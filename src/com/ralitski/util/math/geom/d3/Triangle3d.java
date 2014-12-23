@@ -1,6 +1,6 @@
 package com.ralitski.util.math.geom.d3;
 
-public class Triangle3d implements Surface3d {
+public class Triangle3d implements Surface3d, Cloneable {
 	
 	private Point3d a;
 	private Point3d b;
@@ -156,9 +156,18 @@ public class Triangle3d implements Surface3d {
 	public Surface3d crossSection(Plane plane) {
 		Plane thisPlane = getPlane();
 		if(plane == thisPlane) {
-			
+			return clone();
 		} else {
-			Line3d planeIntersection = plane.getIntersection(thisPlane);
+			Line3d planeIntersection = (Line3d)plane.getIntersection(thisPlane);
+			if(planeIntersection != null) {
+				return getIntersection(planeIntersection);
+			} else {
+				return null;
+			}
 		}
+	}
+	
+	public Triangle3d clone() {
+		return new Triangle3d(a.clone(), b.clone(), c.clone());
 	}
 }

@@ -233,6 +233,12 @@ public class Vector3d implements Cloneable {
     	z *= magnitude;
     	magnitudeDirty = true;
     }
+
+	public void invert() {
+		x = -x;
+		y = -y;
+		z = -z;
+	}
     
     public float magnitude() {
     	recalcMagnitude();

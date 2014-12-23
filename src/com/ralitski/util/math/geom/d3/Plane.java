@@ -87,6 +87,18 @@ public class Plane {
 		return total == 0;
 	}
 	
+	public float getXFromYZ(float y, float z) {
+		return -(y * this.y + z * this.z + c) / x;
+	}
+	
+	public float getYFromXZ(float x, float z) {
+		return -(x * this.x + z * this.z + c) / y;
+	}
+	
+	public float getZFromXY(float x, float y) {
+		return -(x * this.x + y * this.y + c) / z;
+	}
+	
 	public boolean contains(Vector3d vector) {
 		return vector.isOrthogonal(getOrthogonalVector());
 	}
@@ -109,13 +121,36 @@ public class Plane {
 		return new Line3d(line.getPointFromT(t));
 	}
 	
-	public Line3d getIntersection(Plane plane) {
-		if(plane.getOrthogonalVector().equals(this.getOrthogonalVector())) {
+	public Object getIntersection(Plane plane) {
+		Vector3d thisOrtho = this.getOrthogonalVector();
+		Vector3d planeOrtho = plane.getOrthogonalVector();
+		if(planeOrtho.isParallel(thisOrtho)) {
 			if(plane.contains(getXIntercept())) {
-				//same plane
+				return this;
 			} else {
 				return null;
 			}
+		} else {
+			//line intersection
+			Vector3d slope = thisOrtho.crossProduct(planeOrtho);
+			Point3d base;
+			float d1 = -c;
+			float d2 = -plane.c;
+			float num = (d1 + d2);
+			float denom = (y*plane.z+z*plane.y);
+			if(denom == 0F) {
+				denom = (x*plane.z+z*plane.x);
+				float x = num/denom;
+				float y = 0;
+				float z = getZFromXY(x, y);
+				base = new Point3d(x, y, z);
+			} else {
+				float x = 0;
+				float y = num/denom;
+				float z = getZFromXY(x, y);
+				base = new Point3d(x, y, z);
+			}
+			return new Line3d(base, slope);
 		}
 	}
 	

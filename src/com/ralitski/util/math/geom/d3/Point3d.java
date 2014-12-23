@@ -215,6 +215,12 @@ public class Point3d implements Cloneable, Streamable {
     	multiply(length / l);
     }
     
+    public void setLength(Point3d center, float length) {
+    	translate(-center.getX(), -center.getY(), -center.getZ());
+    	setLength(length);
+    	translate(center);
+    }
+    
     //rotate
     
     public float getAngleX() {
