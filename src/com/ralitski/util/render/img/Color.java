@@ -12,10 +12,11 @@ import com.ralitski.util.doc.TODO;
 public class Color implements Streamable, Cloneable {
 
     public static final Color WHITE = new Color(ColorHelper.WHITE);
+    public static final Color GRAY = new Color(ColorHelper.GRAY);
+    public static final Color BLACK = new Color(ColorHelper.BLACK);
     public static final Color RED = new Color(ColorHelper.RED);
     public static final Color GREEN = new Color(ColorHelper.GREEN);
     public static final Color BLUE = new Color(ColorHelper.BLUE);
-    public static final Color BLACK = new Color(ColorHelper.BLACK);
     public static final Color YELLOW = new Color(ColorHelper.YELLOW);
     public static final Color CYAN = new Color(ColorHelper.CYAN);
     public static final Color MAGENTA = new Color(ColorHelper.MAGENTA);

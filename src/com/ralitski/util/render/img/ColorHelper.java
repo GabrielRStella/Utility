@@ -14,15 +14,16 @@ public class ColorHelper {
 	
 	// HEX use method
 
-	public static int WHITE, RED, GREEN, BLUE, BLACK, YELLOW, CYAN, MAGENTA;
+	public static int WHITE, GRAY, BLACK, RED, GREEN, BLUE, YELLOW, CYAN, MAGENTA;
 	
 	static
 	{
 		WHITE = toCompressed(255,255,255);
+		GRAY = toCompressed(160, 160, 160);
+		BLACK = toCompressed(0,0,0);
 		RED = toCompressed(255,0,0);
 		GREEN = toCompressed(0,255,0);
 		BLUE = toCompressed(0,0,255);
-		BLACK = toCompressed(0,0,0);
 		YELLOW = toCompressed(255,255,0);
 		CYAN = toCompressed(0,255,255);
 		MAGENTA = toCompressed(255,0,255);

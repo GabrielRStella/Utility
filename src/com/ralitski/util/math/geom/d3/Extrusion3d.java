@@ -1,5 +1,7 @@
 package com.ralitski.util.math.geom.d3;
 
+import com.ralitski.util.math.geom.Interval;
+
 public class Extrusion3d implements Shape3d {
 	
 	private Surface3d base;
@@ -16,11 +18,61 @@ public class Extrusion3d implements Shape3d {
 		this.direction = direction;
 		if(direction.isOrthogonal(s.getPlane().getOrthogonalVector())) throw new IllegalArgumentException("Can't extrude sideways!");
 	}
+	
+	public Surface3d getSurface() {
+		return base;
+	}
+	
+	public Vector3d getDirection() {
+		return direction;
+	}
 
 	@Override
 	public Line3d getIntersection(Line3d line) {
-		// TODO Auto-generated method stub
-		return null;
+		Line3d project = line.project(base.getPlane(), direction);
+		Line3d surfaceIntersection = base.getIntersection(project);
+		if(surfaceIntersection == null) {
+			return null;
+		} else if(surfaceIntersection.getInterval().equals(Interval.ALL)) {
+			//the surface of this extrusion is infinite (probably a line)
+			Plane plane = base.getPlane();
+			Line3d start = plane.getIntersection(line);
+			Point3d base;
+			try {
+				base = plane.getXIntercept();
+			} catch(Exception e) {
+				//the plane doesn't intersect through the x-axis
+				base = plane.getYIntercept();
+			}
+			base.translate(direction);
+			Plane extrudedPlane = new Plane(base, direction);
+			Line3d end = extrudedPlane.getIntersection(line);
+			if(start != null) {
+				if(start.isPoint()) {
+					//both will be points
+					return new Segment3d(start.getBase(), end.getBase());
+				} else {
+					//the line is on the surface's plane
+					return start;
+				}
+			} else if(end != null) {
+				//the given line is parallel to the extruded plane
+				return end;
+			} else {
+				//the line is parallel to the plane, but not directly on the plane or extruded plane
+				base = line.getBase();
+				Point3d closest = plane.getClosestPointTo(base);
+				Vector3d v = new Vector3d(closest, base);
+				if(v.isAligned(direction) && v.magnitude() <= direction.magnitude()) {
+					return line;
+				} else {
+					//the line is in front of or behind the extrusion
+					return null;
+				}
+			}
+		} else {
+			//find the bounds of it and whatnot
+		}
 	}
 
 	@Override
@@ -71,14 +123,10 @@ public class Extrusion3d implements Shape3d {
 
 	@Override
 	public Surface3d project(Plane plane, Vector3d direction) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
 	public Surface3d crossSection(Plane plane) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

@@ -211,7 +211,7 @@ public class Line3d implements Surface3d, Cloneable {
 //    }
 
 	@Override
-	public Surface3d project(Plane plane, Vector3d direction) {
+	public Line3d project(Plane plane, Vector3d direction) {
 		Line3d intersect = new Line3d(base, direction);
 		Line3d line = plane.getIntersection(intersect);
 		if(line == null) {
@@ -242,5 +242,9 @@ public class Line3d implements Surface3d, Cloneable {
 		} else {
 			return null;
 		}
+	}
+	
+	public String toString() {
+		return "[t" + slope + " + " + base + "]";
 	}
 }

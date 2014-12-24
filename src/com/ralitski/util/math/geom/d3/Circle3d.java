@@ -28,7 +28,6 @@ public class Circle3d implements Surface3d {
 			//TODO
 			//get the intersecting segment
 		}
-		return null;
 	}
 
 	@Override
@@ -56,7 +55,6 @@ public class Circle3d implements Surface3d {
 	// ;-;
 	@Override
 	public Surface3d project(Plane plane, Vector3d direction) {
-		return null;
 	}
 
 	@Override

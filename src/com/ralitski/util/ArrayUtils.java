@@ -268,25 +268,35 @@ public class ArrayUtils {
     }
     
     public static <T> Iterable<T> getIterable(T...t) {
-        return new ArrayIterator<T>(t);
+        return new ArrayIterable<T>(t);
     }
     
     public static <T> Iterator<T> getIterator(T...t) {
         return new ArrayIterator<T>(t);
     }
     
-    private static class ArrayIterator<T> implements Iterable<T>, Iterator<T> {
+    private static class ArrayIterable<T> implements Iterable<T> {
+    	
+    	private T[] t;
+    	
+    	private ArrayIterable(T...t) {
+    		this.t = t;
+    	}
+
+		@Override
+		public Iterator<T> iterator() {
+			return new ArrayIterator<T>(t);
+		}
+    	
+    }
+    
+    private static class ArrayIterator<T> implements Iterator<T> {
         
         private T[] t;
         private int nextIndex;
         
         private ArrayIterator(T...t) {
             this.t = t;
-        }
-
-        @Override
-        public Iterator<T> iterator() {
-            return this;
         }
 
         @Override

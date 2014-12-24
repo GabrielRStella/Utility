@@ -112,7 +112,7 @@ public class Triangle3d implements Surface3d, Cloneable {
 		Line3d cabL = cp.getIntersection(ab);
 		Line3d bcaL = bp.getIntersection(ca);
 		
-		if(abcL.isPoint() && cabL.isPoint() && bcaL.isPoint()) {
+		if(abcL != null && abcL.isPoint() && cabL != null &&  cabL.isPoint() && bcaL != null &&  bcaL.isPoint()) {
 			Point3d abc = abcL.getBase();
 			Point3d cab = cabL.getBase();
 			Point3d bca = bcaL.getBase();
@@ -169,5 +169,9 @@ public class Triangle3d implements Surface3d, Cloneable {
 	
 	public Triangle3d clone() {
 		return new Triangle3d(a.clone(), b.clone(), c.clone());
+	}
+	
+	public String toString() {
+		return "[" + a.toString() + ", " + b.toString() + ", " + c.toString() + "]";
 	}
 }

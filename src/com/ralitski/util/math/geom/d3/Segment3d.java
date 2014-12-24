@@ -8,15 +8,23 @@ public class Segment3d extends Line3d {
 
 	public Segment3d(Line3d l) {
 		super(l);
+		interval = Interval.ALL; //omg it's a real line
 	}
 	
 	public Segment3d(Point3d p) {
 		super(p);
+		interval = Interval.NONE;
 	}
 	
 	public Segment3d(Point3d p1, Point3d p2) {
 		super(p1, p2);
-		interval = new Interval(getTFromX(p1.getX()), true, getTFromX(p2.getX()), true);
+		float firstT = getTFromX(p1.getX());
+		if(Float.isNaN(firstT)) firstT = getTFromY(p1.getY());
+		if(Float.isNaN(firstT)) firstT = getTFromZ(p1.getZ());
+		float secondT = getTFromX(p2.getX());
+		if(Float.isNaN(secondT)) secondT = getTFromY(p2.getY());
+		if(Float.isNaN(secondT)) secondT = getTFromZ(p2.getZ());
+		interval = new Interval(Math.min(firstT, secondT), true, Math.max(firstT, secondT), true);
 	}
 	
 	public void setInterval(Interval i) {
@@ -36,19 +44,23 @@ public class Segment3d extends Line3d {
 	}
 	
 	public boolean contains(Point3d p) {
-		return interval.includes(getTFromX(p.getX())) && super.contains(p);
+		return containsT(getTFromX(p.getX())) && super.contains(p);
 	}
 	
 	private boolean containsX(float x) {
-		return interval.includes(getTFromX(x));
+		return containsT(getTFromX(x));
 	}
 	
 	private boolean containsY(float y) {
-		return interval.includes(getTFromY(y));
+		return containsT(getTFromY(y));
 	}
 	
 	private boolean containsZ(float z) {
-		return interval.includes(getTFromZ(z));
+		return containsT(getTFromZ(z));
+	}
+	
+	private boolean containsT(float t) {
+		return interval == null || interval.includes(t);
 	}
 	
 	public float getXFromY(float y) {
@@ -76,30 +88,30 @@ public class Segment3d extends Line3d {
 	}
 	
 	public float getXFromT(float t) {
-		return interval.includes(t) ? super.getXFromT(t) : Float.NaN;
+		return containsT(t) ? super.getXFromT(t) : Float.NaN;
 	}
 	
 	public float getYFromT(float t) {
-		return interval.includes(t) ? super.getYFromT(t) : Float.NaN;
+		return containsT(t) ? super.getYFromT(t) : Float.NaN;
 	}
 	
 	public float getZFromT(float t) {
-		return interval.includes(t) ? super.getXFromT(t) : Float.NaN;
+		return containsT(t) ? super.getZFromT(t) : Float.NaN;
 	}
 	
 	public float getTFromX(float x) {
 		float t = super.getTFromX(x);
-		return interval.includes(t) ? t : Float.NaN;
+		return containsT(t) ? t : Float.NaN;
 	}
 	
 	public float getTFromY(float y) {
 		float t = super.getTFromY(y);
-		return interval.includes(t) ? t : Float.NaN;
+		return containsT(t) ? t : Float.NaN;
 	}
 	
 	public float getTFromZ(float z) {
-		float t = super.getTFromX(z);
-		return interval.includes(t) ? t : Float.NaN;
+		float t = super.getTFromZ(z);
+		return containsT(t) ? t : Float.NaN;
 	}
 	
 	public Point3d getPointFromX(float x) {
@@ -115,7 +127,7 @@ public class Segment3d extends Line3d {
 	}
 	
 	public Point3d getPointFromT(float t) {
-		return interval.includes(t) ? super.getPointFromT(t) : null;
+		return containsT(t) ? super.getPointFromT(t) : null;
 	}
 	
 	public Line3d getIntersection(Line3d other) {
@@ -153,6 +165,10 @@ public class Segment3d extends Line3d {
 		Segment3d s = new Segment3d(this);
 		s.setInterval(interval); //intervals are immutable and can be reused
 		return s;
+	}
+	
+	public String toString() {
+		return super.toString() + interval;
 	}
 
 }

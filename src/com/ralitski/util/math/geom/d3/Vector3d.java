@@ -281,6 +281,11 @@ public class Vector3d implements Cloneable {
     	});
     }
     
+    public boolean isAligned(Vector3d other) {
+    	//do the alignment calculation first because it's faster
+    	return (x > 0F ? other.x > 0F : (x < 0F ? other.x < 0F : other.x == 0F)) && isParallel(other);
+    }
+    
     public boolean isParallel(Vector3d other) {
     	float scalar = magnitude() / other.magnitude();
     	return x / scalar == other.x && y / scalar == other.y && z / scalar == other.z;
