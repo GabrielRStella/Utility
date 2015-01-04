@@ -7,22 +7,6 @@ import com.ralitski.util.math.geom.d2.Point2d;
 
 public class BoundingBoxPositioner {
 	
-	public static void exclude(BoundingBox relative, BoundingBox boundingBox) {
-		exclude(relative, boundingBox, 0);
-	}
-	
-	public static void exclude(BoundingBox relative, BoundingBox boundingBox, float boundarySpace) {
-		exclude(relative, boundingBox, boundingBox.getCenter(), boundarySpace);
-	}
-	
-	public static void exclude(BoundingBox relative, BoundingBox boundingBox, Point2d prevPosition) {
-		exclude(relative, boundingBox, prevPosition, 0);
-	}
-	
-	public static void exclude(BoundingBox relative, BoundingBox boundingBox, Point2d prevPosition, float boundarySpace) {
-		//TODO...
-	}
-	
 	public static void position(GuiPosition[] positions, BoundingBox relative, BoundingBox boundingBox) {
 		position(positions, relative, boundingBox, Display.getWidth(), Display.getHeight());
 	}

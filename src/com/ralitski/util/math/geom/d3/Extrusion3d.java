@@ -27,51 +27,67 @@ public class Extrusion3d implements Shape3d {
 		return direction;
 	}
 
+	//TODO: see if this can be condensed
 	@Override
 	public Line3d getIntersection(Line3d line) {
 		Line3d project = line.project(base.getPlane(), direction);
 		Line3d surfaceIntersection = base.getIntersection(project);
 		if(surfaceIntersection == null) {
 			return null;
-		} else if(surfaceIntersection.getInterval().equals(Interval.ALL)) {
-			//the surface of this extrusion is infinite (probably a line)
-			Plane plane = base.getPlane();
-			Line3d start = plane.getIntersection(line);
-			Point3d base;
-			try {
-				base = plane.getXIntercept();
-			} catch(Exception e) {
-				//the plane doesn't intersect through the x-axis
-				base = plane.getYIntercept();
-			}
-			base.translate(direction);
-			Plane extrudedPlane = new Plane(base, direction);
-			Line3d end = extrudedPlane.getIntersection(line);
-			if(start != null) {
-				if(start.isPoint()) {
-					//both will be points
-					return new Segment3d(start.getBase(), end.getBase());
-				} else {
-					//the line is on the surface's plane
-					return start;
-				}
-			} else if(end != null) {
-				//the given line is parallel to the extruded plane
-				return end;
-			} else {
-				//the line is parallel to the plane, but not directly on the plane or extruded plane
-				base = line.getBase();
-				Point3d closest = plane.getClosestPointTo(base);
-				Vector3d v = new Vector3d(closest, base);
-				if(v.isAligned(direction) && v.magnitude() <= direction.magnitude()) {
-					return line;
-				} else {
-					//the line is in front of or behind the extrusion
-					return null;
-				}
-			}
 		} else {
-			//find the bounds of it and whatnot
+			if(surfaceIntersection.getInterval().equals(Interval.ALL)) {
+				//the surface of this extrusion is infinite (probably a line)
+				Plane plane = base.getPlane();
+				Line3d lineOnSurfacePlane = plane.getIntersection(line);
+				Point3d base;
+				try {
+					base = plane.getXIntercept();
+				} catch(Exception e) {
+					//the plane doesn't intersect through the x-axis
+					base = plane.getYIntercept();
+				}
+				base.translate(direction);
+				Plane extrudedPlane = new Plane(base, direction);
+				Line3d lineOnExtrudedPlane = extrudedPlane.getIntersection(line);
+				if(lineOnSurfacePlane != null) {
+					if(lineOnSurfacePlane.isPoint()) {
+						//both will be points
+						return new Segment3d(lineOnSurfacePlane.getBase(), lineOnExtrudedPlane.getBase());
+					} else {
+						//the line is on the surface's plane
+						return lineOnSurfacePlane;
+					}
+				} else if(lineOnExtrudedPlane != null) {
+					//the given line is parallel to the extruded plane
+					return lineOnExtrudedPlane;
+				} else {
+					//the line is parallel to the plane, but not directly on the plane or extruded plane
+					base = line.getBase();
+					Point3d closest = plane.getClosestPointTo(base);
+					Vector3d v = new Vector3d(closest, base);
+					if(v.isAligned(direction) && v.magnitude() <= direction.magnitude()) {
+						return line;
+					} else {
+						//the line is in front of or behind the extrusion
+						return null;
+					}
+				}
+			} else {
+				//surface has bounds
+				if(surfaceIntersection.isPoint()) {
+					//the given line is parallel to the extrusion
+					Point3d start = surfaceIntersection.getBase();
+					Point3d end = start.clone();
+					end.translate(direction);
+					return new Segment3d(start, end);
+				} else {
+					Point3d start = surfaceIntersection.getPointFromT(surfaceIntersection.getInterval().getMin());
+					Point3d end = surfaceIntersection.getPointFromT(surfaceIntersection.getInterval().getMax());
+					Line3d startLine = line.getIntersection(new Line3d(start, direction));
+					Line3d endLine = line.getIntersection(new Line3d(end, direction));
+					return new Segment3d(startLine.getBase(), endLine.getBase());
+				}
+			}
 		}
 	}
 

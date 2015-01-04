@@ -160,6 +160,19 @@ public class Segment3d extends Line3d {
 	public float distanceFromEnds(Point3d p) {
 		return Math.min(getMin().length(p), getMax().length(p));
 	}
+
+	@Override
+	public Segment3d project(Plane plane, Vector3d direction) {
+		Line3d line = super.project(plane, direction);
+		if(direction.isAligned(getSlope())) {
+			return (Segment3d)line; //super calls clone()
+		}
+		Point3d start = getPointFromT(interval.getMin());
+		Point3d end = getPointFromT(interval.getMax());
+		Line3d startLine = new Line3d(start, direction);
+		Line3d endLine = new Line3d(end, direction);
+		return new Segment3d(line.getIntersection(startLine).getBase(), line.getIntersection(endLine).getBase());
+	}
 	
 	public Segment3d clone() {
 		Segment3d s = new Segment3d(this);

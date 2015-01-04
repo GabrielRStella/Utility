@@ -126,6 +126,10 @@ public class Color implements Streamable, Cloneable {
         c /= 3;
         this.r = this.g = this.b = c;
     }
+    
+    public Color darker(int dark) {
+    	return new Color(r - dark, g - dark, b - dark, a);
+    }
 
     //COMPARISON
     public static boolean compare(Color c, Color c1) {

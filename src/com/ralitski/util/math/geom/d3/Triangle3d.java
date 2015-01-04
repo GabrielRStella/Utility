@@ -7,6 +7,9 @@ public class Triangle3d implements Surface3d, Cloneable {
 	private Point3d c;
 	
 	public Triangle3d(Point3d a, Point3d b, Point3d c) {
+		if(Line3d.colinear(a, b, c)) {
+			throw new IllegalArgumentException("Triangle points can't be colinear");
+		}
 		this.a = a;
 		this.b = b;
 		this.c = c;
@@ -50,7 +53,7 @@ public class Triangle3d implements Surface3d, Cloneable {
 	
 	public Line3d getIntersection(Line3d line) {
 		Line3d intersection = getPlane().getIntersection(line);
-		return intersection.isPoint() ? (contains(line.getBase()) ? intersection : null) : getIntersectionInternal(intersection);
+		return intersection != null ? (intersection.isPoint() ? (contains(line.getBase()) ? intersection : null) : getIntersectionInternal(intersection)) : null;
 	}
 	
 	//called if a line is on the triangle's plane
@@ -111,17 +114,17 @@ public class Triangle3d implements Surface3d, Cloneable {
 		Line3d abcL = ap.getIntersection(bc);
 		Line3d cabL = cp.getIntersection(ab);
 		Line3d bcaL = bp.getIntersection(ca);
-		
-		if(abcL != null && abcL.isPoint() && cabL != null &&  cabL.isPoint() && bcaL != null &&  bcaL.isPoint()) {
+
+		if(abcL != null) {
 			Point3d abc = abcL.getBase();
+			return a.length(p) <= a.length(abc);
+		} else if(cabL != null) {
 			Point3d cab = cabL.getBase();
+			return c.length(p) <= c.length(cab);
+		} else if(bcaL != null) {
 			Point3d bca = bcaL.getBase();
-			
-			return a.length(p) <= a.length(abc)
-					&& b.length(p) <= b.length(bca)
-					&& c.length(p) <= c.length(cab);
-		}
-		return false;
+			return b.length(p) <= b.length(bca);
+		} else return false;
 	}
 	
 	public Triangle3d project(Plane p, Vector3d v) {

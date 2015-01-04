@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class ImageList {
 
+	private String fileType = "png";
     public Map<String, Texture> images;
     public String loc;
 
@@ -14,10 +15,7 @@ public class ImageList {
 
     public ImageList(String loc) {
         this.images = new HashMap<String, Texture>();
-        if (!loc.endsWith("/")) {
-            loc = loc.concat("/");
-        }
-        this.loc = loc;
+        setBaseLoc(loc);
     }
 
     public String getBaseLoc() {
@@ -25,47 +23,88 @@ public class ImageList {
     }
 
     public void setBaseLoc(String loc) {
+        if (!loc.endsWith("/")) {
+            loc = loc.concat("/");
+        }
         this.loc = loc;
     }
+    
+    public String getFileType() {
+    	return fileType;
+    }
+    
+    public void setFileType(String fileType) {
+    	this.fileType = fileType;
+    }
+    
+    //add
 
-    public boolean bind(String image) {
-        return bind(image, false);
+    /**
+     * 
+     * @param name
+     * @param data
+     * @return the image previously stored under the given name (null if no image previously stored)
+     */
+    public Texture setImage(String name, Texture data) {
+        return this.images.put(name, data);
+    }
+    
+    //get
+
+    public Texture getImage(String string) {
+    	return getImage(string, false);
     }
 
-    public boolean bind(String image, boolean flag) {
-        Texture data = this.images.get(image);
-        if (data == null) {
-            if (flag) {
-                this.loadImage(this.loc, image);
-            } else {
-                return false;
-            }
+    public Texture getImage(String string, boolean load) {
+        Texture tex = this.images.get(string);
+        if (tex != null) {
+            return tex;
         }
-        ImageManager.bindTexture(data.id());
-        return true;
+        return load ? this.loadImage(this.loc + string, string) : null;
     }
+    
+    //load
 
     public Texture loadImage(String loc, String name) {
-        Texture texture = ImageManager.loadTexture(loc + ".png");
+    	Image image = GLImageHelper.loadImage(loc + "." + fileType);
+    	image.glPrepare();
+        Texture texture = new Texture(image);
         this.images.put(name, texture);
         return texture;
     }
 
     public Texture loadImage(String name) {
-        Texture texture = ImageManager.loadTexture(this.loc + name + ".png");
+    	Image image = GLImageHelper.loadImage(this.loc + name + "." + fileType);
+    	image.glPrepare();
+        Texture texture = new Texture(image);
         this.images.put(name, texture);
         return texture;
     }
+    
+    //bind
 
-    public void addImage(String name, Texture data) {
-        this.images.put(name, data);
+    public boolean bindImage(String image) {
+        return bindImage(image, false);
     }
 
-    public Texture get(String string) {
-        Texture tex = this.images.get(string);
-        if (tex != null) {
-            return tex;
+    public boolean bindImage(String image, boolean flag) {
+        Texture data = this.images.get(image);
+        if (data == null) {
+            if (flag) {
+                data = this.loadImage(this.loc, image);
+            } else {
+                return false;
+            }
         }
-        return this.loadImage(this.loc + string, string);
+        data.glBind();
+        return true;
+    }
+    
+    //delete
+    
+    public Texture deleteImage(String name) {
+    	Texture tex = getImage(name);
+    	if(tex != null) tex.glDelete();
+    	return tex;
     }
 }

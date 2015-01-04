@@ -180,6 +180,7 @@ public class Vector3d implements Cloneable {
     	return x == 0 || y == 0 || z == 0;
     }
     
+    //TODO: test this
     public Vector3d project(Vector3d axis) {
     	axis = axis.clone();
     	Vector3d v = clone();
@@ -283,7 +284,7 @@ public class Vector3d implements Cloneable {
     
     public boolean isAligned(Vector3d other) {
     	//do the alignment calculation first because it's faster
-    	return (x > 0F ? other.x > 0F : (x < 0F ? other.x < 0F : other.x == 0F)) && isParallel(other);
+    	return (x > 0F ? other.x > 0F : (x < 0F ? other.x < 0F : (y > 0F ? other.y > 0F : (y < 0F ? other.y < 0F : (z > 0F ? other.z > 0F : (z < 0F ? other.z < 0F : other.z == 0F)))))) && isParallel(other);
     }
     
     public boolean isParallel(Vector3d other) {

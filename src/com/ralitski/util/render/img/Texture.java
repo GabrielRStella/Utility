@@ -1,44 +1,80 @@
 package com.ralitski.util.render.img;
 
+import org.lwjgl.opengl.GL11;
+
+/**
+ * references an Image in opengl without storing the image's data separately.
+ * 
+ * @author ralitski
+ *
+ */
 public class Texture {
 
-	public int id, width, height;
+	private int id;
+	private int width;
+	private int height;
+	private int minFilter;
+	private int magFilter;
 	
-	Texture(int id, int w, int h)
+	public Texture(Image i)
 	{
-		this.id = id;
-		this.width = w;
-		this.height = h;
+		this(i.getId(), i.getWidth(), i.getHeight(), i.getMinFilter(), i.getMagFilter());
 	}
 	
-	public void setData(Image newImage)
-	{
-		this.id = newImage.id();
-		this.width = newImage.width();
-		this.height = newImage.height();
+	public Texture(int id, int width, int height, int minFilter, int magFilter) {
+		this.id = id;
+		this.width = width;
+		this.height = height;
+		this.minFilter = minFilter;
+		this.magFilter = magFilter;
 	}
 
-	public int id()
-	{
-		return this.id;
+	public int getId() {
+		return id;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
 	}
 	
-	public int width()
-	{
-		return this.width;
+	public int getMinFilter() {
+		return minFilter;
+	}
+
+	public void setMinFilter(int minFilter) {
+		this.minFilter = minFilter;
+		GLImageHelper.resetImageFilters(id, minFilter, magFilter);
+	}
+
+	public int getMagFilter() {
+		return magFilter;
+	}
+
+	public void setMagFilter(int magFilter) {
+		this.magFilter = magFilter;
+		GLImageHelper.resetImageFilters(id, minFilter, magFilter);
+	}
+
+    public void blend() {
+        minFilter = GL11.GL_LINEAR;
+        magFilter = GL11.GL_LINEAR;
+    }
+
+    public void noBlend() {
+        minFilter = GL11.GL_NEAREST;
+        magFilter = GL11.GL_NEAREST;
+    }
+	
+	public void glBind() {
+		GLImageHelper.bindTexture(id);
 	}
 	
-	public int height()
-	{
-		return this.height;
-	}
-	
-	public void bind() {
-		ImageManager.bindTexture(this.id);
-	}
-	
-	public static Texture getData(Image i)
-	{
-		return new Texture(i.id(), i.width(), i.height());
+	public void glDelete() {
+		GLImageHelper.deleteImage(id);
+		id = -1;
 	}
 }

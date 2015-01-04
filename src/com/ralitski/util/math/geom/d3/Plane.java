@@ -118,7 +118,9 @@ public class Plane {
 		float f2 = x * v.getX() + y * v.getY() + z * v.getZ();
 		if(f2 == 0F) return line.clone();
 		float t = f1 / f2;
-		return new Line3d(line.getPointFromT(t));
+		p = line.getPointFromT(t);
+		line = p != null ? new Line3d(p) : null;
+		return line;
 	}
 	
 	public Object getIntersection(Plane plane) {

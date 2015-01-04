@@ -50,3 +50,4 @@ Temporary Items
 .settings/org.eclipse.jdt.core.prefs
 .classpath
 .project
+src/com/foodyling/util/SparseArray.java

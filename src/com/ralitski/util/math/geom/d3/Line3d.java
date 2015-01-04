@@ -5,6 +5,10 @@ import com.ralitski.util.math.geom.Interval;
 
 public class Line3d implements Surface3d, Cloneable {
 	
+	public static boolean colinear(Point3d a, Point3d b, Point3d c) {
+		return new Line3d(a, b).equals(new Line3d(b, c));
+	}
+	
 	private Plane plane;
 
 	private Point3d base;
@@ -145,14 +149,15 @@ public class Line3d implements Surface3d, Cloneable {
 	
 	//THE ALGEBRA
 	public Line3d getIntersection(Line3d other) {
-		if(slope.isParallel(other.slope)) return base.equals(other.base) ? clone() : null;
+		if(slope.isParallel(other.slope)) return contains(other.getBase()) ? clone() : null;
 		float f1 = (base.getX() * other.slope.getY() - other.base.getX() * slope.getY()) / base.getY() / other.base.getY();
 		float f2 = other.base.getX() * slope.getX() / other.slope.getY();
 		float f3 = base.getX() * other.slope.getX() / base.getY();
-		float f4 = (other.base.getX() / other.base.getY() - base.getX() / base.getY());
+		float f4 = (other.base.getX() / other.base.getY()) - (base.getX() / base.getY());
 		float x = f1 + f2 - f3;
 		x /= f4;
-		if(getYFromX(x) == other.getYFromX(x)) return new Line3d(getPointFromX(x));
+		Point3d p = getPointFromX(x);
+		if(other.contains(p)) return new Line3d(p);
 		else return null;
 	}
 	
@@ -246,5 +251,14 @@ public class Line3d implements Surface3d, Cloneable {
 	
 	public String toString() {
 		return "[t" + slope + " + " + base + "]";
+	}
+	
+	public boolean equals(Object o) {
+		if(o == this) {
+			return true;
+		} else if(o instanceof Line3d) {
+			Line3d line = (Line3d)o;
+			return line.getInterval().equals(this.getInterval()) && line.getSlope().isParallel(getSlope()) && line.contains(getBase());
+		} else return false;
 	}
 }
