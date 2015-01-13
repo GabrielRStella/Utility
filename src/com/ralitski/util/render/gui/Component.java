@@ -14,7 +14,7 @@ public interface Component {
 	void setSelected(boolean selected);
 	boolean isSelected();
 	
-	//this should reflect an editable boundary for the component.
+	//this should reflect an editable (movable) boundary for the component.
 	Box getBounds();
 	
 	//render manager included for ease

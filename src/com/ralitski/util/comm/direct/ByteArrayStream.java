@@ -6,6 +6,7 @@ public class ByteArrayStream {
 	
 	/*
 	 * I basically mashed together ByteArrayInputStream and ByteArrayOutputStream. hope it works.
+	 * edit: it dooooo
 	 */
 
     private byte[] buf;
@@ -126,7 +127,6 @@ public class ByteArrayStream {
     
     //unique implementation - reduces buffer size, ensures average write capacity
     public void flush() {
-    	/*
     	flushes++;
     	int newLength = buf.length;
     	if(enableSmartFlush) {
@@ -137,6 +137,5 @@ public class ByteArrayStream {
     		count = available();
     		pos = 0;
     	}
-    	 */
     }
 }
