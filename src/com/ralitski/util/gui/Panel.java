@@ -1,4 +1,4 @@
-package com.ralitski.util.render.gui;
+package com.ralitski.util.gui;
 
 public class Panel implements Container {
 

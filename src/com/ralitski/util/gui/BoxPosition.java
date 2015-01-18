@@ -1,4 +1,4 @@
-package com.ralitski.util.render.gui;
+package com.ralitski.util.gui;
 
 import com.ralitski.util.doc.TODO;
 

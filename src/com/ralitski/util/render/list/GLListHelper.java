@@ -10,6 +10,13 @@ import org.lwjgl.opengl.GL11;
 public class GLListHelper {
 
     public static void getList(ListMaker m) {
+        if (m.registered()) {
+            deleteList(m);
+        }
+        doGetList(m);
+    }
+
+    private static void doGetList(ListMaker m) {
         int glId = glGenLists(1);
         
         m.setCallId(glId);
@@ -27,13 +34,6 @@ public class GLListHelper {
             GL11.glDeleteLists(glId, 1);
             m.setCallId(0);
         }
-    }
-
-    public static void regenList(ListMaker m) {
-        if (m.registered()) {
-            deleteList(m);
-        }
-        getList(m);
     }
     
     private static CenteredSquareRenderList squareListCentered = new CenteredSquareRenderList();

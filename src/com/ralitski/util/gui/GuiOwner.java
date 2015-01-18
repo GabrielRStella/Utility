@@ -1,4 +1,6 @@
-package com.ralitski.util.render.gui;
+package com.ralitski.util.gui;
+
+import com.ralitski.util.gui.render.GuiRenderManager;
 
 public interface GuiOwner {
 	int getWidth();

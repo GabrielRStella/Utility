@@ -1,4 +1,6 @@
-package com.ralitski.util.render.gui;
+package com.ralitski.util.gui.render;
+
+import com.ralitski.util.gui.Box;
 
 //TODO: replace strings with RenderString (attributes)
 public interface FontRenderer {

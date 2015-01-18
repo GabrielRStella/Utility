@@ -1,4 +1,6 @@
-package com.ralitski.util.render.gui;
+package com.ralitski.util.gui;
+
+import com.ralitski.util.gui.render.GuiRenderManager;
 
 //TODO: input
 //also rendering optimization (to allow "render list" type things)

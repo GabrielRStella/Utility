@@ -23,11 +23,8 @@ public abstract class ListMaker {
         if(callId >= 0) GL11.glCallList(this.callId);
     }
     
-    public void recompile() {
-        GLListHelper.regenList(this);
-    }
-    
-    public void register() {
+    //also registers the list
+    public void compile() {
         GLListHelper.getList(this);
     }
 

@@ -1,5 +1,6 @@
-package com.ralitski.util.render.gui;
+package com.ralitski.util.gui;
 
+import com.ralitski.util.gui.render.GuiRenderManager;
 import com.ralitski.util.render.img.Color;
 
 public class Gui {
@@ -54,15 +55,18 @@ public class Gui {
 		return true;
 	}
 	
-	public void render() {
+	public void render2d() {
 		GuiManager manager = getOwner();
 		GuiRenderManager render = manager.getGuiOwner().getRenderManager();
 		if(parent != null && renderParent()) {
-			parent.render();
+			parent.render2d();
 			render.drawRectangle(manager.getWindow(), FILM);
 		}
 		if(topLevel != null) topLevel.render(render);
 	}
+	
+	//optional 3d rendering
+	public void render3d() {}
 	
 	//optional stuff to let the gui do whatever it needs to
 	public void onOpen(boolean reentry) {}

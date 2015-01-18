@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+//TODO: pen, command system, separate Rules structure
 public class LSystem {
 	
 	private String axiom;
@@ -39,6 +40,7 @@ public class LSystem {
 		return axiom;
 	}
 	
+	//note: doesn't automatically reset state
 	public void setAxiom(String axiom) {
 		this.axiom = axiom;
 	}

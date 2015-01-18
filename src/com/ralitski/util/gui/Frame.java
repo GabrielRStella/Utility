@@ -1,11 +1,13 @@
-package com.ralitski.util.render.gui;
+package com.ralitski.util.gui;
 
 import java.awt.Dimension;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.ralitski.util.render.gui.layout.BorderLayout;
-import com.ralitski.util.render.gui.layout.Layout;
+import com.ralitski.util.gui.layout.BorderLayout;
+import com.ralitski.util.gui.layout.Layout;
+import com.ralitski.util.gui.render.GuiRenderManager;
+import com.ralitski.util.gui.render.Renderer;
 
 //todo: the actual frame (borders, close button)
 public class Frame implements Container {
@@ -20,6 +22,8 @@ public class Frame implements Container {
 	
 	private Layout layout;
 	private List<Component> children;
+	
+	private boolean renderSelf;
 	
 	public Frame(Gui gui) {
 		prepare(gui);
@@ -172,15 +176,27 @@ public class Frame implements Container {
 	
 	public void render(GuiRenderManager manager) {
 		//render frame background, then components
-		Renderer<Frame> renderer = manager.getSpecialRenderer(this);
-		if(renderer != null) {
-			renderer.render(this);
-		} else {
-			manager.drawBackgroundBox(box);
+		if(renderSelf) {
+			Renderer<Frame> renderer = manager.getSpecialRenderer(this);
+			if(renderer != null) {
+				renderer.render(this);
+			} else {
+				manager.drawBackgroundBox(box);
+			}
 		}
 		for(Component c : children) {
 			c.render(manager);
 		}
+	}
+
+	@Override
+	public boolean doRenderSelf() {
+		return renderSelf;
+	}
+
+	@Override
+	public void setRenderSelf(boolean renderSelf) {
+		this.renderSelf = renderSelf;
 	}
 	
 }

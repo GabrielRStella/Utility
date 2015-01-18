@@ -1,4 +1,4 @@
-package com.ralitski.util.render.gui;
+package com.ralitski.util.gui;
 
 public class GuiManager {
 	
@@ -46,7 +46,11 @@ public class GuiManager {
 		return new Box(0, 0, getWindowWidth(), getWindowHeight());
 	}
 	
-	public void render() {
-		if(currentScreen != null) currentScreen.render();
+	public void render2d() {
+		if(currentScreen != null) currentScreen.render2d();
+	}
+	
+	public void render3d() {
+		if(currentScreen != null) currentScreen.render3d();
 	}
 }

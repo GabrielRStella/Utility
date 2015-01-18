@@ -1,6 +1,8 @@
-package com.ralitski.util.render.gui;
+package com.ralitski.util.gui.render;
 
 import com.ralitski.util.BoundingBox;
+import com.ralitski.util.gui.Box;
+import com.ralitski.util.gui.Component;
 import com.ralitski.util.render.img.Color;
 
 public interface GuiRenderManager {
@@ -24,4 +26,14 @@ public interface GuiRenderManager {
 	
 	//draws the edges of a box
 	void drawBounds(Box box, Color color);
+	
+	//render lists
+	boolean supportLists();
+	
+	/**
+	 * 
+	 * @param renderer a runnable to be called when the list must be (re)generated
+	 * @return
+	 */
+	RenderList newList(Runnable renderer);
 }
