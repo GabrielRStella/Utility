@@ -4,6 +4,20 @@ import com.ralitski.util.math.Matrix;
 
 public class Vector3d implements Cloneable {
 	
+	public Vector3d getI() {
+		return new Vector3d(1, 0, 0);
+	}
+	
+	public Vector3d getJ() {
+		return new Vector3d(0, 1, 0);
+	}
+	
+	public Vector3d getK() {
+		return new Vector3d(0, 0, 1);
+	}
+	
+	//obj
+	
 	private float x;
 	private float y;
 	private float z;
@@ -26,6 +40,10 @@ public class Vector3d implements Cloneable {
     }
     
     public Vector3d(Point3d terminal) {
+    	this(terminal.getX(), terminal.getY(), terminal.getZ());
+    }
+    
+    public Vector3d(Vector3d terminal) {
     	this(terminal.getX(), terminal.getY(), terminal.getZ());
     }
 
@@ -225,7 +243,13 @@ public class Vector3d implements Cloneable {
     }
     
     public void setMagnitude(float m) {
-    	multiply(m / magnitude());
+    	float mag = magnitude();
+    	if(mag != 0F) multiply(m / mag);
+    	else {
+    		x = 1;
+    		y = 0;
+    		z = 0;
+    	}
     }
     
     public void multiply(float magnitude) {
@@ -282,14 +306,28 @@ public class Vector3d implements Cloneable {
     	});
     }
     
-    public boolean isAligned(Vector3d other) {
-    	//do the alignment calculation first because it's faster
-    	return (x > 0F ? other.x > 0F : (x < 0F ? other.x < 0F : (y > 0F ? other.y > 0F : (y < 0F ? other.y < 0F : (z > 0F ? other.z > 0F : (z < 0F ? other.z < 0F : other.z == 0F)))))) && isParallel(other);
-    }
+//    public boolean isAligned(Vector3d other) {
+//    	//do the alignment calculation first because it's faster
+//    	return (x > 0F ? other.x > 0F : (x < 0F ? other.x < 0F : (y > 0F ? other.y > 0F : (y < 0F ? other.y < 0F : (z > 0F ? other.z > 0F : (z < 0F ? other.z < 0F : other.z == 0F)))))) && isParallel(other);
+//    }
     
     public boolean isParallel(Vector3d other) {
-    	float scalar = magnitude() / other.magnitude();
-    	return x / scalar == other.x && y / scalar == other.y && z / scalar == other.z;
+    	float xx = x / other.x;
+    	float yy = y / other.y;
+    	float zz = z / other.z;
+    	if(x == 0F) {
+    		if(y == 0F) {
+    			return other.x == 0F && other.y == 0F;
+    		} else if(z == 0F) {
+    			return other.x == 0F && other.z == 0F;
+    		} else return other.x == 0 && yy == zz;
+    	} else if(y == 0F) {
+    		if(z == 0F) {
+    			return other.y == 0F && other.z == 0F;
+    		} else return other.y == 0 && xx == zz;
+    	} else if(z == 0F) {
+    		return other.z == 0F && xx == yy;
+    	} else return xx == yy && yy == zz;
     }
     
     public boolean isOrthogonal(Vector3d other) {
@@ -311,5 +349,42 @@ public class Vector3d implements Cloneable {
     
     public Vector3d clone() {
     	return new Vector3d(x, y, z);
+    }
+    
+    //merge with jinngine
+    
+    public Vector3d addCopy(Vector3d v) {
+    	return new Vector3d(x + v.x, y + v.y, z + v.z);
+    }
+    
+    public Vector3d subtractCopy(Vector3d v) {
+    	return new Vector3d(x - v.x, y - v.y, z - v.z);
+    }
+    
+    public Vector3d scaleCopy(Vector3d v) {
+    	return new Vector3d(x * v.x, y * v.y, z * v.z);
+    }
+    
+    public Vector3d negateCopy() {
+    	return new Vector3d(-x, -y, -z);
+    }
+    
+    public boolean isNaN() {
+    	return Float.isNaN(x) || Float.isNaN(y) || Float.isNaN(z);
+    }
+    
+    public float dotXY(Vector3d other) {
+    	return (x * other.x) + (y * other.y);
+    }
+    
+    //from jinngine
+    public boolean isEpsilon(float epsilon) {
+        return -epsilon <= x && x <= epsilon
+                && -epsilon <= y && y <= epsilon
+                && -epsilon <= z && z <= epsilon;
+    }
+    
+    public float[] toArray() {
+    	return new float[]{x, y, z};
     }
 }

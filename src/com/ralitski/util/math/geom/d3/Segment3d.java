@@ -164,7 +164,7 @@ public class Segment3d extends Line3d {
 	@Override
 	public Segment3d project(Plane plane, Vector3d direction) {
 		Line3d line = super.project(plane, direction);
-		if(direction.isAligned(getSlope())) {
+		if(direction.isParallel(getSlope())) {
 			return (Segment3d)line; //super calls clone()
 		}
 		Point3d start = getPointFromT(interval.getMin());

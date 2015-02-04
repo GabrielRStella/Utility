@@ -1,6 +1,5 @@
 package com.ralitski.util.math.expression;
 
-import com.ralitski.util.Objects;
 import com.ralitski.util.math.geom.IntervalCompound;
 import com.ralitski.util.math.geom.d2.func.Function;
 import com.ralitski.util.math.var.VariableSet;
@@ -43,8 +42,8 @@ public class FunctionExpression extends AbstractExpression {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 37 * hash + Objects.hashCode(this.function);
-        hash = 37 * hash + Objects.hashCode(this.variable);
+        hash = 37 * hash + function.hashCode();
+        hash = 37 * hash + variable.hashCode();
         return hash;
     }
 

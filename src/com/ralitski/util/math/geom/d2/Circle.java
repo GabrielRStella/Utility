@@ -1,6 +1,7 @@
 package com.ralitski.util.math.geom.d2;
 
-import com.ralitski.util.MathHelper;
+import java.util.Random;
+
 import com.ralitski.util.math.expression.Expression;
 import com.ralitski.util.math.expression.Expressions;
 import com.ralitski.util.math.geom.Interval;
@@ -70,7 +71,10 @@ public class Circle implements Shape {
 	{
 		float d = this.radius;
 		if(!edge) d -= 0.00000000001F; //close enough
-		return Point2d.fromComplex(MathHelper.randomFloat(d), MathHelper.randomFloat(360F));
+		Random r = new Random();
+		float dist = d * r.nextFloat();
+		float angle = 360F * r.nextFloat();
+		return Point2d.fromComplex(dist, angle);
 	}
 	
 	public Point2d[] split(int points)

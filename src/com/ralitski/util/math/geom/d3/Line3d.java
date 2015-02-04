@@ -147,18 +147,18 @@ public class Line3d implements Surface3d, Cloneable {
 		return new Point3d(x, y, z);
 	}
 	
-	//THE ALGEBRA
+	//THE ALGEBRA...and it didn't work the first time ;-;
 	public Line3d getIntersection(Line3d other) {
-		if(slope.isParallel(other.slope)) return contains(other.getBase()) ? clone() : null;
-		float f1 = (base.getX() * other.slope.getY() - other.base.getX() * slope.getY()) / base.getY() / other.base.getY();
-		float f2 = other.base.getX() * slope.getX() / other.slope.getY();
-		float f3 = base.getX() * other.slope.getX() / base.getY();
-		float f4 = (other.base.getX() / other.base.getY()) - (base.getX() / base.getY());
-		float x = f1 + f2 - f3;
-		x /= f4;
-		Point3d p = getPointFromX(x);
-		if(other.contains(p)) return new Line3d(p);
-		else return null;
+//		if(slope.isParallel(other.slope)) return contains(other.getBase()) ? clone() : null;
+//		float f1 = (base.getX() * other.slope.getY() - other.base.getX() * slope.getY()) / base.getY() / other.base.getY();
+//		float f2 = other.base.getX() * slope.getX() / other.slope.getY();
+//		float f3 = base.getX() * other.slope.getX() / base.getY();
+//		float f4 = (other.base.getX() / other.base.getY()) - (base.getX() / base.getY());
+//		float x = f1 + f2 - f3;
+//		x /= f4;
+//		Point3d p = getPointFromX(x);
+//		if(other.contains(p)) return new Line3d(p);
+//		else return null;
 	}
 	
 	public Line3d getParallelThrough(Point3d thru) {

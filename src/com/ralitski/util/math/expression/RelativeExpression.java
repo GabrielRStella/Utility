@@ -1,6 +1,5 @@
 package com.ralitski.util.math.expression;
 
-import com.ralitski.util.Objects;
 import com.ralitski.util.math.geom.IntervalCompound;
 import com.ralitski.util.math.var.Variable;
 import com.ralitski.util.math.var.VariableSet;
@@ -53,7 +52,7 @@ public class RelativeExpression extends AbstractExpression {
 
     @Override
     public int hashCode() {
-        return (Objects.hashCode(variable) << 1) + ((this.simplify ? 1 : 0));
+        return (variable.hashCode() << 1) + ((this.simplify ? 1 : 0));
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.ralitski.util.math.geom.d2.func;
 
-import com.ralitski.util.MathHelper;
 import com.ralitski.util.math.expression.Expression;
 import com.ralitski.util.math.expression.Expressions;
 import com.ralitski.util.math.geom.Interval;
@@ -113,7 +112,7 @@ public class Line2d implements FunctionInverse {
     }
     
     public Line2d getPerpendicularThrough(Point2d p) {
-    	return new Line2d(p, MathHelper.oppositeReciprocal(slope));
+    	return new Line2d(p, -1F / slope);
     }
     
     public Line2d getParallelThrough(Point2d p) {
