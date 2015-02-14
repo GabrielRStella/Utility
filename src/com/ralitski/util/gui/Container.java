@@ -12,6 +12,7 @@ public interface Container extends Component {
 	void setMinWidth(int width);
 	int getMinHeight();
 	void setMinHeight(int height);
+	//control whether the container will resize itself to its layout's recommended size
 	void setResizable(boolean resizable);
 	boolean isResizable();
 	

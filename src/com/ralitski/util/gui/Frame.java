@@ -6,8 +6,7 @@ import java.util.List;
 
 import com.ralitski.util.gui.layout.BorderLayout;
 import com.ralitski.util.gui.layout.Layout;
-import com.ralitski.util.gui.render.GuiRenderManager;
-import com.ralitski.util.gui.render.Renderer;
+import com.ralitski.util.gui.render.RenderStyle;
 
 //todo: the actual frame (borders, close button)
 public class Frame implements Container {
@@ -15,6 +14,7 @@ public class Frame implements Container {
 	private Gui gui;
 	private int id = -1;
 	private Box box;
+	private RenderStyle style;
 	
 	private int minWidth;
 	private int minHeight;
@@ -81,6 +81,21 @@ public class Frame implements Container {
 	@Override
 	public boolean isResizable() {
 		return resizable;
+	}
+
+	@Override
+	public void setRenderStyle(int index, RenderStyle s) {
+		style = s;
+	}
+
+	@Override
+	public RenderStyle getRenderStyle(int index) {
+		return style;
+	}
+
+	@Override
+	public int getRenderStyles() {
+		return 1;
 	}
 
 	@Override
@@ -167,25 +182,21 @@ public class Frame implements Container {
 	public void refresh() {
 		if(resizable) {
 			Dimension d = layout.getMinimumSize();
-			if(box.getWidth() < d.getWidth()) box.setWidth(Math.max(minWidth, (int)d.getWidth()));
-			if(box.getHeight() < d.getHeight()) box.setHeight(Math.max(minHeight, (int)d.getHeight()));
+			if(box.getWidth() < d.getWidth()) box.setWidth(Math.min(Math.max(minWidth, (int)d.getWidth()), gui.getOwner().getGuiOwner().getWidth()));
+			if(box.getHeight() < d.getHeight()) box.setHeight(Math.min(Math.max(minHeight, (int)d.getHeight()), gui.getOwner().getGuiOwner().getHeight()));
 			BoxPosition.position(null, box, gui.getOwner().getWindow(), BoxPosition.WITHIN_STRICT);
 		}
 		layout.refresh(box);
 	}
 	
-	public void render(GuiRenderManager manager) {
+	//TODO: render lists
+	public void render(GuiOwner owner) {
 		//render frame background, then components
 		if(renderSelf) {
-			Renderer<Frame> renderer = manager.getSpecialRenderer(this);
-			if(renderer != null) {
-				renderer.render(this);
-			} else {
-				manager.drawBackgroundBox(box);
-			}
+			owner.drawBox(box, style);
 		}
 		for(Component c : children) {
-			c.render(manager);
+			c.render(owner);
 		}
 	}
 
