@@ -119,26 +119,28 @@ public class Box implements Cloneable {
         Box newBB = new Box(minX - wide, minY - high, maxX + wide, maxY + high);
         return newBB;
     }
-
+    
+    public boolean colliding(Box other) {
+    	return intersecting(other) || enclosed(other) || other.enclosed(this);
+    }
+    
+    //note: to detect collisions between B1 and B2, (B1.intersecting(B2) || B2.intersecting(B1)) can be used
     public boolean intersecting(Box other) {
         boolean TOP_BOTTOM = other.minY < maxY;
         boolean BOTTOM_BOTTOM = other.minY > minY;
         boolean TOP_TOP = other.maxY < maxY;
         boolean BOTTOM_TOP = other.maxY > minY;
-        boolean intersecting = false;
         if ((TOP_BOTTOM && BOTTOM_BOTTOM) || (TOP_TOP && BOTTOM_TOP)) {
             //sides
             boolean RIGHT_LEFT = other.minX < maxX;
             boolean LEFT_LEFT = other.minX > minX;
             boolean RIGHT_RIGHT = other.maxX < maxX;
             boolean LEFT_RIGHT = other.maxX > minX;
-            intersecting = (RIGHT_LEFT && LEFT_LEFT) || (RIGHT_RIGHT && LEFT_RIGHT);
+            return (RIGHT_LEFT && LEFT_LEFT) || (RIGHT_RIGHT && LEFT_RIGHT);
         }
-        //todo: will use a separate method to check if boxes are enclosed
-        return intersecting || enclosed(other) || other.enclosed(this);
+        return false;
     }
 
-    //broken method
     private boolean enclosed(Box other) {
     	return other.maxX > maxX && other.minX < minX && other.maxY > maxY && other.minY < minY;
     }

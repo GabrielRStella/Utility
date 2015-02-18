@@ -18,6 +18,12 @@ public class ArrayUtils {
 		return array[random.nextInt(array.length)];
 	}
     
+	/**
+	 * returns a copy of the given array without duplicate or null elements
+	 * @param type the type of the array
+	 * @param array the array to be copied
+	 * @return a copy of the given array without duplicate or null elements
+	 */
     public static <T> T[] eliminateEquivalentAndNull(Class<T> type, T[] array) {
         if(array == null) return type != null ? (T[]) Array.newInstance(type, 0) : null;
         T[] newArray = (T[]) Array.newInstance(type, array.length);
@@ -31,16 +37,16 @@ public class ArrayUtils {
         return Arrays.copyOf(newArray, length);
     }
     
-    public static <T> boolean equals(T[] t1, T[] t2) {
-        if(t1 == null && t2 == null) return true;
-        if(t1 == null || t2 == null) return false;
-        if(t1.length != t2.length) return false;
-        boolean[] equals = new boolean[t1.length];
-        for(int i = 0; i < t1.length; i++) {
-            equals[i] = equivalent(t1, t2);
-        }
-        return isTrue(equals);
-    }
+//    public static <T> boolean equals(T[] t1, T[] t2) {
+//        if(t1 == null && t2 == null) return true;
+//        if(t1 == null || t2 == null) return false;
+//        if(t1.length != t2.length) return false;
+//        boolean[] equals = new boolean[t1.length];
+//        for(int i = 0; i < t1.length; i++) {
+//            equals[i] = equivalent(t1, t2);
+//        }
+//        return isTrue(equals);
+//    }
     
     public static <T> T[] combineNoNull(Class<T> type, T[]...originals) {
         T[] newArray = combine(type, originals);
@@ -79,6 +85,7 @@ public class ArrayUtils {
         return newArray;
     }
     
+    //used for matrices
     public static <T> Object[][] flip(T[][] table) {
         int xSize = table.length;
         int ySize = table.length > 0 ? table[0].length : (xSize = 0);
@@ -101,19 +108,6 @@ public class ArrayUtils {
             }
         }
         return result;
-    }
-    
-    public static <T extends Enum> T[] parseValues(Class<T> clazz, String value) {
-        return parseValues(clazz, value, ",");
-    }
-    
-    public static <T extends Enum> T[] parseValues(Class<T> clazz, String value, String split) {
-        String[] parts = value.split(split);
-        T[] ret = (T[])Array.newInstance(clazz, parts.length);
-        for(int i = 0; i < ret.length; i++) {
-            ret[i] = valueOf(clazz, parts[i]);
-        }
-        return ret;
     }
     
     public static <T extends Enum> T valueOf(Class<T> clazz, String value) {

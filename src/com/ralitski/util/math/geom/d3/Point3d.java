@@ -4,7 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import com.ralitski.util.Streamable;
+import com.ralitski.util.io.Streamable;
 
 public class Point3d implements Cloneable, Streamable {
 

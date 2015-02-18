@@ -1,5 +1,6 @@
 package com.ralitski.util;
 
+import java.lang.reflect.Array;
 import java.util.regex.Pattern;
 
 public final class StringUtils {
@@ -8,9 +9,9 @@ public final class StringUtils {
 		return Pattern.compile(str, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE).matcher(match).find();
 	}
 	
-	public static boolean matchMulticaseWord(String str, String match) {
-		return Pattern.compile("\\s" + str + "\\s", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE).matcher(" " + match + " ").find();
-	}
+//	public static boolean matchMulticaseWord(String str, String match) {
+//		return Pattern.compile("\\s" + str + "\\s", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE).matcher(" " + match + " ").find();
+//	}
 	
 	public static boolean containsRegex(String regex, String string) {
 		return Pattern.compile(regex).matcher(string).find();
@@ -53,5 +54,20 @@ public final class StringUtils {
     		data[i] = c;
     	}
     	return String.valueOf(data);
+    }
+    
+    //parse enum values from string
+    public static <T extends Enum<?>> T[] parseValues(Class<T> clazz, String value) {
+        return parseValues(clazz, value, ",");
+    }
+    
+    @SuppressWarnings("unchecked")
+	public static <T extends Enum<?>> T[] parseValues(Class<T> clazz, String value, String split) {
+        String[] parts = value.split(split);
+        T[] ret = (T[])Array.newInstance(clazz, parts.length);
+        for(int i = 0; i < ret.length; i++) {
+            ret[i] = ArrayUtils.valueOf(clazz, parts[i]);
+        }
+        return ret;
     }
 }

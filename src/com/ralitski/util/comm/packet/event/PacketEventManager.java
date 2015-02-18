@@ -1,10 +1,13 @@
 package com.ralitski.util.comm.packet.event;
 
 import java.lang.reflect.Method;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.ralitski.util.MapList;
+import com.ralitski.util.Generator;
+import com.ralitski.util.NonNullMap;
 import com.ralitski.util.Pair;
 import com.ralitski.util.comm.packet.Packet;
 import com.ralitski.util.doc.Usage;
@@ -15,7 +18,7 @@ import com.ralitski.util.doc.Usage;
 @Usage(Usage.EXTERNAL)
 public class PacketEventManager {
 
-    private MapList<String, OMPair> handlers = new MapList<String, OMPair>();
+    private NonNullMap<String, List<OMPair>> handlers = new NonNullMap<String, List<OMPair>>(new ListGenerator<OMPair>());
     
     public void clearHandlers() {
     	handlers.clear();
@@ -30,7 +33,8 @@ public class PacketEventManager {
             PacketEventHandler handler = m.getAnnotation(PacketEventHandler.class);
             Class<?>[] params = m.getParameterTypes();
             if (handler != null && params.length == 1 && params[0] == PacketReceivedEvent.class) {
-                handlers.add(handler.value(), new OMPair(o, m));
+            	List<OMPair> list = handlers.get(handler.value());
+            	list.add(new OMPair(o, m));
                 m.setAccessible(true);
             }
         }
@@ -86,5 +90,15 @@ public class PacketEventManager {
         public OMPair(Object o, Method m) {
             super(o, m);
         }
+    }
+    
+    private class ListGenerator<T> implements Generator<List<T>> {
+
+		@Override
+		public List<T> next() {
+			//love me some linked lists
+			return new LinkedList<T>();
+		}
+    	
     }
 }

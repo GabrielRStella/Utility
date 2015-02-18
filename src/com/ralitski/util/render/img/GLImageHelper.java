@@ -49,7 +49,7 @@ public class GLImageHelper {
 	public static Image loadImage(File f) {
         try {
             BufferedImage image = ImageIO.read(f);
-            return loadImage(image);
+            return new Image(image);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,15 +59,11 @@ public class GLImageHelper {
 	public static Image loadImage(InputStream in) {
         try {
             BufferedImage image = ImageIO.read(in);
-            return loadImage(image);
+            return new Image(image);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
-	}
-	
-	public static Image loadImage(BufferedImage image) {
-		return new Image(image);
 	}
 
     public static void setup(Image i) {

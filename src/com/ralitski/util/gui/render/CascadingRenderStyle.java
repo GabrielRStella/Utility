@@ -52,9 +52,8 @@ public class CascadingRenderStyle implements RenderStyle {
 		if(o != null) {
 			return o;
 		}
-		String s = styles.getParentClassType(classType);
-		if(s != null) {
-			RenderStyle r = styles.getRenderStyle(s);
+		if(parentType != null) {
+			RenderStyle r = styles.getRenderStyle(parentType);
 			return r.getStyle(c, style);
 		}
 		if(c.getParent() != null) {

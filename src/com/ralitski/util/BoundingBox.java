@@ -1,6 +1,5 @@
 package com.ralitski.util;
 
-import com.ralitski.util.doc.TODO;
 import com.ralitski.util.math.geom.d2.Point2d;
 
 public class BoundingBox {
@@ -90,32 +89,29 @@ public class BoundingBox {
         newBB.setCenter(center);
         return newBB;
     }
+    
+    public boolean colliding(BoundingBox other) {
+    	return intersecting(other) || enclosed(other) || other.enclosed(this);
+    }
 
     public boolean intersecting(BoundingBox other) {
         boolean TOP_BOTTOM = (other.center.getY() + other.minY) < center.getY() + maxY;
         boolean BOTTOM_BOTTOM = (other.center.getY() + other.minY) > center.getY() + minY;
         boolean TOP_TOP = (other.center.getY() + other.maxY) < center.getY() + maxY;
         boolean BOTTOM_TOP = (other.center.getY() + other.maxY) > center.getY() + minY;
-        boolean intersecting = false;
         if ((TOP_BOTTOM && BOTTOM_BOTTOM) || (TOP_TOP && BOTTOM_TOP)) {
             //sides
             boolean RIGHT_LEFT = (other.center.getX() + other.minX) < center.getX() + maxX;
             boolean LEFT_LEFT = (other.center.getX() + other.minX) > center.getX() + minX;
             boolean RIGHT_RIGHT = (other.center.getX() + other.maxX) < center.getX() + maxX;
             boolean LEFT_RIGHT = (other.center.getX() + other.maxX) > center.getX() + minX;
-            intersecting = (RIGHT_LEFT && LEFT_LEFT) || (RIGHT_RIGHT && LEFT_RIGHT);
+            return (RIGHT_LEFT && LEFT_LEFT) || (RIGHT_RIGHT && LEFT_RIGHT);
         }
-        //todo: will use a separate method to check if boxes are enclosed
-        return intersecting;
+        return false;
     }
-
-    //broken method
-    @TODO("diagonal contact while not touching")
-    private boolean enclosed(BoundingBox other) {
-        float xDist = Math.abs((center.getX() + minX + maxX) - (other.center.getX() + other.minX + other.maxX));
-        float yDist = Math.abs((center.getY() + minY + maxY) - (other.center.getY() + other.minY + other.maxY));
-        boolean flag = (xDist * 2F < getWidth() + other.getWidth()) && (yDist * 2F < getHeight() + other.getHeight());
-        return flag;
+    
+    public boolean enclosed(BoundingBox other) {
+    	return minX > other.minX && maxX < other.maxX && minY > other.minY && maxY < other.maxY;
     }
 
     public boolean contains(float x, float y) {

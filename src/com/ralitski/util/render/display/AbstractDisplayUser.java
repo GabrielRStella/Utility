@@ -3,7 +3,7 @@ package com.ralitski.util.render.display;
 import java.awt.Image;
 import java.awt.event.WindowEvent;
 
-import com.ralitski.util.Timer;
+import com.ralitski.util.Ticker;
 
 public abstract class AbstractDisplayUser implements DisplayUser {
 
@@ -110,7 +110,7 @@ public abstract class AbstractDisplayUser implements DisplayUser {
         manager.time(ticksPerSecond);
     }
     
-    public void setTimer(Timer timer) {
+    public void setTimer(Ticker timer) {
         manager.setTimer(timer);
     }
     

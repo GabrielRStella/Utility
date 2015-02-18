@@ -6,8 +6,8 @@ import java.io.IOException;
 
 import org.lwjgl.opengl.GL11;
 
-import com.ralitski.util.Streamable;
 import com.ralitski.util.doc.TODO;
+import com.ralitski.util.io.Streamable;
 
 public class Color implements Streamable, Cloneable {
 

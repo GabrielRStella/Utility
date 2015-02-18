@@ -1,4 +1,4 @@
-package com.ralitski.util;
+package com.ralitski.util.io;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

@@ -26,7 +26,7 @@ public class DisplayManager implements WindowListener {
     private boolean running, stopOnClose, setup;
     private DisplayUser user;
     private Frame frame;
-    private Timer timer;
+    private Ticker timer;
     
     //previous window dimensions, to detect resizing
     private int prevX, prevY;
@@ -159,7 +159,7 @@ public class DisplayManager implements WindowListener {
         this.timer = new SecondTimer(ticksPerSecond);
     }
 
-    public void setTimer(Timer t) {
+    public void setTimer(Ticker t) {
         this.timer = t;
     }
 
