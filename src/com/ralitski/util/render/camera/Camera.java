@@ -1,14 +1,12 @@
 package com.ralitski.util.render.camera;
 
-import com.ralitski.util.input.InputUser;
+import com.ralitski.util.math.geom.d3.Point3d;
 
 /**
  *
  * @author ralitski
  */
-public interface Camera extends InputUser {
-    
-    void update();
+public interface Camera {
     /*
      * TODO: this will be the position and rotation and such of the user (or
      * whatever the current view is), and a separate RenderCamera will translate
@@ -17,23 +15,9 @@ public interface Camera extends InputUser {
     
     //position, rotation
 
-    void setX(float x);
-    void setY(float y);
-    void setZ(float z);
-    float getX();
-    float getY();
-    float getZ();
+    Point3d getPosition();
+    //TODO: maybe have an Orientation object or something? idk
     float getYaw();
     float getPitch();
     float getRoll();
-    
-    //input inherited from InputUser
-    
-//    void moveForward(float forward);
-//    /**
-//     * positive strafe should move camera to the right.
-//     * @param strafe 
-//     */
-//    void moveStrafe(float strafe);
-//    void jump();
 }

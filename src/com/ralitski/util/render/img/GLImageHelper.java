@@ -1,13 +1,7 @@
 package com.ralitski.util.render.img;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-
-import javax.imageio.ImageIO;
 
 import org.lwjgl.opengl.GL11;
 
@@ -41,35 +35,10 @@ public class GLImageHelper {
 		}
 	}
 
-    public static Image loadImage(String s) {
-        File f = new File(s);
-        return loadImage(f);
-    }
-	
-	public static Image loadImage(File f) {
-        try {
-            BufferedImage image = ImageIO.read(f);
-            return new Image(image);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-	}
-	
-	public static Image loadImage(InputStream in) {
-        try {
-            BufferedImage image = ImageIO.read(in);
-            return new Image(image);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-	}
-
-    public static void setup(Image i) {
+    public static void setup(GLImage i) {
     	
     	i.setId(newID());
-        byte[] b = i.getData();
+        byte[] b = i.getSource().getData();
     	
         ByteBuffer imageData = ByteBuffer.allocateDirect(b.length).order(ByteOrder.nativeOrder());
         imageData.clear();
@@ -92,6 +61,10 @@ public class GLImageHelper {
 
     public static int newID() {
         return GL11.glGenTextures();
+    }
+    
+    public static void glColor(Color c) {
+    	GL11.glColor4f(c.getRedFloat(), c.getGreenFloat(), c.getBlueFloat(), c.getAlphaFloat());
     }
 
 }

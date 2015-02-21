@@ -1,11 +1,43 @@
 package com.ralitski.util.render.img;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 
-import org.lwjgl.opengl.GL11;
+import javax.imageio.ImageIO;
 
 public class Image {
+	
+	//loading
+
+    public static Image loadImage(String s) {
+        File f = new File(s);
+        return loadImage(f);
+    }
+	
+	public static Image loadImage(File f) {
+        try {
+            BufferedImage image = ImageIO.read(f);
+            return new Image(image);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+	}
+	
+	public static Image loadImage(InputStream in) {
+        try {
+            BufferedImage image = ImageIO.read(in);
+            return new Image(image);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+	}
+	
+	//stoof
 
 	/**
 	 * converts image data from java standard (int argb) to opengl standard (byte rgba)
@@ -36,11 +68,7 @@ public class Image {
 	
     private int width;
     private int height;
-    private int id = -1;
     private byte[] data;
-    
-    private int minFilter = GL11.GL_LINEAR;
-    private int magFilter = GL11.GL_LINEAR;
     
     /**
      * constructs an empty image.
@@ -86,32 +114,6 @@ public class Image {
         this.height = i;
     }
 
-    public int getId() {
-        return this.id;
-    }
-
-    public void setId(int i) {
-        this.id = i;
-    }
-
-    public int getMinFilter() {
-		return minFilter;
-	}
-
-	public void setMinFilter(int minFilter) {
-		this.minFilter = minFilter;
-		GLImageHelper.resetImageFilters(id, minFilter, magFilter);
-	}
-
-	public int getMagFilter() {
-		return magFilter;
-	}
-
-	public void setMagFilter(int magFilter) {
-		this.magFilter = magFilter;
-		GLImageHelper.resetImageFilters(id, minFilter, magFilter);
-	}
-
 	public byte[] getData() {
         return this.data;
     }
@@ -122,21 +124,6 @@ public class Image {
         index *= 4;
         return index;
 	}
-	
-	//opengl
-    
-    public void glBind() {
-    	GLImageHelper.bindTexture(id);
-    }
-    
-    public void glPrepare() {
-    	GLImageHelper.setup(this);
-    }
-    
-    public void glDelete() {
-    	GLImageHelper.deleteImage(id);
-    	id = -1;
-    }
     
     //image editing
 

@@ -4,9 +4,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.lwjgl.opengl.GL11;
-
-import com.ralitski.util.doc.TODO;
 import com.ralitski.util.io.Streamable;
 
 public class Color implements Streamable, Cloneable {
@@ -111,7 +108,7 @@ public class Color implements Streamable, Cloneable {
     }
 
     public void glColor() {
-        GL11.glColor4f((float) this.getRed() / 255F, (float) this.getGreen() / 255F, (float) this.getBlue() / 255F, (float) this.getAlpha() / 255F);
+        GLImageHelper.glColor(this);
     }
 
     //MANIPULATION

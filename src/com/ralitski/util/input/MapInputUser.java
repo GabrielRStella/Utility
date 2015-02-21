@@ -1,10 +1,7 @@
 package com.ralitski.util.input;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import org.magicwerk.brownies.collections.GapList;
 
 /**
  *

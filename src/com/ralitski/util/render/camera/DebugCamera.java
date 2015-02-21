@@ -1,5 +1,7 @@
 package com.ralitski.util.render.camera;
 
+import com.ralitski.util.input.InputUser;
+import com.ralitski.util.math.geom.d3.Point3d;
 import com.ralitski.util.render.camera.Camera;
 
 import org.lwjgl.input.Keyboard;
@@ -9,7 +11,7 @@ import org.lwjgl.input.Mouse;
  *
  * @author ralitski
  */
-public class BasicCamera implements Camera {
+public class DebugCamera implements Camera, InputUser {
     
     public static final float MIN_Y = 1;
     public static final float GRAVITY = .065F;
@@ -19,12 +21,12 @@ public class BasicCamera implements Camera {
     public static final float FLY_Y = .05F;
     
     private float x, y, z;
+    private Pos pos = new Pos();
     private float mx, my, mz, pitch, yaw;
     private boolean flying, onGround, mouseGrabbed;
     //if you only fly up/down by pressing space/LSHIFT
     private boolean ONLY_FLY_UP;
 
-    @Override
     public void update() {
         if(!flying && y > MIN_Y) {
             //gravity
@@ -56,33 +58,31 @@ public class BasicCamera implements Camera {
 //        float aPitch = Math.abs(pitch);
 //        return 90 < aPitch && aPitch < 270;
 //    }
+    
+    public Point3d getPosition() {
+    	return pos;
+    }
 
-	@Override
 	public void setX(float x) {
 		this.x = x;
 	}
 
-	@Override
 	public void setY(float y) {
 		this.y = y;
 	}
 
-	@Override
 	public void setZ(float z) {
 		this.z = z;
 	}
     
-    @Override
     public float getX() {
         return x;
     }
 
-    @Override
     public float getY() {
         return y;
     }
 
-    @Override
     public float getZ() {
         return z;
     }
@@ -191,5 +191,31 @@ public class BasicCamera implements Camera {
 
     @Override
     public void onKeyRelease(int key, char keyChar, int ticks) {
+    }
+    
+    private class Pos extends Point3d {
+    	public void setX(float x) {
+    		DebugCamera.this.x = x;
+    	}
+    	
+    	public void setY(float y) {
+    		DebugCamera.this.y = y;
+    	}
+    	
+    	public void setZ(float z) {
+    		DebugCamera.this.z = z;
+    	}
+    	
+    	public float getX() {
+    		return x;
+    	}
+    	
+    	public float getY() {
+    		return y;
+    	}
+    	
+    	public float getZ() {
+    		return z;
+    	}
     }
 }

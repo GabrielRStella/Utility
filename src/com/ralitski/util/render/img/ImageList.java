@@ -6,7 +6,7 @@ import java.util.Map;
 public class ImageList {
 
 	private String fileType = "png";
-    public Map<String, Texture> images;
+    public Map<String, GLTexture> images;
     public String loc;
 
     public ImageList() {
@@ -14,7 +14,7 @@ public class ImageList {
     }
 
     public ImageList(String loc) {
-        this.images = new HashMap<String, Texture>();
+        this.images = new HashMap<String, GLTexture>();
         setBaseLoc(loc);
     }
 
@@ -45,18 +45,18 @@ public class ImageList {
      * @param data
      * @return the image previously stored under the given name (null if no image previously stored)
      */
-    public Texture setImage(String name, Texture data) {
+    public GLTexture setImage(String name, GLTexture data) {
         return this.images.put(name, data);
     }
     
     //get
 
-    public Texture getImage(String string) {
+    public GLTexture getImage(String string) {
     	return getImage(string, false);
     }
 
-    public Texture getImage(String string, boolean load) {
-        Texture tex = this.images.get(string);
+    public GLTexture getImage(String string, boolean load) {
+        GLTexture tex = this.images.get(string);
         if (tex != null) {
             return tex;
         }
@@ -65,18 +65,18 @@ public class ImageList {
     
     //load
 
-    public Texture loadImage(String loc, String name) {
-    	Image image = GLImageHelper.loadImage(loc + "." + fileType);
+    public GLTexture loadImage(String loc, String name) {
+    	GLImage image = new GLImage(Image.loadImage(loc + "." + fileType));
     	image.glPrepare();
-        Texture texture = new Texture(image);
+        GLTexture texture = new GLTexture(image);
         this.images.put(name, texture);
         return texture;
     }
 
-    public Texture loadImage(String name) {
-    	Image image = GLImageHelper.loadImage(this.loc + name + "." + fileType);
+    public GLTexture loadImage(String name) {
+    	GLImage image = new GLImage(Image.loadImage(this.loc + name + "." + fileType));
     	image.glPrepare();
-        Texture texture = new Texture(image);
+        GLTexture texture = new GLTexture(image);
         this.images.put(name, texture);
         return texture;
     }
@@ -88,7 +88,7 @@ public class ImageList {
     }
 
     public boolean bindImage(String image, boolean flag) {
-        Texture data = this.images.get(image);
+        GLTexture data = this.images.get(image);
         if (data == null) {
             if (flag) {
                 data = this.loadImage(this.loc, image);
@@ -102,8 +102,8 @@ public class ImageList {
     
     //delete
     
-    public Texture deleteImage(String name) {
-    	Texture tex = getImage(name);
+    public GLTexture deleteImage(String name) {
+    	GLTexture tex = getImage(name);
     	if(tex != null) tex.glDelete();
     	return tex;
     }

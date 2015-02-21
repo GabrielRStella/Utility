@@ -1,10 +1,6 @@
 package com.ralitski.util.math.geom.d3.transform;
 
 import com.ralitski.util.math.Matrix;
-import com.ralitski.util.math.expression.Expression;
-import com.ralitski.util.math.expression.Expressions;
-import com.ralitski.util.math.geom.d2.func.CosFunction;
-import com.ralitski.util.math.geom.d2.func.SinFunction;
 import com.ralitski.util.math.geom.d3.Line3d;
 import com.ralitski.util.math.geom.d3.Point3d;
 import com.ralitski.util.math.geom.d3.Vector3d;

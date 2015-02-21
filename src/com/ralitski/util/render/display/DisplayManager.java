@@ -118,9 +118,9 @@ public class DisplayManager implements WindowListener {
 
     private void update() {
         resizeCheck();
-        float f = this.time();
-        boolean flag = this.hasTimer() ? this.timer.update(f) : true;
-        if (!this.user.update(flag, f)) {
+        double d = timer != null ? timer.time() : 1;
+        boolean flag = d >= 1;
+        if (!this.user.update(flag, (float)d)) {
             this.running = false;
         }
         //Display.sync(60);
@@ -146,17 +146,10 @@ public class DisplayManager implements WindowListener {
             this.user.resize();
         }
     }
-
-    private float time() {
-        if (!this.hasTimer()) {
-            return 1.0F;
-        } else {
-            return this.timer.time();
-        }
-    }
+    
 
     public void time(int ticksPerSecond) {
-        this.timer = new SecondTimer(ticksPerSecond);
+        this.timer = Ticker.ticksPerSecond(ticksPerSecond);
     }
 
     public void setTimer(Ticker t) {

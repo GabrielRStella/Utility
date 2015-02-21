@@ -1,7 +1,7 @@
 package com.ralitski.util.input;
 
+import java.util.LinkedList;
 import java.util.List;
-import org.magicwerk.brownies.collections.GapList;
 
 /**
  *
@@ -12,7 +12,7 @@ public class MultiInputUser implements InputUser {
     private List<InputUser> users;
     
     public MultiInputUser() {
-        this.users = new GapList<InputUser>();
+        this.users = new LinkedList<InputUser>();
     }
     
     public boolean isEmpty() {

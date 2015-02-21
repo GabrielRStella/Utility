@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL11;
  * @author ralitski
  *
  */
-public class Texture {
+public class GLTexture {
 
 	private int id;
 	private int width;
@@ -16,12 +16,12 @@ public class Texture {
 	private int minFilter;
 	private int magFilter;
 	
-	public Texture(Image i)
+	public GLTexture(GLImage i)
 	{
 		this(i.getId(), i.getWidth(), i.getHeight(), i.getMinFilter(), i.getMagFilter());
 	}
 	
-	public Texture(int id, int width, int height, int minFilter, int magFilter) {
+	public GLTexture(int id, int width, int height, int minFilter, int magFilter) {
 		this.id = id;
 		this.width = width;
 		this.height = height;
