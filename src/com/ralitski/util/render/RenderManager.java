@@ -3,7 +3,6 @@ package com.ralitski.util.render;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
-import com.ralitski.util.doc.Usage;
 import com.ralitski.util.math.geom.d3.Point3d;
 import com.ralitski.util.render.camera.Camera;
 import com.ralitski.util.render.img.Color;
@@ -100,6 +99,11 @@ public class RenderManager {
 
 	public void setDestBlend(BlendFunc destBlend) {
 		this.destBlend = destBlend;
+	}
+	
+	public void setBlendAlpha() {
+		srcBlend = BlendFunc.SRC_ALPHA;
+		destBlend = BlendFunc.ONE_MINUS_SRC_ALPHA; //TODO: should this use DEST_ALPHA?
 	}
 
 	public boolean isEnableCull() {
@@ -203,6 +207,7 @@ public class RenderManager {
             
             owner.render3d(partial);
 
+            //TODO: may need to rework this if roll is ever used. gotta test
             GL11.glRotatef(camera.getPitch(), 1, 0, 0);
             GL11.glRotatef(camera.getYaw(), 0, 1, 0);
             GL11.glRotatef(camera.getRoll(), 0, 0, 1);

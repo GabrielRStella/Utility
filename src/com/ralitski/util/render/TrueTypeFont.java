@@ -20,6 +20,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
+//TODO: clean this up
 /**
  * A TrueType font implementation originally for Slick, edited for Bobjob's
  * Engine
