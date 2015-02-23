@@ -2,6 +2,7 @@ package com.ralitski.util.math.geom;
 
 import com.ralitski.util.doc.TODO;
 
+//TODO: periodic intervals
 public class Interval implements Comparable<Interval> {
 
 	public static final Interval ALL = new Interval(Float.NEGATIVE_INFINITY, false, Float.POSITIVE_INFINITY, false);

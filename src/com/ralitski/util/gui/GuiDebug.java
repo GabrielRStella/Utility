@@ -8,6 +8,7 @@ import java.text.DecimalFormat;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 
+import com.ralitski.util.math.geom.d3.Orientation3d;
 import com.ralitski.util.math.geom.d3.Point3d;
 import com.ralitski.util.render.TrueTypeFont;
 import com.ralitski.util.render.camera.Camera;
@@ -52,8 +53,12 @@ public class GuiDebug {
         font.drawString(10, 40, "(X: " + format.format(pos.getX()) + ", Y: "
                 + format.format(pos.getY()) + ", Z: "
                 + format.format(pos.getZ()) + ")", 1, 1);
-        font.drawString(10, 20, "Yaw: " + format.format(camera.getYaw()) + ", Pitch: "
-                + format.format(camera.getPitch()), 1, 1);
+        Orientation3d o = camera.getOrientation();
+        font.drawString(10, 20,
+        		"Yaw: " + format.format(o.getYaw())
+        		+ ", Pitch: " + format.format(o.getPitch())
+        		+ ", Roll: " + format.format(o.getRoll()),
+        		1, 1);
         MemoryMXBean mb = ManagementFactory.getMemoryMXBean();
         font.drawString(10, 0, "Memory: " + (mb.getHeapMemoryUsage().getUsed() / 1024) / 1024 + " MB ("
                 + (mb.getHeapMemoryUsage().getMax() / 1024) / 1024 + " MB)", 1F, 1F);

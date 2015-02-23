@@ -3,7 +3,9 @@ package com.ralitski.util.render;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
+import com.ralitski.util.math.geom.d3.Orientation3d;
 import com.ralitski.util.math.geom.d3.Point3d;
+import com.ralitski.util.math.geom.d3.Vector3d;
 import com.ralitski.util.render.camera.Camera;
 import com.ralitski.util.render.img.Color;
 
@@ -103,7 +105,7 @@ public class RenderManager {
 	
 	public void setBlendAlpha() {
 		srcBlend = BlendFunc.SRC_ALPHA;
-		destBlend = BlendFunc.ONE_MINUS_SRC_ALPHA; //TODO: should this use DEST_ALPHA?
+		destBlend = BlendFunc.DST_ALPHA; //BlendFunc.ONE_MINUS_SRC_ALPHA;
 	}
 
 	public boolean isEnableCull() {
@@ -162,39 +164,6 @@ public class RenderManager {
             GL11.glDisable(GL11.GL_CULL_FACE);
         }
     }
-    /*
-     * from RenderCam2D
-     * 
-
-	public void setup(boolean deep)
-	{
-		if(this.textured) GL11.glEnable(GL11.GL_TEXTURE_2D);
-		else GL11.glDisable(GL11.GL_TEXTURE_2D);
-		if(!deep) GL11.glDisable(GL11.GL_DEPTH_TEST);
-		else GL11.glEnable(GL11.GL_DEPTH_TEST);
-		GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glDisable(GL11.GL_CULL_FACE);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glDisable(GL11.GL_DEPTH_TEST);
-
-        rescale();
-	}
-	
-	public void rescale(int width, int height)
-	{
-		int mode = GL11.glGetInteger(GL11.GL_MATRIX_MODE);
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glLoadIdentity();
-		//left, right, bottom, top, zNear, zFar
-		GL11.glOrtho(0, width, 0, height, 0, 1);
-		//x, y, width, height
-		GL11.glViewport(0, 0, width, height);
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		GL11.glLoadIdentity();
-		GL11.glMatrixMode(mode);
-	}
-     */
     
     public void render(float partial) {
     	//clear screen
@@ -207,12 +176,10 @@ public class RenderManager {
             
             owner.render3d(partial);
 
-            //TODO: may need to rework this if roll is ever used. gotta test
-            GL11.glRotatef(camera.getPitch(), 1, 0, 0);
-            GL11.glRotatef(camera.getYaw(), 0, 1, 0);
-            GL11.glRotatef(camera.getRoll(), 0, 0, 1);
+            Orientation3d o = camera.getOrientation();
+            Vector3d axis = o.getAxis();
+            GL11.glRotatef((float)Math.toDegrees(o.getRoll()), axis.getX(), axis.getY(), axis.getZ());
             owner.render3dRotated(partial);
-            
             Point3d p = camera.getPosition();
             GL11.glTranslatef(-p.getX(), -p.getY(), -p.getZ());
             owner.render3dTranslated(partial);

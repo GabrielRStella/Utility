@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 
+//why the heck does this have assert in it
 /**
  * http://www.magicwerk.org/page-collections-overview.html
  *
@@ -916,7 +917,9 @@ public class GapList<E> extends IList<E> {
 		return removed;
 	}
 
-    @Override
+	//SuppressWarnings added by ral
+    @SuppressWarnings("unchecked")
+	@Override
     protected void doEnsureCapacity(int minCapacity) {
 		// Note: Same behavior as in ArrayList.ensureCapacity()
 		int oldCapacity = values.length;
@@ -1062,47 +1065,47 @@ public class GapList<E> extends IList<E> {
 	 * Private method to check invariant of GapList.
 	 * It is only used for debugging.
 	 */
-	private void debugCheck() {
-		// If the GapList is not used for storing content in KeyListImpl, values may be null
-		if (values == null) {
-			assert(size == 0 && start == 0 && end == 0);
-			assert(gapSize == 0 && gapStart == 0 && gapIndex == 0);
-			return;
-		}
-
-		assert(size >= 0 && size <= values.length);
-		assert(start >=0 && (start < values.length || values.length == 0));
-		assert(end >= 0 && (end < values.length || values.length == 0));
-		assert(values.length == 0 || (start+size+gapSize) % values.length == end);
-
-		// Check that logical gap index is correct
-		assert(gapSize >= 0);
-		if (gapSize > 0) {
-			assert(gapStart >= 0 && gapStart < values.length);
-			// gap may not be at start or end
-			assert(gapIndex > 0 && gapIndex < size);
-			// gap start may not be the same as start or end
-			assert(gapStart != start && gapStart != end);
-			// check that logical and phyiscal gap index are correct
-			assert(physIndex(gapIndex) == (gapStart+gapSize) % values.length);
-		}
-
-		// Check that gap positions contain null values
-		if (gapSize > 0) {
-			for (int i=gapStart; i<gapStart+gapSize; i++) {
-				int pos = (i % values.length);
-				assert(values[pos] == null);
-			}
-		}
-
-		// Check that all end positions contain null values
-		if (end != start) {
-			for (int i=end; i<start; i++) {
-				int pos = (i % values.length);
-				assert(values[pos] == null);
-			}
-		}
-	}
+//	private void debugCheck() {
+//		// If the GapList is not used for storing content in KeyListImpl, values may be null
+//		if (values == null) {
+//			assert(size == 0 && start == 0 && end == 0);
+//			assert(gapSize == 0 && gapStart == 0 && gapIndex == 0);
+//			return;
+//		}
+//
+//		assert(size >= 0 && size <= values.length);
+//		assert(start >=0 && (start < values.length || values.length == 0));
+//		assert(end >= 0 && (end < values.length || values.length == 0));
+//		assert(values.length == 0 || (start+size+gapSize) % values.length == end);
+//
+//		// Check that logical gap index is correct
+//		assert(gapSize >= 0);
+//		if (gapSize > 0) {
+//			assert(gapStart >= 0 && gapStart < values.length);
+//			// gap may not be at start or end
+//			assert(gapIndex > 0 && gapIndex < size);
+//			// gap start may not be the same as start or end
+//			assert(gapStart != start && gapStart != end);
+//			// check that logical and phyiscal gap index are correct
+//			assert(physIndex(gapIndex) == (gapStart+gapSize) % values.length);
+//		}
+//
+//		// Check that gap positions contain null values
+//		if (gapSize > 0) {
+//			for (int i=gapStart; i<gapStart+gapSize; i++) {
+//				int pos = (i % values.length);
+//				assert(values[pos] == null);
+//			}
+//		}
+//
+//		// Check that all end positions contain null values
+//		if (end != start) {
+//			for (int i=end; i<start; i++) {
+//				int pos = (i % values.length);
+//				assert(values[pos] == null);
+//			}
+//		}
+//	}
 
 	/**
 	 * Private method to determine state of GapList.
@@ -1168,12 +1171,12 @@ public class GapList<E> extends IList<E> {
 	 * Private method to dump fields of GapList.
 	 * It is only called if the code is run in development mode.
 	 */
-	private void debugDump() {
-		debugLog("values: size= " +values.length + ", data= "+ debugPrint(values));
-		debugLog("size=" + size + ", start=" + start + ", end=" + end +
-				", gapStart=" + gapStart + ", gapSize=" + gapSize + ", gapIndex=" + gapIndex);
-		debugLog(toString());
-	}
+//	private void debugDump() {
+//		debugLog("values: size= " +values.length + ", data= "+ debugPrint(values));
+//		debugLog("size=" + size + ", start=" + start + ", end=" + end +
+//				", gapStart=" + gapStart + ", gapSize=" + gapSize + ", gapIndex=" + gapIndex);
+//		debugLog(toString());
+//	}
 
 	/**
 	 * Print array values into string.
@@ -1181,18 +1184,18 @@ public class GapList<E> extends IList<E> {
 	 * @param values	array with values
 	 * @return			string representing array values
 	 */
-	private String debugPrint(E[] values) {
-		StringBuilder buf = new StringBuilder();
-		buf.append("[ ");
-		for (int i=0; i<values.length; i++) {
-			if (i > 0) {
-				buf.append(", ");
-			}
-			buf.append(values[i]);
-		}
-		buf.append(" ]");
-		return buf.toString();
-	}
+//	private String debugPrint(E[] values) {
+//		StringBuilder buf = new StringBuilder();
+//		buf.append("[ ");
+//		for (int i=0; i<values.length; i++) {
+//			if (i > 0) {
+//				buf.append(", ");
+//			}
+//			buf.append(values[i]);
+//		}
+//		buf.append(" ]");
+//		return buf.toString();
+//	}
 
 
 	/**
@@ -1201,7 +1204,7 @@ public class GapList<E> extends IList<E> {
 	 *
 	 * @param msg message to write out
 	 */
-	private void debugLog(String msg) { //TODO
-	}
+//	private void debugLog(String msg) { //TODO
+//	}
 
 }

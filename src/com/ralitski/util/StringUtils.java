@@ -40,12 +40,24 @@ public final class StringUtils {
      * @return the compressed string
      */
     public static String compress(String[] args, String spacer, int start, int end) {
-        StringBuilder ret = new StringBuilder();
-        for (int i = start; i < end; i++) {
-            if (i > start) { ret.append(spacer); }
-            ret.append(args[i]);
-        }
-        return ret.toString();
+    	int len = 0;
+    	for(int i = start; i < end; i++) {
+    		len += args[i].length();
+    	}
+    	char[] space = spacer.toCharArray();
+    	char[] all = new char[len + spacer.length() * (end - start - 1)];
+    	int index = 0;
+    	for(int i = start; i < end; i++) {
+    		String s = args[i];
+    		char[] c = s.toCharArray();
+    		System.arraycopy(c, 0, all, index, c.length);
+    		index += c.length;
+    		if(index < all.length) {
+    			System.arraycopy(space, 0, all, index, space.length);
+    			index += space.length;
+    		}
+    	}
+        return String.valueOf(all);
     }
     
     public static String copy(char c, int copies) {

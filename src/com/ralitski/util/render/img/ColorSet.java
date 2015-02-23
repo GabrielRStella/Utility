@@ -1,88 +1,84 @@
 package com.ralitski.util.render.img;
 
-import org.lwjgl.opengl.GL11;
+import com.ralitski.util.Ticker;
 
+//TODO: maybe use BlendFunc to gradient?
 public class ColorSet {
-
-	//array of stores colors
-	public Color[] colors;
+	private int index;
+	private Color[] colors;
+	private boolean isSmooth;
 	
-	//transition time (color loops)
-	public int time = 0;
+	private int ticksPerLoop;
+	private int ticks;
 	
-	//time left until transition (reset to value of 'time' on hitting 0)
-	public int timeLeft = 0;
+	//if no ticker is assigned, the ColorSet must be updated by calling tick()
+	private Ticker ticker;
 	
-	//current index in color loop
-	public int index = 0;
-	
-	//whether or not to do update logic
-	public boolean loop = false;
-
-	public ColorSet(Color color)
-	{
-		this.colors = new Color[]{color};
-	}
-	
-	public ColorSet(Color...colors)
-	{
+	public ColorSet(Color[] colors, int ticksPerLoop) {
+		if(colors.length == 0) throw new IllegalArgumentException("ColorSet must contain at least 1 Color");
 		this.colors = colors;
-		this.loop = true;
+		this.ticksPerLoop = ticksPerLoop;
+		isSmooth = true;
+	}
+
+	public boolean isSmooth() {
+		return isSmooth;
+	}
+
+	public void setSmooth(boolean isSmooth) {
+		this.isSmooth = isSmooth;
+	}
+
+	public int getTicksPerLoop() {
+		return ticksPerLoop;
+	}
+
+	public void setTicksPerLoop(int ticksPerLoop) {
+		this.ticksPerLoop = ticksPerLoop;
+	}
+
+	public Ticker getTicker() {
+		return ticker;
+	}
+
+	public void setTicker(Ticker ticker) {
+		this.ticker = ticker;
 	}
 	
-	public Color color(int i)
-	{
-		return this.colors[i];
+	public void tick() {
+		ticks++;
 	}
 	
-	public Color color()
-	{
-		return this.colors[this.index];
-	}
-	
-	public java.awt.Color jColor()
-	{
-		return this.color().jColor();
-	}
-	
-	public void color(Color c)
-	{
-		this.colors[this.index] = c; 
-	}
-	
-	public void color(Color c, int i)
-	{
-		this.colors[i] = c;
-	}
-	
-	public void setTime(int i)
-	{
-		this.time = i;
-	}
-	
-	public void reColor(Color...colors)
-	{
-		this.colors = colors;
-		this.index = 0;
-	}
-	
-	public void update()
-	{
-		if(this.loop)
-		{
-			this.timeLeft--;
-			if(this.timeLeft <= 0)
-			{
-				this.timeLeft = this.time;
-				this.index++;
-				this.index %= this.colors.length;
+	public Color next() {
+		//OH GOSH IT CALCULATES PARTIAL EVEN IF IT'S NOT USED MUST OPTIMIZE
+		float partial;
+		if(ticker != null) {
+			float f = (float)ticker.time();
+			float floor = (float)Math.floor(f) + ((float)ticks / (float)ticksPerLoop);
+			f -= floor;
+			int i = (int)floor;
+			index = (index + i) % colors.length;
+			partial = f;
+			ticks = (int)(partial * (float)ticksPerLoop);
+		} else {
+			if(ticks >= ticksPerLoop) {
+				int mod = ticks % ticksPerLoop;
+				int extra = (ticks - mod) / ticksPerLoop;
+				index = (index + extra) % colors.length;
+				ticks = mod;
 			}
+			partial = (float)ticks / (float)ticksPerLoop;
 		}
-	}
-	
-	public void glColor()
-	{
-		Color c = this.color();
-		GL11.glColor4f((float)c.getRed() / 255F, (float)c.getGreen() / 255F, (float)c.getBlue() / 255F, (float)c.getAlpha() / 255F);
+		if(isSmooth) {
+			Color current = colors[index];
+			Color next = colors[(index + 1) % colors.length];
+			float partial1 = 1F - partial;
+			//fancy gradienting yay
+			float r = (partial * current.getRedFloat()) + (partial1 * next.getRedFloat());
+			float g = (partial * current.getGreenFloat()) + (partial1 * next.getGreenFloat());
+			float b = (partial * current.getBlueFloat()) + (partial1 * next.getBlueFloat());
+			float a = (partial * current.getAlphaFloat()) + (partial1 * next.getAlphaFloat());
+			return new Color(r, g, b, a);
+		} else return colors[index];
 	}
 }

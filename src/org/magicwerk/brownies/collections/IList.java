@@ -60,6 +60,11 @@ public abstract class IList<E> extends AbstractList<E>
 		Deque<E> {
 
 	/**
+	 * @author eclipse (added by ral)
+	 */
+	private static final long serialVersionUID = -9174212688341615200L;
+
+	/**
 	 * Copies the collection values into an array.
 	 *
 	 * @param coll   collection of values

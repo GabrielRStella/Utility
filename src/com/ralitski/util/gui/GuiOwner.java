@@ -4,6 +4,7 @@ import com.ralitski.util.gui.render.FontRenderer;
 import com.ralitski.util.gui.render.RenderList;
 import com.ralitski.util.gui.render.RenderStyle;
 import com.ralitski.util.render.img.Color;
+import com.ralitski.util.render.img.Image;
 
 public interface GuiOwner {
 	int getWidth();
@@ -17,6 +18,8 @@ public interface GuiOwner {
 	void drawBox(Box box, Color c);
 	//use the box's RenderStyle to draw its bounds (and bg)
 	void drawBox(Box box, RenderStyle style);
+	//draw an image scaled to fit inside the specified box
+	void drawImage(Image image, Box box, RenderStyle style);
 	//render lists
 	boolean supportLists();
 	

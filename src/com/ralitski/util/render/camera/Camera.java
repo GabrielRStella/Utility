@@ -1,5 +1,6 @@
 package com.ralitski.util.render.camera;
 
+import com.ralitski.util.math.geom.d3.Orientation3d;
 import com.ralitski.util.math.geom.d3.Point3d;
 
 /**
@@ -16,8 +17,5 @@ public interface Camera {
     //position, rotation
 
     Point3d getPosition();
-    //TODO: maybe have an Orientation object or something? idk
-    float getYaw();
-    float getPitch();
-    float getRoll();
+    Orientation3d getOrientation();
 }

@@ -1,6 +1,7 @@
 package com.ralitski.util.render.camera;
 
 import com.ralitski.util.input.InputUser;
+import com.ralitski.util.math.geom.d3.Orientation3d;
 import com.ralitski.util.math.geom.d3.Point3d;
 import com.ralitski.util.render.camera.Camera;
 
@@ -22,7 +23,8 @@ public class DebugCamera implements Camera, InputUser {
     
     private float x, y, z;
     private Pos pos = new Pos();
-    private float mx, my, mz, pitch, yaw;
+    private Orientation3d look = new Orientation3d();
+    private float mx, my, mz;
     private boolean flying, onGround, mouseGrabbed;
     //if you only fly up/down by pressing space/LSHIFT
     private boolean ONLY_FLY_UP;
@@ -46,6 +48,7 @@ public class DebugCamera implements Camera, InputUser {
         }
         if(mouseGrabbed) {
             pitch = (pitch - Mouse.getDY() * SENSITIVITY) % 360;
+            
             if(pitch > 90) pitch = 90;
             else if(pitch < -90) pitch = -90;
             float toYaw = Mouse.getDX() * SENSITIVITY;
@@ -61,6 +64,10 @@ public class DebugCamera implements Camera, InputUser {
     
     public Point3d getPosition() {
     	return pos;
+    }
+    
+    public Orientation3d getOrientation() {
+    	return look;
     }
 
 	public void setX(float x) {
@@ -85,21 +92,6 @@ public class DebugCamera implements Camera, InputUser {
 
     public float getZ() {
         return z;
-    }
-
-    @Override
-    public float getYaw() {
-        return yaw;
-    }
-
-    @Override
-    public float getPitch() {
-        return pitch;
-    }
-
-    @Override
-    public float getRoll() {
-        return 0;
     }
 
     @Override
@@ -168,8 +160,8 @@ public class DebugCamera implements Camera, InputUser {
                 vectors.add(v);
     	 */
 //        if(upsideDown()) forward = -forward;
-        float rPitch = (float) Math.toRadians(this.pitch);
-        float rYaw = (float) Math.toRadians(this.yaw);
+        float rPitch = look.getPitch();
+        float rYaw = look.getAngleY();
         
         double y = -Math.sin(rPitch);
         double h = 1;
@@ -183,7 +175,7 @@ public class DebugCamera implements Camera, InputUser {
     }
     
     private void moveStrafe(float strafe) {
-        float rYaw = (float) Math.toRadians(this.yaw);
+        float rYaw = look.getAngleY();
         
         mx -= -(float)Math.cos(-rYaw) * strafe;
         mz -= (float)Math.sin(-rYaw) * strafe;

@@ -1,8 +1,6 @@
-package com.ralitski.util;
+package com.ralitski.util.math.geom.d2;
 
-import com.ralitski.util.math.geom.d2.Point2d;
-
-public class BoundingBox {
+public class BoundingBox2d {
 
     private Point2d origin() {
         return Point2d.origin();
@@ -14,11 +12,11 @@ public class BoundingBox {
     private float maxY;
     private Point2d center = origin();
 
-    public BoundingBox(float width, float height) {
+    public BoundingBox2d(float width, float height) {
         this(-width / 2F, -height / 2F, width / 2F, height / 2F);
     }
 
-    public BoundingBox(float minX, float minY, float maxX, float maxY) {
+    public BoundingBox2d(float minX, float minY, float maxX, float maxY) {
         this.minX = minX;
         this.minY = minY;
         this.maxX = maxX;
@@ -37,7 +35,7 @@ public class BoundingBox {
             this.maxY -= center.getY();
             this.center = center;
         } else {
-            BoundingBox b = getAbsolute();
+            BoundingBox2d b = getAbsolute();
             this.minX = b.minX;
             this.minY = b.minY;
             this.maxX = b.maxX;
@@ -74,8 +72,8 @@ public class BoundingBox {
         return maxY - minY;
     }
 
-    public BoundingBox getAbsolute() {
-        return new BoundingBox(minX + center.getX(), minY + center.getY(), maxX + center.getX(), maxY + center.getY());
+    public BoundingBox2d getAbsolute() {
+        return new BoundingBox2d(minX + center.getX(), minY + center.getY(), maxX + center.getX(), maxY + center.getY());
     }
 
     /**
@@ -84,17 +82,17 @@ public class BoundingBox {
      * @param high
      * @return a new bounding box
      */
-    public BoundingBox expand(float wide, float high) {
-        BoundingBox newBB = new BoundingBox(minX - wide, minY - high, maxX + wide, maxY + high);
+    public BoundingBox2d expand(float wide, float high) {
+        BoundingBox2d newBB = new BoundingBox2d(minX - wide, minY - high, maxX + wide, maxY + high);
         newBB.setCenter(center);
         return newBB;
     }
     
-    public boolean colliding(BoundingBox other) {
+    public boolean colliding(BoundingBox2d other) {
     	return intersecting(other) || enclosed(other) || other.enclosed(this);
     }
 
-    public boolean intersecting(BoundingBox other) {
+    public boolean intersecting(BoundingBox2d other) {
         boolean TOP_BOTTOM = (other.center.getY() + other.minY) < center.getY() + maxY;
         boolean BOTTOM_BOTTOM = (other.center.getY() + other.minY) > center.getY() + minY;
         boolean TOP_TOP = (other.center.getY() + other.maxY) < center.getY() + maxY;
@@ -110,7 +108,7 @@ public class BoundingBox {
         return false;
     }
     
-    public boolean enclosed(BoundingBox other) {
+    public boolean enclosed(BoundingBox2d other) {
     	return minX > other.minX && maxX < other.maxX && minY > other.minY && maxY < other.maxY;
     }
 
