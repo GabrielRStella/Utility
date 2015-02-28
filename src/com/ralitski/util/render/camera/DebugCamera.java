@@ -161,7 +161,7 @@ public class DebugCamera implements Camera, InputUser {
     	 */
 //        if(upsideDown()) forward = -forward;
         float rPitch = look.getPitch();
-        float rYaw = look.getAngleY();
+        float rYaw = look.getYaw();
         
         double y = -Math.sin(rPitch);
         double h = 1;
@@ -175,7 +175,7 @@ public class DebugCamera implements Camera, InputUser {
     }
     
     private void moveStrafe(float strafe) {
-        float rYaw = look.getAngleY();
+        float rYaw = look.getYaw();
         
         mx -= -(float)Math.cos(-rYaw) * strafe;
         mz -= (float)Math.sin(-rYaw) * strafe;

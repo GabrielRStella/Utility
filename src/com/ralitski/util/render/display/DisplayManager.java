@@ -11,8 +11,6 @@ import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
@@ -23,30 +21,38 @@ import com.ralitski.util.*;
 
 public class DisplayManager implements WindowListener {
 
-    private boolean running, stopOnClose, setup;
+	public static final int ERROR_NO_DISPLAY = 0;
+	public static final int ERROR_LOAD_IMAGE = 1;
+	public static final int ERROR_FULLSCREEN = 2;
+
+    private boolean running;
+    private boolean setup;
     private DisplayUser user;
     private Frame frame;
     private Ticker timer;
     
+    private boolean stopOnClose = true;
+    private boolean resizable = true;
+    private int minWidth = 0;
+    private int minHeight = 0;
+    
     //previous window dimensions, to detect resizing
     private int prevX, prevY;
-
-    public DisplayManager(DisplayUser user) {
-        this(user, true);
-    }
     
-    public DisplayManager(DisplayUser user, boolean stopOnWindowExit) {
+    private float partialTicks;
+    
+    public DisplayManager(DisplayUser user) {
         this.user = user;
-        this.stopOnClose = stopOnWindowExit;
     }
     
     public boolean setup() {
         this.running = true;
         this.frame = new Frame();
-        frame.setTitle(user.title());
+//        frame.setTitle("");
         frame.setBackground(java.awt.Color.BLACK);
         frame.setLayout(new BorderLayout());
         frame.setVisible(true);
+        frame.setResizable(resizable);
         
         //make sure the inside of the frame is the proper size
         Insets insets = frame.getInsets();
@@ -55,37 +61,33 @@ public class DisplayManager implements WindowListener {
         int height = prevY = this.user.getHeight() + insets.top + insets.bottom;
         frame.setSize(width, height);
 
-        int minWidth = this.user.getMinWidth() + insets.left + insets.right;
-        int minHeight = this.user.getMinHeight() + insets.top + insets.bottom;
+        int minWidth = this.minWidth + insets.left + insets.right;
+        int minHeight = this.minHeight + insets.top + insets.bottom;
         frame.setMinimumSize(new Dimension(minWidth, minHeight));
         
-        @SuppressWarnings("serial")
-		Canvas canvas = new Canvas() {
-
-            @Override
-            public final void removeNotify() {
-                System.out.println("Window destroyed");
-                super.removeNotify();
-            }
-        };
+		Canvas canvas = new Canvas();
         canvas.setFocusable(true);
         canvas.requestFocus();
         canvas.setIgnoreRepaint(true);
 
         frame.add(canvas);
+        //frame.addWindowListener(user instanceof WindowListener ? (WindowListener)user : this);
         frame.addWindowListener(this);
+        if(user instanceof WindowListener) frame.addWindowListener((WindowListener)user);
 
         try {
             Display.setParent(canvas);
             Display.create();
         } catch (Throwable e) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Display Error!", e);
             canvas.setEnabled(false);
             frame.remove(canvas);
             frame.setEnabled(false);
             frame.dispose();
             frame = null;
             running = false;
+            
+            user.getError(ERROR_NO_DISPLAY, e);
+            
             return false;
         }
         System.out.println("Window created!");
@@ -118,9 +120,11 @@ public class DisplayManager implements WindowListener {
 
     private void update() {
         resizeCheck();
-        double d = timer != null ? timer.time() : 1;
-        boolean flag = d >= 1;
-        if (!this.user.update(flag, (float)d)) {
+        float f = timer != null ? (float)timer.time() : 1;
+        partialTicks += f;
+        boolean flag = this.partialTicks >= 1F;
+        if(flag) partialTicks = 0; //get rid of extra built-up ticks
+        if (!this.user.update(flag, f)) {
             this.running = false;
         }
         //Display.sync(60);
@@ -146,14 +150,49 @@ public class DisplayManager implements WindowListener {
             this.user.resize();
         }
     }
-    
 
+    public boolean isResizable() {
+		return resizable;
+	}
+
+	public void setResizable(boolean resizable) {
+		this.resizable = resizable;
+	}
+
+	public int getMinWidth() {
+		return minWidth;
+	}
+
+	public void setMinWidth(int minWidth) {
+		this.minWidth = minWidth;
+	}
+
+	public int getMinHeight() {
+		return minHeight;
+	}
+
+	public void setMinHeight(int minHeight) {
+		this.minHeight = minHeight;
+	}
+
+	public boolean doStopOnClose() {
+		return stopOnClose;
+	}
+
+	public void setStopOnClose(boolean stopOnClose) {
+		this.stopOnClose = stopOnClose;
+	}
+    
     public void time(int ticksPerSecond) {
         this.timer = Ticker.ticksPerSecond(ticksPerSecond);
     }
 
-    public void setTimer(Ticker t) {
+	public void setTimer(Ticker t) {
         this.timer = t;
+    }
+    
+    public Ticker getTimer() {
+    	return timer;
     }
 
     public boolean hasTimer() {
@@ -165,26 +204,30 @@ public class DisplayManager implements WindowListener {
             BufferedImage img = ImageIO.read(new File(imageFilePath));
             this.setIconImage(img);
         } catch (IOException e) {
-            e.printStackTrace();
+            user.getError(ERROR_LOAD_IMAGE, e);
         }
     }
 
     public void setIconImage(Image i) {
-        this.frame.setIconImage(i);
+        if(frame != null) this.frame.setIconImage(i);
+    }
+    
+    public boolean isFullscreen() {
+    	return Display.isFullscreen();
     }
 
     public boolean setFullscreen(boolean flag) {
         try {
             Display.setFullscreen(flag);
         } catch (LWJGLException e) {
-            e.printStackTrace();
+            user.getError(ERROR_FULLSCREEN, e);
             return false;
         }
         return true;
     }
 
     public void setTitle(String s) {
-        this.frame.setTitle(s);
+        if(frame != null) this.frame.setTitle(s);
     }
 
     @Override
@@ -204,7 +247,7 @@ public class DisplayManager implements WindowListener {
 
     @Override
     public void windowClosing(WindowEvent event) {
-        // TODO stop requested (stop button)
+        //red X button clicked
         if(this.stopOnClose) this.stop();
     }
 
