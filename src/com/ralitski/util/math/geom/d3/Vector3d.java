@@ -197,10 +197,10 @@ public class Vector3d implements Cloneable {
     //misc
     
     public boolean isEmpty() {
-    	return x == 0 || y == 0 || z == 0;
+    	return x == 0 && y == 0 && z == 0;
     }
     
-    //TODO: test this
+    //TODO: test this, possibly make more efficient
     public Vector3d project(Vector3d axis) {
     	axis = axis.clone();
     	Vector3d v = clone();

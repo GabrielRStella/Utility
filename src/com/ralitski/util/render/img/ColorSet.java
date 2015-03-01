@@ -2,7 +2,6 @@ package com.ralitski.util.render.img;
 
 import com.ralitski.util.Ticker;
 
-//TODO: maybe use BlendFunc to gradient?
 public class ColorSet {
 	private int index;
 	private Color[] colors;

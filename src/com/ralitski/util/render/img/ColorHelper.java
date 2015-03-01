@@ -85,5 +85,7 @@ public class ColorHelper {
 		return r + g + b;
 	}
 	
-	// HEX-COMPRESSED use method
+	public static int fullAlpha(int i) {
+		return i | 0xFF000000;
+	}
 }

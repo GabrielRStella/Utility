@@ -55,7 +55,7 @@ public class Orientation3d {
 		return v;
 	}
 	
-	//vector stuff (TODO)
+	//vector stuff
     
 //    public float getAngleX() {
 //    	return axis.getAngleX();

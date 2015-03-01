@@ -3,17 +3,17 @@ package com.ralitski.util.render.img;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ImageList {
+public class GLImageList {
 
 	private String fileType = "png";
     public Map<String, GLTexture> images;
     public String loc;
 
-    public ImageList() {
+    public GLImageList() {
         this(".");
     }
 
-    public ImageList(String loc) {
+    public GLImageList(String loc) {
         this.images = new HashMap<String, GLTexture>();
         setBaseLoc(loc);
     }

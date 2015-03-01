@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Used for organizing components in a top container. Automatically handles Containers (as "directories" in the system).
+ * Used for organizing components in a top container. Automatically handles Containers as "directories" in a system with child Components as their files and subfolders.
  * 
  * @author ralitski
  */
@@ -86,7 +86,6 @@ public class ComponentPath {
 		}
 	}
 	
-	//single-char variable names, ACTIVATE
 	private class Directory {
 		private Container container;
 		private Map<String, Object> sub;

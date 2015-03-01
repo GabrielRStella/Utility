@@ -139,10 +139,6 @@ public class Image {
     	data[index + 2] = (byte)color.getBlue();
     	data[index + 3] = (byte)color.getAlpha();
     }
-    
-    public Pixel getPixel(int x, int y) {
-    	return new Pixel(this, x, y);
-    }
 
     public void makeGrayscale() {
         for (int i = 0; i < this.data.length / 4; i++) {
