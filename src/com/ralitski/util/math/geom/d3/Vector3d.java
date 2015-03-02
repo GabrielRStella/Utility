@@ -308,10 +308,11 @@ public class Vector3d implements Cloneable {
     	});
     }
     
-//    public boolean isAligned(Vector3d other) {
-//    	//do the alignment calculation first because it's faster
-//    	return (x > 0F ? other.x > 0F : (x < 0F ? other.x < 0F : (y > 0F ? other.y > 0F : (y < 0F ? other.y < 0F : (z > 0F ? other.z > 0F : (z < 0F ? other.z < 0F : other.z == 0F)))))) && isParallel(other);
-//    }
+    public boolean isAligned(Vector3d other) {
+    	//do the alignment calculation first because it's faster...maybe
+    	//also can I get a whoop whoop for nested tertiary statements
+    	return (x > 0F ? other.x > 0F : (x < 0F ? other.x < 0F : (y > 0F ? other.y > 0F : (y < 0F ? other.y < 0F : (z > 0F ? other.z > 0F : (z < 0F ? other.z < 0F : other.z == 0F)))))) && isParallel(other);
+    }
     
     public boolean isParallel(Vector3d other) {
     	float xx = x / other.x;

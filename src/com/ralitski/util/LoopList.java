@@ -1,59 +1,76 @@
 package com.ralitski.util;
 
-public class LoopList<E> {
+import java.util.Iterator;
 
-	public E[] values;
-	int index = 0;
+/**
+ * A super cool list type that will store a finite number of values in an array, looping through old values. Good for tracking position.
+ * 
+ * @author ralitski
+ *
+ * @param <E> The data type of this list
+ */
+public class LoopList<E> implements Iterable<E> {
+
+	private Object[] values;
+	private int index = 0;
 	
 	public LoopList(E[] values)
 	{
 		this.values = values;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public LoopList(int size)
 	{
-		this.values = (E[])new Object[size];
+		this.values = new Object[size];
 	}
 	
 	private void shift()
 	{
-		this.index++;
-		if(this.index >= this.values.length) this.index %= this.values.length; 
+		index++;
+		if(index >= values.length) index %= values.length; 
 	}
 	
 	private void shift(int i)
 	{
-		this.shift(i, false);
+		index = i % values.length;
 	}
 	
-	private void shift(int i, boolean flag)
-	{
-		this.index = i;
-		if(flag) this.index++;
-		if(this.index >= this.values.length) this.index %= this.values.length;
-	}
-	
+	/**
+	 * Used internally to keep track of position offset, but can be used externally to interact directly with the stored array using get(wanted index - offsetIndex(wantedIndex))
+	 * @param i the index, relative to the LoopList's current position
+	 * @return
+	 */
 	public int offsetIndex(int i)
 	{
 		return (i + this.index) % this.values.length;
 	}
 	
-	public boolean add(E value) {
+	/**
+	 * Append a value to the list and shift the current position by one.
+	 * @param value The value to be appended
+	 */
+	public void add(E value) {
 		values[index] = value;
 		this.shift();
-		return true;
 	}
 	
+	/**
+	 * Sets the value at a certain position in the list.
+	 * @param index The index, relative to the LoopList's position, to be changed
+	 * @param value new value to be set at the specified position
+	 * @return The previous value at that space
+	 */
+	@SuppressWarnings("unchecked")
 	public E set(int index, E value) {
 		int i = this.offsetIndex(index);
-		E e = this.values[i];
+		E e = (E)this.values[i];
 		this.values[i] = value;
 		return e;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public E get(int index) {
-		return this.values[this.offsetIndex(index)];
+		return (E)this.values[this.offsetIndex(index)];
 	}
 	
 	public boolean isEmpty() {
@@ -64,14 +81,42 @@ public class LoopList<E> {
 		return true;
 	}
 
-	@SuppressWarnings("unchecked")
 	public void clear() {
-		this.values = (E[])new Object[this.values.length];
+		this.values = new Object[this.values.length];
 		this.shift(0);
 	}
 	
 	public int size() {
 		return this.values.length;
+	}
+	
+	/**
+	 * Returns an iterator over this LoopList. The iteration begins at the LoopList's relative start.
+	 */
+	@Override
+	public Iterator<E> iterator() {
+		return new LoopListIterator();
+	}
+	
+	private class LoopListIterator implements Iterator<E> {
+		
+		private int iterIndex;
+
+		@Override
+		public boolean hasNext() {
+			return iterIndex < values.length;
+		}
+
+		@Override
+		public E next() {
+			return get(iterIndex++);
+		}
+
+		@Override
+		public void remove() {
+			set(iterIndex - 1, null);
+		}
+		
 	}
 
 }

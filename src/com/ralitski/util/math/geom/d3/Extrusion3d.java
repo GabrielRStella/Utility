@@ -93,7 +93,6 @@ public class Extrusion3d implements Shape3d {
 
 	@Override
 	public boolean contains(Point3d point) {
-		// TODO Auto-generated method stub
 		Line3d project = new Line3d(point, direction);
 		Line3d line = base.getIntersection(project);
 		if(line != null) {

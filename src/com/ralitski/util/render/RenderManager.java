@@ -5,7 +5,6 @@ import org.lwjgl.util.glu.GLU;
 
 import com.ralitski.util.math.geom.d3.Orientation3d;
 import com.ralitski.util.math.geom.d3.Point3d;
-import com.ralitski.util.math.geom.d3.Vector3d;
 import com.ralitski.util.render.camera.Camera;
 import com.ralitski.util.render.img.Color;
 
@@ -106,6 +105,7 @@ public class RenderManager {
 	public void setBlendAlpha() {
 		srcBlend = BlendFunc.SRC_ALPHA;
 		destBlend = BlendFunc.DST_ALPHA; //BlendFunc.ONE_MINUS_SRC_ALPHA;
+		enableBlend = true;
 	}
 
 	public boolean isEnableCull() {
@@ -174,15 +174,17 @@ public class RenderManager {
         if(this.is3D) {
             Camera camera = owner.getCamera();
             
-            owner.render3d(partial);
+            owner.render3dUntransformed(partial);
 
+            //TODO: le test
             Orientation3d o = camera.getOrientation();
-            Vector3d axis = o.getAxis();
-            GL11.glRotatef((float)Math.toDegrees(o.getRoll()), axis.getX(), axis.getY(), axis.getZ());
+            GL11.glRotatef((float)Math.toDegrees(o.getPitch()), 1, 0, 0);
+            GL11.glRotatef((float)Math.toDegrees(o.getRoll()), 0, 0, 1);
+            GL11.glRotatef((float)Math.toDegrees(o.getYaw()), 0, 1, 0);
             owner.render3dRotated(partial);
             Point3d p = camera.getPosition();
             GL11.glTranslatef(-p.getX(), -p.getY(), -p.getZ());
-            owner.render3dTranslated(partial);
+            owner.render3dTransformed(partial);
         }
         
         //2D stoof

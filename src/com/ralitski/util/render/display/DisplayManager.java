@@ -19,7 +19,17 @@ import org.lwjgl.opengl.Display;
 
 import com.ralitski.util.*;
 
+/**
+ * 
+ * @author ralitski
+ *
+ */
 public class DisplayManager implements WindowListener {
+	
+	/* 
+	 * frame.setUndecorated(true);
+	 * frame.setBackground(new Color(0, 0, 0, 0));
+	 */
 
 	public static final int ERROR_NO_DISPLAY = 0;
 	public static final int ERROR_LOAD_IMAGE = 1;
@@ -60,6 +70,8 @@ public class DisplayManager implements WindowListener {
         int width = prevX = this.user.getWidth() + insets.left + insets.right;
         int height = prevY = this.user.getHeight() + insets.top + insets.bottom;
         frame.setSize(width, height);
+        prevX = width;
+        prevY = height;
 
         int minWidth = this.minWidth + insets.left + insets.right;
         int minHeight = this.minHeight + insets.top + insets.bottom;
