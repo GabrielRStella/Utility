@@ -2,6 +2,12 @@ package com.ralitski.util.math.graph;
 
 import com.ralitski.util.math.geom.n.Point;
 
+/**
+ * A Graph, in the sense of Graph Theory - a set of nodes linked by edges.
+ * Note: The Graph interface supplies no methods for changing the Graph. Interaction is implementation-dependent.
+ * 
+ * @author ralitski
+ */
 public interface Graph extends Iterable<Node> {
 	Node getClosest(Point p);
 	

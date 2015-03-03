@@ -6,7 +6,12 @@ import java.util.List;
 
 import com.ralitski.util.math.geom.n.Point;
 
-public class RelatedGraph implements Graph {
+/**
+ * A graph in which nodes at arbitrary positions are stored and linked together like a web.
+ * 
+ * @author ralitski
+ */
+public class WebGraph implements Graph {
 	
 	private List<Node> nodes = new LinkedList<Node>();
 
@@ -36,13 +41,13 @@ public class RelatedGraph implements Graph {
 
 	@Override
 	public Iterable<Edge> getConnected(Node n) {
-		return n instanceof RelatedNode ? ((RelatedNode)n) : null;
+		return n instanceof WebNode ? ((WebNode)n) : null;
 	}
 
 	@Override
 	public Edge getConnection(Node start, Node end) {
-		if(start instanceof RelatedNode) {
-			RelatedNode r = (RelatedNode)start;
+		if(start instanceof WebNode) {
+			WebNode r = (WebNode)start;
 			for(Edge e : r) {
 				if(e.getEnd().equals(end)) {
 					return e;
@@ -52,8 +57,8 @@ public class RelatedGraph implements Graph {
 		return null;
 	}
 	
-	public RelatedNode addNode(Point position) {
-		RelatedNode node = new RelatedNode(position);
+	public WebNode addNode(Point position) {
+		WebNode node = new WebNode(position);
 		nodes.add(node);
 		return node;
 	}
@@ -63,15 +68,17 @@ public class RelatedGraph implements Graph {
 	}
 	
 	/**
-	 * Node: order doesn't actually matter.
-	 * @param start
-	 * @param end
+	 * Note: order doesn't actually matter.
+	 * Connects two Nodes together. They must both be instances of RelatedNode.
+	 * @param start The first node
+	 * @param end The second node
+	 * @return An edge representing the connection between the two nodes (now part of the graph as well)
 	 */
 	public Edge connect(Node start, Node end) {
-		if(start instanceof RelatedNode && end instanceof RelatedNode) {
+		if(start instanceof WebNode && end instanceof WebNode) {
 			Metadata shared = new Metadata();
-			Edge ret = ((RelatedNode)start).addConnection(end, shared);
-			((RelatedNode)end).addConnection(start, shared);
+			Edge ret = ((WebNode)start).addConnection(end, shared);
+			((WebNode)end).addConnection(start, shared);
 			return ret;
 		}
 		return null;
@@ -83,11 +90,11 @@ public class RelatedGraph implements Graph {
 	 * @param end
 	 */
 	public void disconnect(Node start, Node end) {
-		if(start instanceof RelatedNode) {
-			((RelatedNode)start).removeConnection(end);
+		if(start instanceof WebNode) {
+			((WebNode)start).removeConnection(end);
 		}
-		if(end instanceof RelatedNode) {
-			((RelatedNode)end).removeConnection(start);
+		if(end instanceof WebNode) {
+			((WebNode)end).removeConnection(start);
 		}
 	}
 

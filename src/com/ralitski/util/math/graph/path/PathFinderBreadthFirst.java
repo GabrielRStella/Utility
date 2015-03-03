@@ -10,6 +10,13 @@ import com.ralitski.util.math.graph.Edge;
 import com.ralitski.util.math.graph.Graph;
 import com.ralitski.util.math.graph.Node;
 
+/**
+ * This class re-implements, in Java, the Python script written here:
+ * http://www.redblobgames.com/pathfinding/a-star/introduction.html
+ * As do most of the other classes in this package.
+ * 
+ * @author ralitski
+ */
 public class PathFinderBreadthFirst implements PathFinder {
 	
 	private boolean stopOnEnd;

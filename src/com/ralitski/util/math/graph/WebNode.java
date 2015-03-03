@@ -6,25 +6,41 @@ import java.util.List;
 
 import com.ralitski.util.math.geom.n.Point;
 
-public class RelatedNode implements Node, Iterable<Edge> {
+/**
+ * A Node implementation that stores references to the Nodes connected to it. Specially designed for use with WebGraph; useless in other cases, since WebGraph has access to its package-level methods.
+ * 
+ * @author ralitski
+ */
+public class WebNode implements Node, Iterable<Edge> {
 	
 	private Point position;
 	private List<Edge> connections = new LinkedList<Edge>();
+	private Metadata data;
 	
-	public RelatedNode(Point position) {
+	public WebNode(Point position) {
 		this.position = position;
 	}
 	
 	//connection methods should be used through RelatedGraph
 	
 	Edge addConnection(Node n, Metadata data) {
-		Edge e = new SimpleEdge(this, n, data);
+		Edge e = new Edge(this, n, data);
 		connections.add(e);
 		return e;
 	}
 	
 	void removeConnection(Node n) {
 		connections.remove(n);
+	}
+	
+	//public stuff
+
+	public Metadata getMetadata() {
+		return data;
+	}
+
+	public void setMetadata(Metadata data) {
+		this.data = data;
 	}
 
 	@Override
@@ -39,7 +55,7 @@ public class RelatedNode implements Node, Iterable<Edge> {
 
 	@Override
 	public Object getMetadata(int key) {
-		return null;
+		return data != null ? data.getData(key) : null;
 	}
 	
 	public boolean equals(Object o) {
