@@ -165,7 +165,6 @@ public class Vector3d implements Cloneable {
     	y = yPrime;
     }
 
-    //TODO: fix
     public float getAngleAround(Vector3d axis) {
     	Vector3d v = clone();
     	Vector3d axisClone = axis.clone();
@@ -177,7 +176,6 @@ public class Vector3d implements Cloneable {
     	return v.getAngleZ();
     }
     
-    //TODO: fix
     public void rotateAround(Vector3d axis, float angle) {
     	axis = axis.clone();
     	Vector3d v = clone();
@@ -188,7 +186,7 @@ public class Vector3d implements Cloneable {
     	v.rotateY(-angleY);
     	v.rotateZ(angle);
     	v.rotateY(angleY);
-    	v.rotateZ(angleX);
+    	v.rotateX(angleX);
     	x = v.x;
     	y = v.y;
     	z = v.z;

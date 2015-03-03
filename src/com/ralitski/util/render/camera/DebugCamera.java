@@ -47,13 +47,15 @@ public class DebugCamera implements Camera, InputUser {
             onGround = false;
         }
         if(mouseGrabbed) {
-            pitch = (pitch - Mouse.getDY() * SENSITIVITY) % 360;
+            float pitch = ((float)Math.toDegrees(look.getPitch()) - Mouse.getDY() * SENSITIVITY) % 360;
             
             if(pitch > 90) pitch = 90;
             else if(pitch < -90) pitch = -90;
+            look.setPitch((float)Math.toRadians(pitch));
             float toYaw = Mouse.getDX() * SENSITIVITY;
-            yaw = (yaw + toYaw) % 360;
+            float yaw = ((float)Math.toDegrees(look.getYaw()) + toYaw) % 360;
             if(yaw < 0) yaw += 360;
+            look.setYaw((float)Math.toRadians(yaw));
         }
     }
     

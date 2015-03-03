@@ -2,6 +2,7 @@ package com.ralitski.util;
 
 import java.lang.reflect.Field;
 
+//TODO: extend ValueList
 public class ReflectingValueList {
 	
 	private Object host;

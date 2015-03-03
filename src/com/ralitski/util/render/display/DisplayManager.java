@@ -102,7 +102,6 @@ public class DisplayManager implements WindowListener {
             
             return false;
         }
-        System.out.println("Window created!");
 
         this.user.setup();
         return setup = true;
@@ -255,6 +254,7 @@ public class DisplayManager implements WindowListener {
     @Override
     public void windowClosed(WindowEvent event) {
         // TODO window closed via call to dispose()
+    	this.stop();
     }
 
     @Override

@@ -2,10 +2,6 @@ package com.ralitski.util.math.geom.n;
 
 import java.util.Arrays;
 
-import com.ralitski.util.counter.Counter;
-import com.ralitski.util.math.var.VariableFixed;
-import com.ralitski.util.math.var.VariableSet;
-
 public class Point extends SimpleDimensionalSet implements Cloneable {
 	
 	public Point(float...data) {
