@@ -49,7 +49,7 @@ public class GraphSearchAStar implements GraphSearch {
 				Node next = e.getEnd();
 				float newCost = current.cost + getCost(graph, e);
 				float cost = costs.containsKey(next) ? costs.get(next) : newCost;
-				DijkstraNode dNext = new DijkstraNode(next, newCost);
+				DijkstraNode dNext = new DijkstraNode(next, newCost + getCost(graph, current.node, end);
 				if(!sources.containsKey(next) || newCost < cost) {
 					frontier.add(dNext);
 					sources.put(next, current.node);
@@ -79,6 +79,10 @@ public class GraphSearchAStar implements GraphSearch {
 			f *= (Float)o;
 		}
 		return f;
+	}
+	
+	public float getCost(Graph e, Node current, Node end) {
+		return Edge.distance(current, end);
 	}
 	
 	private class DijkstraNode implements Comparable<DijkstraNode> {
