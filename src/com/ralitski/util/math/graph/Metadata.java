@@ -13,4 +13,8 @@ public class Metadata {
 	public Object getData(int i) {
 		return metadata.get(i);
 	}
+	
+	public String toString() {
+		return metadata.toString();
+	}
 }

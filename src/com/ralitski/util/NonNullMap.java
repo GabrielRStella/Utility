@@ -1,11 +1,50 @@
 package com.ralitski.util;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class NonNullMap<K, V> implements Map<K, V> {
+	
+	public static <K, V> NonNullMap<K, List<V>> getArrayListMap() {
+		return new NonNullMap<K, List<V>>(new Generator<List<V>>() {
+			@Override
+			public List<V> next() {
+				return new ArrayList<V>();
+			}
+		});
+	}
+	
+	public static <K, V> NonNullMap<K, List<V>> getArrayListMap(Map<K, List<V>> mapImpl) {
+		return new NonNullMap<K, List<V>>(mapImpl, new Generator<List<V>>() {
+			@Override
+			public List<V> next() {
+				return new ArrayList<V>();
+			}
+		});
+	}
+	
+	public static <K, V> NonNullMap<K, List<V>> getLinkedListMap() {
+		return new NonNullMap<K, List<V>>(new Generator<List<V>>() {
+			@Override
+			public List<V> next() {
+				return new LinkedList<V>();
+			}
+		});
+	}
+	
+	public static <K, V> NonNullMap<K, List<V>> getLinkedListMap(Map<K, List<V>> mapImpl) {
+		return new NonNullMap<K, List<V>>(mapImpl, new Generator<List<V>>() {
+			@Override
+			public List<V> next() {
+				return new LinkedList<V>();
+			}
+		});
+	}
 	
 	private Map<K, V> mapImplementation;
 	private Generator<V> valueGenerator;

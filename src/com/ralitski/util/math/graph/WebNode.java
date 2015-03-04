@@ -61,5 +61,9 @@ public class WebNode implements Node, Iterable<Edge> {
 	public boolean equals(Object o) {
 		return super.equals(o) ? true : (o instanceof Node ? ((Node)o).getLocation().equals(position) : (o instanceof Point ? ((Point)o).equals(position) : false));
 	}
+	
+	public String toString() {
+		return position.toString();
+	}
 
 }

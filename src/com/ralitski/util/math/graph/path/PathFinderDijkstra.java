@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 import com.ralitski.util.SingleIterator;
 import com.ralitski.util.math.graph.Edge;
@@ -14,11 +15,11 @@ public class PathFinderDijkstra implements PathFinder {
 	
 	private boolean stopOnEnd;
 	
-	public PathFinderBreadthFirst() {
+	public PathFinderDijkstra() {
 		this(true);
 	}
 	
-	public PathFinderBreadthFirst(boolean stopOnEnd) {
+	public PathFinderDijkstra(boolean stopOnEnd) {
 		this.stopOnEnd = stopOnEnd;
 	}
 
@@ -27,52 +28,53 @@ public class PathFinderDijkstra implements PathFinder {
 		return new SingleIterator<Iterable<Node>>(getPath(graph, start, end));
 	}
 
-	public Iterable<Node> getPath(Graph graph, Node start, Node end) {
-	NavigableSet<DijkstraNode> frontier = new TreeSet<DijkstraNode>();
-	frontier.add(new DijkstraNode(start, 0));
-	
-	Map<Node, Node> sources = new HashMap<Node, Node>();
+	public LinkedList<Node> getPath(Graph graph, Node start, Node end) {
+		PriorityQueue<DijkstraNode> frontier = new PriorityQueue<DijkstraNode>();
+		DijkstraNode dStart = new DijkstraNode(start, 0);
+		frontier.add(dStart);
+		
+		Map<Node, Node> sources = new HashMap<Node, Node>();
 		sources.put(start, null);
+		
+		Map<Node, Float> costs = new HashMap<Node, Float>();
+		costs.put(start, 0F);
+		
 		//stitch together graph and flow directions
 		while(!frontier.isEmpty()) {
-			DijkstraNode current = frontier.pollLast();
-			if(stopOnEnd && current.equals(end)) break;
-			for(Edge e : graph.getConnected(current)) {
+			DijkstraNode current = frontier.poll();
+			if(stopOnEnd && current.node.equals(end)) {
+				break;
+			}
+			for(Edge e : graph.getConnected(current.node)) {
 				Node next = e.getEnd();
-				float newCost = current.cost + getCost(e);
-				if(!sources.containsKey(next) | ) {
-					frontier.add(next);
-					sources.put(next, current);
+				float newCost = current.cost + getCost(graph, e);
+				float cost = costs.containsKey(next) ? costs.get(next) : newCost;
+				DijkstraNode dNext = new DijkstraNode(next, newCost);
+				if(!sources.containsKey(next) || newCost < cost) {
+					frontier.add(dNext);
+					sources.put(next, current.node);
+					costs.put(next, newCost);
 				}
 			}
 		}
-	/*
-came_from = {}
-cost_so_far = {}
-came_from[start] = None
-cost_so_far[start] = 0
-
-while not frontier.empty():
-   current = frontier.get()
-   
-   for next in graph.neighbors(current):
-      new_cost = cost_so_far[current] + graph.cost(current, next)
-      if next not in cost_so_far or new_cost < cost_so_far[next]:
-         cost_so_far[next] = new_cost
-         priority = new_cost
-         frontier.put(next, priority)
-         came_from[next] = current
-	*/
-	return null;
-	}
 		//construct path
 		Node current = end;
 		LinkedList<Node> path = new LinkedList<Node>();
 		path.add(current);
 		while(!current.equals(start)) {
 			current = sources.get(current);
+			if(current == null) {
+				System.out.println("No path");
+				return null;
+			}
 			path.add(current);
 		}
+		return path;
+	}
+	
+	public float getCost(Graph g, Edge e) {
+		return e.getStart().getLocation().distance(e.getEnd().getLocation());
+	}
 	
 	private class DijkstraNode implements Comparable<DijkstraNode> {
 	  private Node node;
@@ -84,7 +86,15 @@ while not frontier.empty():
 	  }
 	  
 	  public int compareTo(DijkstraNode n) {
-	    return n.cost - cost;
+	    return (int)(cost - n.cost);
+	  }
+	  
+	  public boolean equals(Object o) {
+		  return super.equals(o) ? true : o instanceof DijkstraNode ? ((DijkstraNode)o).node.equals(node) : node.equals(o);
+	  }
+	  
+	  public String toString() {
+		  return "[" + node.toString() + ", " + cost + "]";
 	  }
 	}
 

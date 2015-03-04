@@ -15,6 +15,8 @@ import com.ralitski.util.math.graph.Node;
  * http://www.redblobgames.com/pathfinding/a-star/introduction.html
  * As do most of the other classes in this package.
  * 
+ * Note: this search will not consider ANY traits of the edges it traverses; it looks for the shortest possible traversal assuming all edges are the same length. For length-based searching, use Dijkstra's algorithm.
+ * 
  * @author ralitski
  */
 public class PathFinderBreadthFirst implements PathFinder {
@@ -57,6 +59,10 @@ public class PathFinderBreadthFirst implements PathFinder {
 		path.add(current);
 		while(!current.equals(start)) {
 			current = sources.get(current);
+			if(current == null) {
+				System.out.println("No path");
+				return null;
+			}
 			path.add(current);
 		}
 		return path;

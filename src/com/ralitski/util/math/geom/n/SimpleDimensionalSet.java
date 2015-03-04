@@ -86,7 +86,7 @@ public abstract class SimpleDimensionalSet implements DimensionalSet<Float> {
     @Override
     public boolean equals(Object o) {
         if(this == o) return true;
-        if(getClass() == o.getClass()) {
+        if(getClass().equals(o.getClass())) {
             SimpleDimensionalSet p = (SimpleDimensionalSet)o;
             for(int i = 0; i < p.data.length || i < data.length; i++) {
                 float thisData = i >= data.length ? 0 : data[i];
