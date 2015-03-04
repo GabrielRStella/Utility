@@ -2,6 +2,10 @@ package com.ralitski.util.math.graph;
 
 public class Edge {
 	
+	public static float distance(Node start, Node end) {
+		return start.getLocation().distance(end.getLocation());
+	}
+	
 	private Node source;
 	private Node dest;
 	
