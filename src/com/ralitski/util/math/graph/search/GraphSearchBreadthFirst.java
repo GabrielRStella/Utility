@@ -1,11 +1,9 @@
-package com.ralitski.util.math.graph.path;
+package com.ralitski.util.math.graph.search;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
-import com.ralitski.util.SingleIterator;
 import com.ralitski.util.math.graph.Edge;
 import com.ralitski.util.math.graph.Graph;
 import com.ralitski.util.math.graph.Node;
@@ -19,23 +17,19 @@ import com.ralitski.util.math.graph.Node;
  * 
  * @author ralitski
  */
-public class PathFinderBreadthFirst implements PathFinder {
+public class GraphSearchBreadthFirst implements GraphSearch {
 	
 	private boolean stopOnEnd;
 	
-	public PathFinderBreadthFirst() {
+	public GraphSearchBreadthFirst() {
 		this(true);
 	}
 	
-	public PathFinderBreadthFirst(boolean stopOnEnd) {
+	public GraphSearchBreadthFirst(boolean stopOnEnd) {
 		this.stopOnEnd = stopOnEnd;
 	}
 
 	@Override
-	public Iterator<Iterable<Node>> getPaths(Graph graph, Node start, Node end) {
-		return new SingleIterator<Iterable<Node>>(getPath(graph, start, end));
-	}
-
 	public Iterable<Node> getPath(Graph graph, Node start, Node end) {
 		LinkedList<Node> frontier = new LinkedList<Node>();
 		frontier.add(start);

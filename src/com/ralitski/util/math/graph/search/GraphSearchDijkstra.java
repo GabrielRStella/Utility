@@ -1,33 +1,27 @@
-package com.ralitski.util.math.graph.path;
+package com.ralitski.util.math.graph.search;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-import com.ralitski.util.SingleIterator;
 import com.ralitski.util.math.graph.Edge;
 import com.ralitski.util.math.graph.Graph;
 import com.ralitski.util.math.graph.Node;
 
-public class PathFinderDijkstra implements PathFinder {
+public class GraphSearchDijkstra implements GraphSearch {
 	
 	private boolean stopOnEnd;
 	
-	public PathFinderDijkstra() {
+	public GraphSearchDijkstra() {
 		this(true);
 	}
 	
-	public PathFinderDijkstra(boolean stopOnEnd) {
+	public GraphSearchDijkstra(boolean stopOnEnd) {
 		this.stopOnEnd = stopOnEnd;
 	}
 
 	@Override
-	public Iterator<Iterable<Node>> getPaths(Graph graph, Node start, Node end) {
-		return new SingleIterator<Iterable<Node>>(getPath(graph, start, end));
-	}
-
 	public LinkedList<Node> getPath(Graph graph, Node start, Node end) {
 		PriorityQueue<DijkstraNode> frontier = new PriorityQueue<DijkstraNode>();
 		DijkstraNode dStart = new DijkstraNode(start, 0);
@@ -73,7 +67,12 @@ public class PathFinderDijkstra implements PathFinder {
 	}
 	
 	public float getCost(Graph g, Edge e) {
-		return e.getStart().getLocation().distance(e.getEnd().getLocation());
+		Object o = e.getMetadata(EDGE_WEIGHT);
+		float f = e.getStart().getLocation().distance(e.getEnd().getLocation());
+		if(o != null && o instanceof Float) {
+			f *= (Float)o;
+		}
+		return f;
 	}
 	
 	private class DijkstraNode implements Comparable<DijkstraNode> {

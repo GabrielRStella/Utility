@@ -34,7 +34,7 @@ public class Edge {
 	}
 
 	public Object getMetadata(int key) {
-		return data != null ? data.getData(key) : null;
+		return data != null ? (data.hasData(key) ? data.getData(key) : null) : null;
 	}
 	
 	public String toString() {

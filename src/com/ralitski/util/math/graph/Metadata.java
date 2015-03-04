@@ -13,6 +13,10 @@ public class Metadata {
 	public Object getData(int i) {
 		return metadata.get(i);
 	}
+
+	public boolean hasData(int key) {
+		return metadata.containsKey(key);
+	}
 	
 	public String toString() {
 		return metadata.toString();
