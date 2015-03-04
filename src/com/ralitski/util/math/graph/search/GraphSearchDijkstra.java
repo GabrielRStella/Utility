@@ -68,7 +68,7 @@ public class GraphSearchDijkstra implements GraphSearch {
 	
 	public float getCost(Graph g, Edge e) {
 		Object o = e.getMetadata(EDGE_WEIGHT);
-		float f = e.getStart().getLocation().distance(e.getEnd().getLocation());
+		float f = e.getLength();
 		if(o != null && o instanceof Float) {
 			f *= (Float)o;
 		}

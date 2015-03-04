@@ -11,11 +11,11 @@ public class Edge {
 	
 	private Metadata data;
 
-	public Edge(WebNode source, Node dest) {
+	public Edge(Node source, Node dest) {
 		this(source, dest, null);
 	}
 
-	public Edge(WebNode source, Node dest, Metadata data) {
+	public Edge(Node source, Node dest, Metadata data) {
 		this.source = source;
 		this.dest = dest;
 		this.data = data;
@@ -27,6 +27,10 @@ public class Edge {
 
 	public Node getEnd() {
 		return dest;
+	}
+	
+	public float getLength() {
+		return source.getLocation().distance(dest.getLocation());
 	}
 
 	public Metadata getMetadata() {
