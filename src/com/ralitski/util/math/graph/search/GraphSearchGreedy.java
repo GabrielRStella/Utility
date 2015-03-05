@@ -30,9 +30,6 @@ public class GraphSearchGreedy implements GraphSearch {
 		Map<Node, Node> sources = new HashMap<Node, Node>();
 		sources.put(start, null);
 		
-		Map<Node, Float> costs = new HashMap<Node, Float>();
-		costs.put(start, 0F);
-		
 		//stitch together graph and flow directions
 		while(!frontier.isEmpty()) {
 			DijkstraNode current = frontier.poll();
@@ -41,13 +38,10 @@ public class GraphSearchGreedy implements GraphSearch {
 			}
 			for(Edge e : graph.getConnected(current.node)) {
 				Node next = e.getEnd();
-				float newCost = current.cost + getCost(graph, next, end);
-				float cost = costs.containsKey(next) ? costs.get(next) : newCost;
-				DijkstraNode dNext = new DijkstraNode(next, newCost);
-				if(!sources.containsKey(next) || newCost < cost) {
+				DijkstraNode dNext = new DijkstraNode(next, getCost(graph, next, end));
+				if(!sources.containsKey(next)) {
 					frontier.add(dNext);
 					sources.put(next, current.node);
-					costs.put(next, newCost);
 				}
 			}
 		}
