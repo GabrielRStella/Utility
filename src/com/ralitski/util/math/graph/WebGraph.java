@@ -1,5 +1,6 @@
 package com.ralitski.util.math.graph;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,8 +41,8 @@ public class WebGraph implements Graph {
 	}
 
 	@Override
-	public Iterable<Edge> getConnected(Node n) {
-		return n instanceof WebNode ? ((WebNode)n) : null;
+	public Collection<Edge> getConnected(Node n) {
+		return n instanceof WebNode ? ((WebNode)n).connections : null;
 	}
 
 	@Override

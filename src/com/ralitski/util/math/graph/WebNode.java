@@ -14,7 +14,7 @@ import com.ralitski.util.math.geom.n.Point;
 public class WebNode implements Node, Iterable<Edge> {
 	
 	private Point position;
-	private List<Edge> connections = new LinkedList<Edge>();
+	List<Edge> connections = new LinkedList<Edge>();
 	private Metadata data;
 	
 	public WebNode(Point position) {

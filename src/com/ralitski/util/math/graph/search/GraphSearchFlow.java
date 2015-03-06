@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 import com.ralitski.util.math.graph.Edge;
 import com.ralitski.util.math.graph.Graph;
@@ -12,17 +13,17 @@ import com.ralitski.util.math.graph.Node;
 public class GraphSearchFlow implements GraphSearch {
 	
 	private boolean stopOnEnd;
-	private Mode mode;
+	private SearchMode mode;
 	
 	private boolean keepSources = false;
 	private Map<Node, Node> sources;
 	private Node prevSource;
 	
-	public GraphSearchFlow(Mode mode) {
+	public GraphSearchFlow(SearchMode mode) {
 		this(mode, true);
 	}
 	
-	public GraphSearchFlow(Mode mode, boolean stopOnEnd) {
+	public GraphSearchFlow(SearchMode mode, boolean stopOnEnd) {
 		this.mode = mode;
 		this.stopOnEnd = stopOnEnd;
 		sources = new HashMap<Node, Node>();
@@ -36,11 +37,11 @@ public class GraphSearchFlow implements GraphSearch {
 		this.stopOnEnd = stopOnEnd;
 	}
 	
-	public Mode getMode() {
+	public SearchMode getMode() {
 		return mode;
 	}
 	
-	public void setMode(Mode mode) {
+	public void setMode(SearchMode mode) {
 		this.mode = mode;
 	}
 	
@@ -58,13 +59,12 @@ public class GraphSearchFlow implements GraphSearch {
 
 	@Override
 	public LinkedList<Node> getPath(Graph graph, Node start, Node end) {
-		Queue<DijkstraNode> frontier = mode.prioritize() ? new PriorityQueue<DijkstraNode>() : new LinkedList<DijkstraNode>();
-		DijkstraNode dStart = new DijkstraNode(start, 0);
+		Queue<WeightedNode> frontier = mode.prioritize() ? new PriorityQueue<WeightedNode>() : new LinkedList<WeightedNode>();
+		WeightedNode dStart = new WeightedNode(start, 0);
 		frontier.add(dStart);
 		
 		boolean keptSource = true;
 		if(!keepSources || !start.equals(prevSource)) {
-			//TODO: test difference between HashMap.clear() and new HashMap<>()
 			sources.clear();
 			keptSource = false;
 		}
@@ -78,8 +78,8 @@ public class GraphSearchFlow implements GraphSearch {
 		
 		//stitch together graph and flow directions
 		while(!frontier.isEmpty()) {
-			DijkstraNode current = frontier.poll();
-			if(stopOnEnd && (current.node.equals(end) || (keptSource && sources.contains(end)))) {
+			WeightedNode current = frontier.poll();
+			if(stopOnEnd && (current.node.equals(end) || (keptSource && sources.containsKey(end)))) {
 				break;
 			}
 			for(Edge e : graph.getConnected(current.node)) {
@@ -92,7 +92,7 @@ public class GraphSearchFlow implements GraphSearch {
 					canForce = newCost < cost;
 				}
 				float priority = getPriority(graph, start, end, e, newCost);
-				DijkstraNode dNext = new DijkstraNode(next, priority);
+				WeightedNode dNext = new WeightedNode(next, priority);
 				if(!sources.containsKey(next) || canForce) {
 					frontier.add(dNext);
 					sources.put(next, current.node);
@@ -129,21 +129,21 @@ public class GraphSearchFlow implements GraphSearch {
 		return mode.getPriority(graph, start, end, current, cost);
 	}
 	
-	private class DijkstraNode implements Comparable<DijkstraNode> {
+	private class WeightedNode implements Comparable<WeightedNode> {
 	  private Node node;
 	  private float cost;
 	  
-	  public DijkstraNode(Node n, float cost) {
+	  public WeightedNode(Node n, float cost) {
 	    node = n;
 	    this.cost = cost;
 	  }
 	  
-	  public int compareTo(DijkstraNode n) {
+	  public int compareTo(WeightedNode n) {
 	    return (int)(cost - n.cost);
 	  }
 	  
 	  public boolean equals(Object o) {
-		  return super.equals(o) ? true : o instanceof DijkstraNode ? ((DijkstraNode)o).node.equals(node) : node.equals(o);
+		  return super.equals(o) ? true : o instanceof WeightedNode ? ((WeightedNode)o).node.equals(node) : node.equals(o);
 	  }
 	  
 	  public String toString() {
@@ -151,27 +151,26 @@ public class GraphSearchFlow implements GraphSearch {
 	  }
 	}
 	
-	public static enum Mode {
-		BREADTH_FIRST(false, false, false),
-		DIJKSTRA(true, true, false),
-		ASTAR(true, true, true){
+	public static enum SearchMode {
+		BREADTH_FIRST(false, false),
+		DIJKSTRA(true, true),
+		ASTAR(true, true){
 			public float getPriority(Graph graph, Node start, Node end, Edge current, float cost) {
-				return cost + current.getEnd().distance(end);
+				return cost + Edge.distance(current.getEnd(), end);
 			}
 		},
-		GREEDY(true, false, true)
+		GREEDY(true, false){
 			public float getPriority(Graph graph, Node start, Node end, Edge current, float cost) {
-				return current.getEnd().distance(end);
-			};
+				return Edge.distance(current.getEnd(), end);
+			}
+		};
 		
 		private boolean priority;
 		private boolean useCost;
-		private boolean useHeuristic;
 		
-		Mode(boolean priority, boolean useCost, boolean useHeuristic) {
+		SearchMode(boolean priority, boolean useCost) {
 			this.priority = priority;
 			this.useCost = useCost;
-			this.useHeuristic = useHeuristic;
 		}
 		
 		public boolean prioritize() {
