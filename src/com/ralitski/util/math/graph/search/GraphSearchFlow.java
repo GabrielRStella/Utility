@@ -14,6 +14,10 @@ public class GraphSearchFlow implements GraphSearch {
 	private boolean stopOnEnd;
 	private Mode mode;
 	
+	private boolean keepSources = false;
+	private Map<Node, Node> sources;
+	private Node prevSource;
+	
 	public GraphSearchFlow(Mode mode) {
 		this(mode, true);
 	}
@@ -21,6 +25,7 @@ public class GraphSearchFlow implements GraphSearch {
 	public GraphSearchFlow(Mode mode, boolean stopOnEnd) {
 		this.mode = mode;
 		this.stopOnEnd = stopOnEnd;
+		sources = new HashMap<Node, Node>();
 	}
 	
 	public boolean doStopOnEnd() {
@@ -38,6 +43,18 @@ public class GraphSearchFlow implements GraphSearch {
 	public void setMode(Mode mode) {
 		this.mode = mode;
 	}
+	
+	public boolean doKeepSources() {
+		return this.keepSources;
+	}
+	
+	public void setKeepSources(boolean keepSources) {
+		this.keepSources = keepSources;
+	}
+	
+	public void clearSources() {
+		sources.clear();
+	}
 
 	@Override
 	public LinkedList<Node> getPath(Graph graph, Node start, Node end) {
@@ -45,7 +62,12 @@ public class GraphSearchFlow implements GraphSearch {
 		DijkstraNode dStart = new DijkstraNode(start, 0);
 		frontier.add(dStart);
 		
-		Map<Node, Node> sources = new HashMap<Node, Node>();
+		boolean keptSource = true;
+		if(!keepSources || !start.equals(prevSource)) {
+			//TODO: test difference between HashMap.clear() and new HashMap<>()
+			sources.clear();
+			keptSource = false;
+		}
 		sources.put(start, null);
 		
 		Map<Node, Float> costs;
@@ -57,7 +79,7 @@ public class GraphSearchFlow implements GraphSearch {
 		//stitch together graph and flow directions
 		while(!frontier.isEmpty()) {
 			DijkstraNode current = frontier.poll();
-			if(stopOnEnd && current.node.equals(end)) {
+			if(stopOnEnd && (current.node.equals(end) || (keptSource && sources.contains(end)))) {
 				break;
 			}
 			for(Edge e : graph.getConnected(current.node)) {
