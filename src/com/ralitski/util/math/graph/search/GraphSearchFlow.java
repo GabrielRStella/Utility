@@ -25,15 +25,18 @@ public class GraphSearchFlow implements GraphSearch {
 
 	@Override
 	public LinkedList<Node> getPath(Graph graph, Node start, Node end) {
-		PriorityQueue<DijkstraNode> frontier = new PriorityQueue<DijkstraNode>();
+		Queue<DijkstraNode> frontier = mode.prioritize() ? new PriorityQueue<DijkstraNode>() : new LinkedList<DijkstraNode>();
 		DijkstraNode dStart = new DijkstraNode(start, 0);
 		frontier.add(dStart);
 		
 		Map<Node, Node> sources = new HashMap<Node, Node>();
 		sources.put(start, null);
 		
-		Map<Node, Float> costs = new HashMap<Node, Float>();
-		costs.put(start, 0F);
+		Map<Node, Float> costs;
+		if(mode.useCost()) {
+			costs = new HashMap<Node, Float>();
+			costs.put(start, 0F);
+		} else costs = null;
 		
 		//stitch together graph and flow directions
 		while(!frontier.isEmpty()) {
@@ -43,10 +46,16 @@ public class GraphSearchFlow implements GraphSearch {
 			}
 			for(Edge e : graph.getConnected(current.node)) {
 				Node next = e.getEnd();
-				float newCost = current.cost + getCost(graph, e);
-				float cost = costs.containsKey(next) ? costs.get(next) : newCost;
-				DijkstraNode dNext = new DijkstraNode(next, newCost);
-				if(!sources.containsKey(next) || newCost < cost) {
+				float newCost = 0;
+				boolean canForce = false;
+				if(mode.useCost()) {
+					newCost = current.cost + getCost(graph, e);
+					float cost = costs.containsKey(next) ? costs.get(next) : newCost;
+					canForce = newCost < cost;
+				}
+				float priority = mode.getPriority(graph, start, end, e, newCost);
+				DijkstraNode dNext = new DijkstraNode(next, priority);
+				if(!sources.containsKey(next) || canForce) {
 					frontier.add(dNext);
 					sources.put(next, current.node);
 					costs.put(next, newCost);
@@ -100,10 +109,39 @@ public class GraphSearchFlow implements GraphSearch {
 	}
 	
 	public static enum Mode {
-		BREADTH_FIRST,
-		DIJKSTRA,
-		ASTAR,
-		GREEDY;
+		BREADTH_FIRST(false, false, false),
+		DIJKSTRA(true, true, false),
+		ASTAR(true, true, true){
+			public float getPriority(Graph graph, Node start, Node end, Edge current, float cost) {
+				return cost + current.getEnd().distance(end);
+			}
+		},
+		GREEDY(true, false, true)
+			public float getPriority(Graph graph, Node start, Node end, Edge current, float cost) {
+				return current.getEnd().distance(end);
+			};
+		
+		private boolean priority;
+		private boolean useCost;
+		private boolean useHeuristic;
+		
+		Mode(boolean priority, boolean useCost, boolean useHeuristic) {
+			this.priority = priority;
+			this.useCost = useCost;
+			this.useHeuristic = useHeuristic;
+		}
+		
+		public boolean prioritize() {
+			return priority;
+		}
+		
+		public boolean useCost() {
+			return useCost;
+		}
+		
+		public float getPriority(Graph graph, Node start, Node end, Edge current, float cost) {
+			return cost;
+		}
 	}
 
 }
