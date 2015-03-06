@@ -53,7 +53,7 @@ public class GraphSearchFlow implements GraphSearch {
 					float cost = costs.containsKey(next) ? costs.get(next) : newCost;
 					canForce = newCost < cost;
 				}
-				float priority = mode.getPriority(graph, start, end, e, newCost);
+				float priority = getPriority(graph, start, end, e, newCost);
 				DijkstraNode dNext = new DijkstraNode(next, priority);
 				if(!sources.containsKey(next) || canForce) {
 					frontier.add(dNext);
@@ -84,6 +84,11 @@ public class GraphSearchFlow implements GraphSearch {
 			f *= (Float)o;
 		}
 		return f;
+	}
+	
+	//can be overridden by subclasses
+	public float getPriority(Graph graph, Node start, Node end, Edge current, float cost) {
+		return mode.getPriority(graph, start, end, current, cost);
 	}
 	
 	private class DijkstraNode implements Comparable<DijkstraNode> {
