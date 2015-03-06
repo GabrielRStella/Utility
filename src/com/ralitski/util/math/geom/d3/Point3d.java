@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import com.ralitski.util.io.Streamable;
+import com.ralitski.util.math.geom.n.Point;
 
 public class Point3d implements Cloneable, Streamable {
 
@@ -101,7 +102,11 @@ public class Point3d implements Cloneable, Streamable {
     private float y;
     private float z;
     
-    protected Point3d() {}
+    public Point3d() {}
+    
+    public Point3d(Point point) {
+    	this(point.get(1), point.get(2), point.get(3));
+    }
     
     public Point3d(Vector3d v) {
     	this(v.getX(), v.getY(), v.getZ());
