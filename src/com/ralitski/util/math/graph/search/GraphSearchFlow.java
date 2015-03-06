@@ -58,7 +58,7 @@ public class GraphSearchFlow implements GraphSearch {
 				if(!sources.containsKey(next) || canForce) {
 					frontier.add(dNext);
 					sources.put(next, current.node);
-					costs.put(next, newCost);
+					if(costs != null) costs.put(next, newCost);
 				}
 			}
 		}
