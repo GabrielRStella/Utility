@@ -10,7 +10,7 @@ import com.ralitski.util.math.graph.Graph;
 import com.ralitski.util.math.graph.Node;
 
 /**
- * TODO: This is a placeholder, currently a copy of Dijkstra's algorithm. Will edit.
+ * Implementation of A* graphsearch algorithm.
  * 
  * @author ralitski
  *
