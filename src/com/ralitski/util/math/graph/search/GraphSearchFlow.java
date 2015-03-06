@@ -9,21 +9,17 @@ import com.ralitski.util.math.graph.Edge;
 import com.ralitski.util.math.graph.Graph;
 import com.ralitski.util.math.graph.Node;
 
-/**
- * TODO: This is a placeholder, currently a copy of Dijkstra's algorithm. Will edit.
- * 
- * @author ralitski
- *
- */
-public class GraphSearchAStar implements GraphSearch {
+public class GraphSearchFlow implements GraphSearch {
 	
 	private boolean stopOnEnd;
+	private Mode mode;
 	
-	public GraphSearchAStar() {
-		this(true);
+	public GraphSearchFlow(Mode mode) {
+		this(mode, true);
 	}
 	
-	public GraphSearchAStar(boolean stopOnEnd) {
+	public GraphSearchFlow(Mode mode, boolean stopOnEnd) {
+		this.mode = mode;
 		this.stopOnEnd = stopOnEnd;
 	}
 
@@ -49,7 +45,7 @@ public class GraphSearchAStar implements GraphSearch {
 				Node next = e.getEnd();
 				float newCost = current.cost + getCost(graph, e);
 				float cost = costs.containsKey(next) ? costs.get(next) : newCost;
-				DijkstraNode dNext = new DijkstraNode(next, newCost + getPriority(graph, current.node, end));
+				DijkstraNode dNext = new DijkstraNode(next, newCost);
 				if(!sources.containsKey(next) || newCost < cost) {
 					frontier.add(dNext);
 					sources.put(next, current.node);
@@ -74,15 +70,11 @@ public class GraphSearchAStar implements GraphSearch {
 	
 	public float getCost(Graph g, Edge e) {
 		Object o = e.getMetadata(EDGE_WEIGHT);
-		float f = e.getStart().getLocation().distance(e.getEnd().getLocation());
+		float f = e.getLength();
 		if(o != null && o instanceof Float) {
 			f *= (Float)o;
 		}
 		return f;
-	}
-	
-	public float getPriority(Graph e, Node current, Node end) {
-		return Edge.distance(current, end);
 	}
 	
 	private class DijkstraNode implements Comparable<DijkstraNode> {
@@ -105,6 +97,13 @@ public class GraphSearchAStar implements GraphSearch {
 	  public String toString() {
 		  return "[" + node.toString() + ", " + cost + "]";
 	  }
+	}
+	
+	public static enum Mode {
+		BREADTH_FIRST,
+		DIJKSTRA,
+		ASTAR,
+		GREEDY;
 	}
 
 }

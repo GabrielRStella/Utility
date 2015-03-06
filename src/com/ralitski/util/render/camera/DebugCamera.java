@@ -98,6 +98,7 @@ public class DebugCamera implements Camera, InputUser {
 
     @Override
     public void onMouseClick(int x, int y, int button) {
+		System.out.println(button + " on");
     }
 
     @Override
@@ -106,6 +107,7 @@ public class DebugCamera implements Camera, InputUser {
 
     @Override
     public void onMouseRelease(int x, int y, int button, int ticks) {
+		System.out.println(button + " off (" + ticks + ")");
     }
 
     @Override

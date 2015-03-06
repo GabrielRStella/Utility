@@ -99,7 +99,7 @@ public class Color implements Streamable, Cloneable {
         this.a = b;
     }
 
-    public int getCompresse() {
+    public int getCompressed() {
         return ColorHelper.toCompressed(a, r, g, b);
     }
 
@@ -154,7 +154,7 @@ public class Color implements Streamable, Cloneable {
     }
     
     public Color clone() {
-    	return new Color(r, g, b);
+    	return new Color(r, g, b, a);
     }
 
 	@Override
