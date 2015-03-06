@@ -22,6 +22,22 @@ public class GraphSearchFlow implements GraphSearch {
 		this.mode = mode;
 		this.stopOnEnd = stopOnEnd;
 	}
+	
+	public boolean doStopOnEnd() {
+		return stopOnEnd;
+	}
+	
+	public void setStopOnEnd(boolean stopOnEnd) {
+		this.stopOnEnd = stopOnEnd;
+	}
+	
+	public Mode getMode() {
+		return mode;
+	}
+	
+	public void setMode(Mode mode) {
+		this.mode = mode;
+	}
 
 	@Override
 	public LinkedList<Node> getPath(Graph graph, Node start, Node end) {
