@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.ralitski.util.Metadata;
 import com.ralitski.util.math.geom.n.Point;
 
 /**
@@ -12,7 +13,7 @@ import com.ralitski.util.math.geom.n.Point;
  * 
  * @author ralitski
  */
-public class WebGraph implements Graph {
+public class WebGraph implements Graph, Iterable<Node> {
 	
 	private List<Node> nodes = new LinkedList<Node>();
 

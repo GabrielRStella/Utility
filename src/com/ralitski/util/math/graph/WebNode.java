@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.ralitski.util.Metadata;
 import com.ralitski.util.math.geom.n.Point;
 
 /**

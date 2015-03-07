@@ -8,7 +8,7 @@ import com.ralitski.util.math.geom.n.Point;
  * 
  * @author ralitski
  */
-public interface Graph extends Iterable<Node> {
+public interface Graph {
 	Node getClosest(Point p);
 	
 	/**

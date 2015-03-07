@@ -1,5 +1,7 @@
 package com.ralitski.util.math.graph;
 
+import com.ralitski.util.Metadata;
+
 public class Edge {
 	
 	public static float distance(Node start, Node end) {

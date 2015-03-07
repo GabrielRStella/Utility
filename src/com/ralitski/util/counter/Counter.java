@@ -23,6 +23,18 @@ public class Counter {
 		return values;
 	}
 	
+	public boolean hasNext() {
+		try {
+			int index = 0;
+			while(values[index] == max.get(index)) {
+				index++;
+			}
+			return true;
+		} catch(ArrayIndexOutOfBoundsException e) {
+			return false;
+		}
+	}
+	
 	public boolean next() {
 		try {
 			int index = 0;
