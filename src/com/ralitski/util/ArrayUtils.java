@@ -262,40 +262,52 @@ public class ArrayUtils {
     }
     
     public static <T> Iterable<T> getIterable(T...t) {
-        return new ArrayIterable<T>(t);
+        return new ArrayIterable<T>(t.length, t);
+    }
+    
+    public static <T> Iterable<T> getIterable(int len, T...t) {
+        return new ArrayIterable<T>(len, t);
     }
     
     public static <T> Iterator<T> getIterator(T...t) {
-        return new ArrayIterator<T>(t);
+        return new ArrayIterator<T>(t.length, t);
+    }
+    
+    public static <T> Iterator<T> getIterator(int len, T...t) {
+        return new ArrayIterator<T>(len, t);
     }
     
     private static class ArrayIterable<T> implements Iterable<T> {
     	
+    	private int len;
     	private T[] t;
     	
-    	private ArrayIterable(T...t) {
+    	private ArrayIterable(int len, T...t) {
+    		this.len = len;
     		this.t = t;
     	}
 
 		@Override
 		public Iterator<T> iterator() {
-			return new ArrayIterator<T>(t);
+			return new ArrayIterator<T>(len, t);
 		}
     	
     }
     
     private static class ArrayIterator<T> implements Iterator<T> {
         
+    	private int len;
         private T[] t;
         private int nextIndex;
         
-        private ArrayIterator(T...t) {
+        private ArrayIterator(int len, T...t) {
+        	this.len = len;
             this.t = t;
         }
 
         @Override
         public boolean hasNext() {
-            return nextIndex < t.length;
+            return nextIndex < t.length && nextIndex < len;
         }
 
         @Override

@@ -71,15 +71,36 @@ public class GridGraph implements Graph {
 					floats[j] = (float)(i[j] - 1) * nodeSpace;
 				}
 				Point point = new Point(floats);
-				Node node = new SimpleNode(point, world.getNodeMetadata(n, point));
-				edges[index++] = new Edge(n, node, world.getEdgeMetadata(n, node));
+				if(world.isNode(point, clearSpace)) {
+					Node node = new SimpleNode(point, world.getNodeMetadata(n, point));
+					edges[index++] = new Edge(n, node, world.getEdgeMetadata(n, node));
+				}
 				c.next();
 			}
-			return ArrayUtils.getIterable(edges);
+			return ArrayUtils.getIterable(index, edges);
 		} else {
 			//TODO muh
 			int nodeCount = dim * 2;
 			Edge[] edges = new Edge[nodeCount];
+			int index = 0;
+			for(int i = 0; i < dim; i++) {
+				int dim2 = i + 1;
+				//add space
+				Point point = n.getLocation().clone();
+				point.set(dim2, point.get(dim2) + nodeSpace);
+				if(world.isNode(point, clearSpace)) {
+					Node node = new SimpleNode(point, world.getNodeMetadata(n, point));
+					edges[index++] = new Edge(n, node, world.getEdgeMetadata(n, node));
+				}
+				//subtract space
+				point = n.getLocation().clone();
+				point.set(dim2, point.get(dim2) - nodeSpace);
+				if(world.isNode(point, clearSpace)) {
+					Node node = new SimpleNode(point, world.getNodeMetadata(n, point));
+					edges[index++] = new Edge(n, node, world.getEdgeMetadata(n, node));
+				}
+			}
+			return ArrayUtils.getIterable(index, edges);
 		}
 	}
 
