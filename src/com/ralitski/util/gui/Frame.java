@@ -11,6 +11,7 @@ import com.ralitski.util.gui.render.RenderListState;
 import com.ralitski.util.gui.render.RenderStyle;
 
 //todo: the actual frame (borders, close button)
+//ie, if a Frame has a parent, it becomes an actual moveable window thing
 public class Frame implements Container {
 	
 	private Gui gui;
@@ -253,7 +254,12 @@ public class Frame implements Container {
 				c.render(owner);
 			}
 		} else {
-			doRender();
+			if(renderSelf) {
+				owner.drawBox(box, style);
+			}
+			for(Component c : children) {
+				c.render(owner);
+			}
 		}
 	}
 	
@@ -264,17 +270,6 @@ public class Frame implements Container {
 			owner.drawBox(box, style);
 		}
 		for(Component c : renderWithThis) {
-			c.render(owner);
-		}
-	}
-	
-	private void doRender() {
-		//render frame background, then components
-		GuiOwner owner = gui.getOwner().getGuiOwner();
-		if(renderSelf) {
-			owner.drawBox(box, style);
-		}
-		for(Component c : children) {
 			c.render(owner);
 		}
 	}

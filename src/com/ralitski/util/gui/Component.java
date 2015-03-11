@@ -20,7 +20,7 @@ public interface Component {
 	Box getBounds();
 	
 	//gui owner included for ease
-	void render(GuiOwner manager);
+	void render(GuiOwner owner);
 	//null or empty to have no hovertext
 	String getHoverText();
 	
