@@ -53,7 +53,7 @@ public class GridGraph implements Graph {
 			float f = i >= dim ? 0 : p.get(d) % (float)nodeSpace;
 			p.set(d, f);
 		}
-		return world.isNode(p, clearSpace) ? new SimpleNode(p, world.getNodeMetadata(null, p)) : expand(p);//crap do I have to recursively scan now? uuuugh...maybe make it spiral outwards somehow. but what is an n-dimensional spiral? D:
+		return world.isNode(p, clearSpace) ? new SimpleNode(p, world.getNodeMetadata(null, p)) : expand(p);
 	}
 	
 	//TODO: somehow get the closest point by expanding out a bunch

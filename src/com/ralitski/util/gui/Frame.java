@@ -6,6 +6,8 @@ import java.util.List;
 
 import com.ralitski.util.gui.layout.BorderLayout;
 import com.ralitski.util.gui.layout.Layout;
+import com.ralitski.util.gui.render.RenderList;
+import com.ralitski.util.gui.render.RenderListState;
 import com.ralitski.util.gui.render.RenderStyle;
 
 //todo: the actual frame (borders, close button)
@@ -22,6 +24,11 @@ public class Frame implements Container {
 	
 	private Layout layout;
 	private List<Component> children;
+	//used to keep track of child components that use their own render lists
+	private List<Component> renderWithThis;
+	private List<Component> renderWithSelf;
+	private RenderList renderList;
+	private RenderListState renderListState;
 	
 	private boolean renderSelf;
 	
@@ -48,6 +55,18 @@ public class Frame implements Container {
 		this.gui = gui;
 		children = new LinkedList<Component>();
 		layout = new BorderLayout();
+		GuiOwner owner = gui.getOwner().getGuiOwner();
+		if(owner.supportLists()) {
+			renderWithThis = new LinkedList<Component>();
+			renderWithSelf = new LinkedList<Component>();
+			renderListState = new RenderListState();
+			getRenderList(owner);
+		}
+	}
+	
+	private void getRenderList(GuiOwner owner) {
+		renderList = owner.newList(new RenderRunner());
+		renderListState.setDirty(true);
 	}
 	
 	//stuff
@@ -142,6 +161,11 @@ public class Frame implements Container {
 	@Override
 	public void add(Component c, String layout) {
 		children.add(c);
+		if(gui.getOwner().getGuiOwner().supportLists()) {
+			if(c.useParentRenderList()) this.renderWithThis.add(c);
+			else this.renderWithSelf.add(c);
+			c.setParentRenderList(renderListState);
+		}
 		c.setParent(this);
 		this.layout.addComponent(c, layout);
 	}
@@ -151,6 +175,10 @@ public class Frame implements Container {
 			c.setParent(null);
 			children.remove(c);
 			layout.removeComponent(c);
+			if(gui.getOwner().getGuiOwner().supportLists()) {
+				if(!this.renderWithThis.remove(c)) this.renderWithSelf.remove(c);
+				c.setParentRenderList(null);
+			}
 		}
 	}
 	
@@ -177,6 +205,16 @@ public class Frame implements Container {
 	public String getHoverText() {
 		return null;
 	}
+
+	@Override
+	public boolean useParentRenderList() {
+		return false;
+	}
+
+	@Override
+	public void setParentRenderList(RenderListState state) {
+		throw new UnsupportedOperationException("Frames have no parent Component");
+	}
 	
 	//position components and resize frame
 	public void refresh() {
@@ -189,9 +227,37 @@ public class Frame implements Container {
 		layout.refresh(box);
 	}
 	
-	//TODO: render lists
 	public void render(GuiOwner owner) {
+		if(owner.supportLists()) {
+			if(renderList == null) getRenderList(owner);
+			if(renderListState.isDirty()) {
+				renderList.compile();
+			}
+			//render stuff with this list
+			renderList.call();
+			//render stuff with own list
+			for(Component c : renderWithSelf) {
+				c.render(owner);
+			}
+		} else {
+			doRender();
+		}
+	}
+	
+	private void doRenderList() {
 		//render frame background, then components
+		GuiOwner owner = gui.getOwner().getGuiOwner();
+		if(renderSelf) {
+			owner.drawBox(box, style);
+		}
+		for(Component c : renderWithThis) {
+			c.render(owner);
+		}
+	}
+	
+	private void doRender() {
+		//render frame background, then components
+		GuiOwner owner = gui.getOwner().getGuiOwner();
 		if(renderSelf) {
 			owner.drawBox(box, style);
 		}
@@ -208,6 +274,13 @@ public class Frame implements Container {
 	@Override
 	public void setRenderSelf(boolean renderSelf) {
 		this.renderSelf = renderSelf;
+	}
+	
+	private class RenderRunner implements Runnable {
+		@Override
+		public void run() {
+			doRenderList();
+		}
 	}
 	
 }
