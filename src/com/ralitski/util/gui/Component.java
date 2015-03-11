@@ -1,9 +1,9 @@
 package com.ralitski.util.gui;
 
+import com.ralitski.util.gui.render.RenderListState;
 import com.ralitski.util.gui.render.RenderStyle;
 
-//TODO: input
-//also rendering optimization (to allow "render list" type things)
+//TODO: input, possibly update() or something
 public interface Component {
 	Gui getGui();
 	Container getParent();
@@ -28,4 +28,16 @@ public interface Component {
 	RenderStyle getRenderStyle(int index);
 	//the number of styles that can be applied to this component
 	int getRenderStyles();
+	
+	/**
+	 * If this Component will be put inside its parent's RenderList (if supported), false means it will render itself (and handle RenderLists itself)
+	 * @return
+	 */
+	boolean useParentRenderList();
+	
+	/**
+	 * Adds a RenderListState for this Component to mark the parent's RenderList as dirty, etc.
+	 * @param state an object keeping track of the state of the parent's render list, to be updated by this component
+	 */
+	void setParentRenderList(RenderListState state);
 }
