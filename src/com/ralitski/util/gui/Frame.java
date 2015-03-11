@@ -24,9 +24,20 @@ public class Frame implements Container {
 	
 	private Layout layout;
 	private List<Component> children;
+	
 	//used to keep track of child components that use their own render lists
+	
+	/**
+	 * The list of components that will be rendered in this Frame's render list.
+	 */
 	private List<Component> renderWithThis;
+	
+	/**
+	 * The list of components that will not be rendered with this Frame's render list.
+	 */
 	private List<Component> renderWithSelf;
+	
+	//render list stuff
 	private RenderList renderList;
 	private RenderListState renderListState;
 	
@@ -176,7 +187,9 @@ public class Frame implements Container {
 			children.remove(c);
 			layout.removeComponent(c);
 			if(gui.getOwner().getGuiOwner().supportLists()) {
-				if(!this.renderWithThis.remove(c)) this.renderWithSelf.remove(c);
+				if(c.useParentRenderList()) this.renderWithThis.remove(c);
+				else this.renderWithSelf.remove(c);
+//				if(!this.renderWithThis.remove(c)) this.renderWithSelf.remove(c);
 				c.setParentRenderList(null);
 			}
 		}

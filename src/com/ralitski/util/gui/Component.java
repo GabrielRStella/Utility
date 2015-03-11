@@ -16,7 +16,7 @@ public interface Component {
 	void setSelected(boolean selected);
 	boolean isSelected();
 	
-	//this should reflect a mobile boundary for the component.
+	//this should reflect an editable boundary for the element; any change to this box should be immediately available when dealing with the component.
 	Box getBounds();
 	
 	//gui owner included for ease
