@@ -9,16 +9,26 @@ package com.ralitski.util.input;
  * @author ralitski
  */
 public interface InputUser {
-    void onMouseClick(int x, int y, int button);
+	
+	//mouse clicky
+	
+    void onMouseClick(int x, int y, long time, int button);
     void onMouseHold(int x, int y, int button, int ticks);
-    void onMouseRelease(int x, int y, int button, int ticks);
+    void onMouseRelease(int x, int y, long time, int button, int ticks);
+    void onMouseMove(int x, int y, long time, int dx, int dy);
     
-    void onMouseWheel(int x, int y, int dWheel);
+    //wheel
     
-    void onMouseEnterWindow(int x, int y);
-    void onMouseExitWindow(int x, int y);
+    void onMouseWheel(int x, int y, long time, int dWheel);
     
-    void onKeyClick(int key, char keyChar);
+    //cursor movement
+    
+    void onMouseEnterWindow(int x, int y, long time);
+    void onMouseExitWindow(int x, int y, long time);
+    
+    //keyboard
+    
+    void onKeyClick(int key, long time, char keyChar);
     void onKeyHold(int key, int ticks);
-    void onKeyRelease(int key, char keyChar, int ticks);
+    void onKeyRelease(int key, long time, char keyChar, int ticks);
 }

@@ -26,7 +26,7 @@ public interface GuiOwner {
 	/**
 	 * 
 	 * @param renderer a runnable to be called when the list must be (re)generated
-	 * @return a render list which will execute the code supplied in renderer.run()
+	 * @return a render list which will execute the code supplied in renderer.run(). The RenderList will not have been previously compiled.
 	 */
 	RenderList newList(Runnable renderer);
 }

@@ -2,8 +2,6 @@ package com.ralitski.util.input;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 
 /**
  *
@@ -13,14 +11,16 @@ public class InputMonitor {
 
     //filters and feeds input to this
     private InputUser user;
+    private InputFeed input;
     private boolean[] mouseClick, mouseReleased;
     private int[] mouseHoldTime;
     private Map<Integer, Key> keyboard;
     private boolean wasMouseInWindow; //was cursor in window previous tick?
 
-    public InputMonitor(InputUser user) {
+    public InputMonitor(InputUser user, InputFeed feed) {
+    	this.input = feed;
         this.user = user;
-        int c = Mouse.getButtonCount();
+        int c = feed.getMouseButtonCount();
         mouseClick = new boolean[c];
         mouseHoldTime = new int[c];
         mouseReleased = new boolean[c];
@@ -40,23 +40,23 @@ public class InputMonitor {
     }
 
     public int getMouseX() {
-        return Mouse.getX();
+        return input.getMouseX();
     }
 
     public int getMouseY() {
-        return Mouse.getY();
+        return input.getMouseY();
     }
 
     public boolean isMouseInWindow() {
-        return Mouse.isInsideWindow();
+        return input.isMouseInsideWindow();
     }
 
     public boolean isButtonDown(int btn) {
-        return Mouse.isButtonDown(btn);
+        return input.isMouseButtonDown(btn);
     }
 
     public boolean isKeyDown(int key) {
-        return Keyboard.isKeyDown(key);
+        return input.isKeyDown(key);
     }
 
     private Key getKey(int id) {
@@ -70,26 +70,26 @@ public class InputMonitor {
     public void update() //only update that needs to be called ever
     {
         
-        while(Mouse.next()) {
+        while(input.mouseNext()) {
             handleMouseInput();
         }
-        while(Keyboard.next()) {
+        while(input.keyNext()) {
             handleKeyboardInput();
         }
         
         if (isMouseInWindow() != wasMouseInWindow) {
             if (wasMouseInWindow) {
-                user.onMouseExitWindow(getMouseX(), getMouseY());
+                user.onMouseExitWindow(getMouseX(), getMouseY(), input.getTime());
             } else {
-                user.onMouseEnterWindow(getMouseX(), getMouseY());
+                user.onMouseEnterWindow(getMouseX(), getMouseY(), input.getTime());
             }
         }
         wasMouseInWindow = isMouseInWindow();
 
         for (int btn = 0; btn < mouseClick.length; btn++) {
-            if (Mouse.isButtonDown(btn) && !mouseReleased[btn]) {
+            if (input.isMouseButtonDown(btn) && !mouseReleased[btn]) {
                 mouseHoldTime[btn]++;
-                user.onMouseHold(Mouse.getX(), Mouse.getY(), btn, mouseHoldTime[btn]);
+                user.onMouseHold(input.getMouseX(), input.getMouseY(), btn, mouseHoldTime[btn]);
             }
         }
 
@@ -102,10 +102,11 @@ public class InputMonitor {
     }
 
     public void handleMouseInput() {
-        int btn = Mouse.getEventButton();
-        boolean state = Mouse.getEventButtonState();
-        int x = Mouse.getEventX();
-        int y = Mouse.getEventY();
+        int btn = input.getMouseEventButton();
+        boolean state = input.getMouseEventButtonState();
+        int x = input.getMouseEventX();
+        int y = input.getMouseEventY();
+        long time = input.getKeyEventTime();
 
         //test for click, hold, release
         if (btn >= 0) {
@@ -113,42 +114,48 @@ public class InputMonitor {
                 if (!mouseClick[btn] && mouseReleased[btn]) {
                     mouseClick[btn] = true;
                     mouseReleased[btn] = false;
-                    user.onMouseClick(x, y, btn);
+                    user.onMouseClick(x, y, time, btn);
                 }
                 mouseReleased[btn] = false;
             } else {
                 if (!mouseReleased[btn]) {
-                    user.onMouseRelease(x, y, btn, mouseHoldTime[btn]);
+                    user.onMouseRelease(x, y, time, btn, mouseHoldTime[btn]);
                 }
                 mouseClick[btn] = false;
                 mouseHoldTime[btn] = 0;
                 mouseReleased[btn] = true;
             }
-        }
-        //wheel
-        int wheel = Mouse.getEventDWheel();
-        if (wheel != 0) {
-            user.onMouseWheel(x, y, wheel);
+        } else {
+            //wheel
+            int wheel = input.getMouseEventDWheel();
+            if (wheel != 0) {
+                user.onMouseWheel(x, y, time, wheel);
+            } else {
+            	int dx = input.getMouseEventDX();
+            	int dy = input.getMouseEventDY();
+            	user.onMouseMove(x, y, time, dx, dy);
+            }
         }
 
     }
 
     public void handleKeyboardInput() {
         
-        int key = Keyboard.getEventKey();
-        char keyChar = Keyboard.getEventCharacter();
-        boolean state = Keyboard.getEventKeyState();
+        int key = input.getKeyEventKey();
+        char keyChar = input.getKeyEventCharacter();
+        boolean state = input.getKeyEventState();
+        long time = input.getKeyEventTime();
         Key k = getKey(key);
         //test for click, hold, release
         if (state) {
             if (!k.isClick() && k.isReleased()) {
                 k.setClick(true);
-                user.onKeyClick(key, keyChar);
+                user.onKeyClick(key, time, keyChar);
             }
             k.setReleased(false);
         } else {
             if (!k.isReleased()) {
-                user.onKeyRelease(key, keyChar, k.getKeyHoldTime());
+                user.onKeyRelease(key, time, keyChar, k.getKeyHoldTime());
             }
             k.setClick(false);
             k.resetKeyHoldTime();

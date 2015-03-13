@@ -12,6 +12,7 @@ import com.ralitski.util.gui.render.RenderStyle;
 
 //todo: the actual frame (borders, close button)
 //ie, if a Frame has a parent, it becomes an actual moveable window thing
+//only accepts Desktop as parent
 public class Frame implements Container {
 	
 	private Gui gui;
@@ -244,7 +245,7 @@ public class Frame implements Container {
 	public void render(GuiOwner owner) {
 		if(owner.supportLists()) {
 			if(renderList == null) getRenderList(owner);
-			if(renderListState.isDirty()) {
+			if(renderListState.isDirty() || !renderList.registered()) {
 				renderList.compile();
 			}
 			//render stuff with this list
