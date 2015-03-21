@@ -7,6 +7,7 @@ import com.ralitski.util.gui.render.RenderStyle;
 public interface Component {
 	Gui getGui();
 	Container getParent();
+	//called by the Container, not by API user
 	void setParent(Container container);
 	
 	int getId();

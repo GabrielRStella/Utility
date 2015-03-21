@@ -8,21 +8,14 @@ import com.ralitski.util.gui.layout.BorderLayout;
 import com.ralitski.util.gui.layout.Layout;
 import com.ralitski.util.gui.render.RenderList;
 import com.ralitski.util.gui.render.RenderListState;
-import com.ralitski.util.gui.render.RenderStyle;
 
-public class ContainerAbstract implements Container {
-	
-	private Gui gui;
-	private int id = -1;
-	private Box box;
-	private RenderStyle style;
+public abstract class ContainerAbstract extends ComponentAbstract implements Container {
 	
 	private int minWidth;
 	private int minHeight;
 	private boolean resizable;
 	
 	private Layout layout;
-	private Container parent;
 	private List<Component> children;
 	
 	//used to keep track of child components that use their own render lists
@@ -39,53 +32,35 @@ public class ContainerAbstract implements Container {
 	
 	//render list stuff
 	private RenderList renderList;
-	private RenderListState renderListState;
 	
 	private boolean renderSelf;
 	
 	public ContainerAbstract(Gui gui) {
+		super(gui);
 		prepare(gui);
-		GuiOwner owner = gui.getOwner().getGuiOwner();
-		box = new Box(0, 0, owner.getWidth(), owner.getHeight());
 	}
 	
 	public ContainerAbstract(Gui gui, int width, int height) {
+		super(gui, width, height);
 		prepare(gui);
-		GuiOwner owner = gui.getOwner().getGuiOwner();
-		box = new Box(0, 0, Math.min(width, owner.getWidth()), Math.min(height, owner.getHeight()));
-		BoxPosition.position(null, box, gui.getOwner().getWindow(), BoxPosition.CENTER);
 	}
 	
 	public ContainerAbstract(Gui gui, Box box) {
+		super(gui, box);
 		prepare(gui);
-		BoxPosition.position(null, box, gui.getOwner().getWindow(), BoxPosition.WITHIN_STRICT);
-		this.box = box;
 	}
 	
 	private void prepare(Gui gui) {
-		this.gui = gui;
-		children = new LinkedList<Component>();
 		layout = new BorderLayout();
 		GuiOwner owner = gui.getOwner().getGuiOwner();
 		if(owner.supportLists()) {
 			renderWithThis = new LinkedList<Component>();
 			renderWithSelf = new LinkedList<Component>();
-			renderListState = new RenderListState();
-			getRenderList(owner);
+//			getRenderList(owner);
 		}
 	}
 	
-	private void getRenderList(GuiOwner owner) {
-		renderList = owner.newList(new RenderRunner());
-		renderListState.setDirty(true);
-	}
-	
 	//stuff
-
-	@Override
-	public Gui getGui() {
-		return gui;
-	}
 
 	public int getMinWidth() {
 		return minWidth;
@@ -114,28 +89,8 @@ public class ContainerAbstract implements Container {
 	}
 
 	@Override
-	public void setRenderStyle(int index, RenderStyle s) {
-		style = s;
-	}
-
-	@Override
-	public RenderStyle getRenderStyle(int index) {
-		return style;
-	}
-
-	@Override
 	public int getRenderStyles() {
 		return 1;
-	}
-
-	@Override
-	public Container getParent() {
-		return parent;
-	}
-
-	@Override
-	public void setParent(Container container) {
-		this.parent = container;
 	}
 	
 	public Layout getLayout() {
@@ -147,21 +102,6 @@ public class ContainerAbstract implements Container {
 			layout.addComponent(c, null);
 		}
 		this.layout = layout;
-	}
-
-	@Override
-	public boolean isSelectable() {
-		return false;
-	}
-
-	@Override
-	public void setSelected(boolean selected) {
-		throw new UnsupportedOperationException("Containers can't be selected.");
-	}
-
-	@Override
-	public boolean isSelected() {
-		return false;
 	}
 
 	@Override
@@ -200,31 +140,6 @@ public class ContainerAbstract implements Container {
 	}
 
 	@Override
-	public int getId() {
-		return id;
-	}
-
-	@Override
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	@Override
-	public Box getBounds() {
-		return box;
-	}
-
-	@Override
-	public String getHoverText() {
-		return null;
-	}
-
-	@Override
-	public boolean useParentRenderList() {
-		return false;
-	}
-
-	@Override
 	public void setParentRenderList(RenderListState state) {
 		if(useParentRenderList()) {
 			this.renderListState = state;
@@ -236,8 +151,11 @@ public class ContainerAbstract implements Container {
 		}
 	}
 	
-	//position components and resize container
+	//position components and possibly resize container
 	public void refresh() {
+		for(Component c : children) {
+			if(c instanceof Container) ((Container)c).refresh();
+		}
 		if(resizable) {
 			Dimension d = layout.getMinimumSize();
 			if(box.getWidth() < d.getWidth()) box.setWidth(Math.min(Math.max(minWidth, (int)d.getWidth()), gui.getOwner().getGuiOwner().getWidth()));
@@ -246,10 +164,19 @@ public class ContainerAbstract implements Container {
 		}
 		layout.refresh(box);
 	}
+
+	@Override
+	public boolean doRenderSelf() {
+		return renderSelf;
+	}
+
+	@Override
+	public void setRenderSelf(boolean renderSelf) {
+		this.renderSelf = renderSelf;
+	}
 	
-	//TODO: support parent render list
 	public void render(GuiOwner owner) {
-		if(owner.supportLists()) {
+		if(owner.supportLists() && !useParentRenderList()) {
 			if(renderList == null) getRenderList(owner);
 			if(renderListState.isDirty() || !renderList.registered()) {
 				renderList.compile();
@@ -270,7 +197,9 @@ public class ContainerAbstract implements Container {
 		}
 	}
 	
-	private void doRenderList() {
+	//actually renders the RenderList stuff, but no sense in making another method since this one is already defined
+	@Override
+	protected void doRender() {
 		//render frame background, then components
 		GuiOwner owner = gui.getOwner().getGuiOwner();
 		if(renderSelf) {
@@ -280,21 +209,16 @@ public class ContainerAbstract implements Container {
 			c.render(owner);
 		}
 	}
-
-	@Override
-	public boolean doRenderSelf() {
-		return renderSelf;
-	}
-
-	@Override
-	public void setRenderSelf(boolean renderSelf) {
-		this.renderSelf = renderSelf;
+	
+	protected void getRenderList(GuiOwner owner) {
+		renderList = owner.newList(new RenderRunner());
+		renderListState.setDirty(true);
 	}
 	
 	private class RenderRunner implements Runnable {
 		@Override
 		public void run() {
-			doRenderList();
+			doRender();
 		}
 	}
 
