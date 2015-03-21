@@ -96,6 +96,7 @@ public class BorderLayout implements Layout {
 		if(center != null) BoxPosition.position(null, center.getBounds(), window, BoxPosition.CENTER);
 	}
 
+	//TODO: this might need a bit of editing
 	@Override
 	public Dimension getMinimumSize() {
 		int w = 0;
