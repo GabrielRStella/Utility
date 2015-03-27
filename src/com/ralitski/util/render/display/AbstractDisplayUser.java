@@ -11,7 +11,7 @@ public abstract class AbstractDisplayUser implements DisplayUser {
     private int height;
 
     public AbstractDisplayUser() {
-        this(800, 600);
+        this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
     public AbstractDisplayUser(int size) {
