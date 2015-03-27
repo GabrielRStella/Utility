@@ -171,9 +171,8 @@ public class RenderManager {
         GL11.glLoadIdentity();
         GL11.glColor4f(1, 1, 1, 1);
         
-        if(this.is3D) {
-            Camera camera = owner.getCamera();
-            
+        Camera camera = owner.getCamera();
+        if(this.is3D && camera != null) {
             owner.render3dUntransformed(partial);
 
             //TODO: le test
