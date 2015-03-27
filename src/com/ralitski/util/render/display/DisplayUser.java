@@ -2,6 +2,9 @@ package com.ralitski.util.render.display;
 
 public interface DisplayUser {
 	
+	int DEFAULT_WIDTH = 800;
+	int DEFAULT_HEIGHT = 600;
+	
 	/**
 	 * setup camera, load textures, etc. This is called after OpenGL is instantiated.
 	 */
