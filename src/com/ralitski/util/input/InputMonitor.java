@@ -3,6 +3,16 @@ package com.ralitski.util.input;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.ralitski.util.input.event.KeyEvent;
+import com.ralitski.util.input.event.KeyEvent.KeyEventType;
+import com.ralitski.util.input.event.KeyTimedEvent;
+import com.ralitski.util.input.event.MouseButtonEvent;
+import com.ralitski.util.input.event.MouseButtonEvent.MouseEventType;
+import com.ralitski.util.input.event.MouseMoveEvent;
+import com.ralitski.util.input.event.MouseWheelEvent;
+import com.ralitski.util.input.event.MouseWindowEvent;
+import com.ralitski.util.input.event.MouseWindowEvent.MouseWindowState;
+
 /**
  *
  * @author ralitski
@@ -79,9 +89,9 @@ public class InputMonitor {
         
         if (isMouseInWindow() != wasMouseInWindow) {
             if (wasMouseInWindow) {
-                user.onMouseExitWindow(getMouseX(), getMouseY(), input.getTime());
+                user.onMouseEvent(new MouseWindowEvent(input.getTime(), getMouseX(), getMouseY(), MouseWindowState.EXIT));
             } else {
-                user.onMouseEnterWindow(getMouseX(), getMouseY(), input.getTime());
+                user.onMouseEvent(new MouseWindowEvent(input.getTime(), getMouseX(), getMouseY(), MouseWindowState.ENTER));
             }
         }
         wasMouseInWindow = isMouseInWindow();
@@ -89,14 +99,14 @@ public class InputMonitor {
         for (int btn = 0; btn < mouseClick.length; btn++) {
             if (input.isMouseButtonDown(btn) && !mouseReleased[btn]) {
                 mouseHoldTime[btn]++;
-                user.onMouseHold(input.getMouseX(), input.getMouseY(), btn, mouseHoldTime[btn]);
+                user.onMouseEvent(new MouseButtonEvent(input.getTime(), input.getMouseX(), input.getMouseY(), btn, mouseHoldTime[btn], MouseEventType.HOLD));
             }
         }
 
         for (Key k : keyboard.values()) {
             if (k.isDown() && !k.isReleased()) {
                 k.incrementKeyHoldTime();
-                user.onKeyHold(k.getId(), k.getKeyHoldTime());
+                user.onKeyEvent(new KeyTimedEvent(input.getTime(), k.getId(), k.getKey(), KeyEventType.HOLD, k.getKeyHoldTime()));
             }
         }
     }
@@ -114,12 +124,12 @@ public class InputMonitor {
                 if (!mouseClick[btn] && mouseReleased[btn]) {
                     mouseClick[btn] = true;
                     mouseReleased[btn] = false;
-                    user.onMouseClick(x, y, time, btn);
+                    user.onMouseEvent(new MouseButtonEvent(time, x, y, btn));
                 }
                 mouseReleased[btn] = false;
             } else {
                 if (!mouseReleased[btn]) {
-                    user.onMouseRelease(x, y, time, btn, mouseHoldTime[btn]);
+                    user.onMouseEvent(new MouseButtonEvent(time, x, y, btn, mouseHoldTime[btn], MouseEventType.UP));
                 }
                 mouseClick[btn] = false;
                 mouseHoldTime[btn] = 0;
@@ -129,11 +139,11 @@ public class InputMonitor {
             //wheel
             int wheel = input.getMouseEventDWheel();
             if (wheel != 0) {
-                user.onMouseWheel(x, y, time, wheel);
+            	user.onMouseEvent(new MouseWheelEvent(time, x, y, wheel));
             } else {
             	int dx = input.getMouseEventDX();
             	int dy = input.getMouseEventDY();
-            	user.onMouseMove(x, y, time, dx, dy);
+            	user.onMouseEvent(new MouseMoveEvent(time, x, y, dx, dy));
             }
         }
 
@@ -142,7 +152,6 @@ public class InputMonitor {
     public void handleKeyboardInput() {
         
         int key = input.getKeyEventKey();
-        char keyChar = input.getKeyEventCharacter();
         boolean state = input.getKeyEventState();
         long time = input.getKeyEventTime();
         Key k = getKey(key);
@@ -150,12 +159,13 @@ public class InputMonitor {
         if (state) {
             if (!k.isClick() && k.isReleased()) {
                 k.setClick(true);
-                user.onKeyClick(key, time, keyChar);
+                char keyChar = input.getKeyEventCharacter();
+                user.onKeyEvent(new KeyEvent(time, key, keyChar));
             }
             k.setReleased(false);
         } else {
             if (!k.isReleased()) {
-                user.onKeyRelease(key, time, keyChar, k.getKeyHoldTime());
+                user.onKeyEvent(new KeyTimedEvent(time, key, k.getKey(), KeyEventType.UP, k.getKeyHoldTime()));
             }
             k.setClick(false);
             k.resetKeyHoldTime();

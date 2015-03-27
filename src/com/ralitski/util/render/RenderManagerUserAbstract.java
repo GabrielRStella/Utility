@@ -1,4 +1,4 @@
-package com.ralitski.util.render.display;
+package com.ralitski.util.render;
 
 import com.ralitski.util.render.display.AbstractDisplayUser;
 

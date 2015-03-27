@@ -2,9 +2,10 @@ package com.ralitski.util.gui;
 
 import com.ralitski.util.gui.render.RenderListState;
 import com.ralitski.util.gui.render.RenderStyle;
+import com.ralitski.util.input.InputUser;
 
 //TODO: input, possibly update() or something
-public interface Component {
+public interface Component extends InputUser {
 	Gui getGui();
 	Container getParent();
 	//called by the Container, not by API user
