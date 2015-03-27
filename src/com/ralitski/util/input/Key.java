@@ -6,6 +6,7 @@ public class Key {
 
     private int id, keyHoldTime;
     private boolean keyClick, isReleased;
+    private char key;
 
     public Key(int id) {
         this.id = id;
@@ -51,4 +52,12 @@ public class Key {
     public boolean isDown() {
         return Keyboard.isKeyDown(this.id);
     }
+
+	public char getKey() {
+		return key;
+	}
+
+	public void setKey(char key) {
+		this.key = key;
+	}
 }
