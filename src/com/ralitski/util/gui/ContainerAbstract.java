@@ -8,6 +8,10 @@ import com.ralitski.util.gui.layout.BorderLayout;
 import com.ralitski.util.gui.layout.Layout;
 import com.ralitski.util.gui.render.RenderList;
 import com.ralitski.util.gui.render.RenderListState;
+import com.ralitski.util.input.event.KeyEvent;
+import com.ralitski.util.input.event.MouseButtonEvent;
+import com.ralitski.util.input.event.MouseButtonEvent.MouseEventType;
+import com.ralitski.util.input.event.MouseEvent;
 
 public abstract class ContainerAbstract extends ComponentAbstract implements Container {
 	
@@ -15,8 +19,8 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 	private int minHeight;
 	private boolean resizable;
 	
-	private Layout layout;
-	private List<Component> children;
+	protected Layout layout;
+	protected List<Component> children;
 	
 	//used to keep track of child components that use their own render lists
 	
@@ -31,7 +35,7 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 	private List<Component> renderWithSelf;
 	
 	//render list stuff
-	private RenderList renderList;
+	protected RenderList renderList;
 	
 	private boolean renderSelf;
 	
@@ -220,6 +224,49 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 		public void run() {
 			doRender();
 		}
+	}
+
+	@Override
+	public void onMouseEvent(MouseEvent event) {
+		boolean handled = false;
+		for(Component c : children) {
+			Box b = c.getBounds();
+			if(b.contains(event.getX(), event.getY())) {
+				handled = true;
+				if(c instanceof Container) {
+					//pass event down
+					c.onMouseEvent(event);
+					break;
+				} else {
+					if(c.isSelectable() && isSelection(event)) {
+						gui.select(c);
+					} else {
+						//pass event to this component
+						c.onMouseEvent(event);
+					}
+					break;
+				}
+			}
+		}
+		if(!handled) {
+			mouseNotHandled(event);
+		}
+	}
+	
+	protected void mouseNotHandled(MouseEvent event) {
+		gui.select(null);
+	}
+	
+	private boolean isSelection(MouseEvent event) {
+		if(event instanceof MouseButtonEvent) {
+			MouseButtonEvent mEvent = (MouseButtonEvent)event;
+			return mEvent.getButton() == 0 && mEvent.getType() == MouseEventType.DOWN;
+		}
+		return false;
+	}
+
+	@Override
+	public void onKeyEvent(KeyEvent event) {
 	}
 
 }
