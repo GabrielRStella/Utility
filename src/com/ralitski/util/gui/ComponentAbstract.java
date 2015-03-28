@@ -1,8 +1,12 @@
 package com.ralitski.util.gui;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import com.ralitski.util.gui.render.RenderList;
 import com.ralitski.util.gui.render.RenderListState;
 import com.ralitski.util.gui.render.RenderStyle;
+import com.ralitski.util.input.event.MouseEvent;
 
 public abstract class ComponentAbstract implements Component {
 	
@@ -14,6 +18,7 @@ public abstract class ComponentAbstract implements Component {
 	//render list stuff
 	protected RenderList renderList;
 	protected RenderListState renderListState;
+	protected List<GuiEventListener> eventListeners;
 	
 	public ComponentAbstract(Gui gui) {
 		prepare(gui);
@@ -36,6 +41,7 @@ public abstract class ComponentAbstract implements Component {
 	
 	private void prepare(Gui gui) {
 		this.gui = gui;
+		eventListeners = new LinkedList<GuiEventListener>();
 		GuiOwner owner = gui.getOwner().getGuiOwner();
 		if(owner.supportLists()) {
 			renderListState = new RenderListState();
@@ -103,6 +109,21 @@ public abstract class ComponentAbstract implements Component {
 	@Override
 	public Box getBounds() {
 		return box;
+	}
+
+	@Override
+	public boolean receiveSelectedMouseEvent(MouseEvent event) {
+		return false;
+	}
+
+	@Override
+	public void addGuiEventListener(GuiEventListener listener) {
+		eventListeners.add(listener);
+	}
+
+	@Override
+	public void removeGuiEventListener(GuiEventListener listener) {
+		eventListeners.remove(listener);
 	}
 
 	@Override
