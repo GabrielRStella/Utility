@@ -104,7 +104,7 @@ public class RenderManager {
 	
 	public void setBlendAlpha() {
 		srcBlend = BlendFunc.SRC_ALPHA;
-		destBlend = BlendFunc.DST_ALPHA; //BlendFunc.ONE_MINUS_SRC_ALPHA;
+		destBlend = BlendFunc.ONE_MINUS_SRC_ALPHA;
 		enableBlend = true;
 	}
 

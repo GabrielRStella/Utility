@@ -5,16 +5,11 @@ import org.lwjgl.opengl.GL11;
 public class GLImage {
 	
 	private Image src;
-	private int id;
+	private int id = -1;
     
     private int minFilter = GL11.GL_LINEAR;
     private int magFilter = GL11.GL_LINEAR;
     
-    /**
-     * constructs an empty image.
-     * @param width
-     * @param height
-     */
     public GLImage(Image src) {
     	this.src = src;
     }

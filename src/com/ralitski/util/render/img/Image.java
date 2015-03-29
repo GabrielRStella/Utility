@@ -217,9 +217,6 @@ public class Image {
     }
     
     private boolean equalsImg(Image i) {
-    	if(i.width == width && i.height == height) {
-    		return Arrays.equals(data, i.data);
-    	}
-    	return false;
+		return Arrays.equals(data, i.data);
     }
 }
