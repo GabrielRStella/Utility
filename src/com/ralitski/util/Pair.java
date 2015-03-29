@@ -53,4 +53,8 @@ public class Pair<K, V> implements Map.Entry<K, V> {
         hash = 37 * hash + this.value.hashCode();
         return hash;
     }
+    
+    public String toString() {
+    	return "Pair[Key=" + key + ", Value=" + value + "]";
+    }
 }
