@@ -1,6 +1,10 @@
 package com.ralitski.util.gui;
 
-public class GuiManager {
+import com.ralitski.util.input.InputUser;
+import com.ralitski.util.input.event.KeyEvent;
+import com.ralitski.util.input.event.MouseEvent;
+
+public class GuiManager implements InputUser {
 	
 	private GuiOwner owner;
 	private Gui currentScreen;
@@ -53,5 +57,15 @@ public class GuiManager {
 	
 	public void render3d(float partial) {
 		if(currentScreen != null) currentScreen.render3d(partial);
+	}
+
+	@Override
+	public void onMouseEvent(MouseEvent event) {
+		if(currentScreen != null) currentScreen.onMouseEvent(event);
+	}
+
+	@Override
+	public void onKeyEvent(KeyEvent event) {
+		if(currentScreen != null) currentScreen.onKeyEvent(event);
 	}
 }

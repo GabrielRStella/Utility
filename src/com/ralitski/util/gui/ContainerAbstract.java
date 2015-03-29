@@ -8,7 +8,6 @@ import com.ralitski.util.gui.layout.BorderLayout;
 import com.ralitski.util.gui.layout.Layout;
 import com.ralitski.util.gui.render.RenderList;
 import com.ralitski.util.gui.render.RenderListState;
-import com.ralitski.util.input.event.KeyEvent;
 import com.ralitski.util.input.event.MouseButtonEvent;
 import com.ralitski.util.input.event.MouseButtonEvent.MouseEventType;
 import com.ralitski.util.input.event.MouseEvent;
@@ -237,26 +236,18 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 			Box b = c.getBounds();
 			if(b.contains(event.getX(), event.getY())) {
 				handled = true;
-				if(c instanceof Container) {
-					//pass event down
-					c.onMouseEvent(event);
-					break;
-				} else {
-					if(c.isSelectable() && isSelection(event)) {
-						gui.select(c);
-					} else {
-						//pass event to this component
-						c.onMouseEvent(event);
-					}
-					break;
+				if(isSelection(event)) {
+					gui.select(c);
 				}
 			}
+			c.onMouseEvent(event);
 		}
 		if(!handled) {
 			mouseNotHandled(event);
 		}
 	}
 	
+	//called when the mouse event was not inside another component
 	protected void mouseNotHandled(MouseEvent event) {
 		gui.select(null);
 	}
@@ -267,10 +258,6 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 			return mEvent.getButton() == 0 && mEvent.getType() == MouseEventType.DOWN;
 		}
 		return false;
-	}
-
-	@Override
-	public void onKeyEvent(KeyEvent event) {
 	}
 
 }

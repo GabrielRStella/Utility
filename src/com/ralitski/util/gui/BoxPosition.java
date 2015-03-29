@@ -8,21 +8,21 @@ public enum BoxPosition {
 		public void position(Box toPosition, Box relative, int space, Box window) {
 			int x = (window.getWidth() - toPosition.getWidth()) / 2;
 			int y = (window.getHeight() - toPosition.getHeight()) / 2;
-			toPosition.setCenter(x + window.getMinX(), y + window.getMinY());
+			toPosition.setPosition(x + window.getMinX(), y + window.getMinY());
 		}
 	},
 	CENTER_WIDE(false) {
 		@Override
 		public void position(Box toPosition, Box relative, int space, Box window) {
 			int x = (window.getWidth() - toPosition.getWidth()) / 2;
-			toPosition.setCenterX(x + window.getMinX());
+			toPosition.setX(x + window.getMinX());
 		}
 	},
 	CENTER_HIGH(false) {
 		@Override
 		public void position(Box toPosition, Box relative, int space, Box window) {
 			int y = (window.getHeight() - toPosition.getHeight()) / 2;
-			toPosition.setCenterY(y + window.getMinY());
+			toPosition.setY(y + window.getMinY());
 		}
 	},
 	LEFT(false) {

@@ -21,4 +21,8 @@ public class GuiEvent {
 	public String getArgs() {
 		return args;
 	}
+	
+	public String toString() {
+		return "[source:" + source + " args:" + args + "]";
+	}
 }

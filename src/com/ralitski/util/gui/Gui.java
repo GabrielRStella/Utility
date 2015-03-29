@@ -61,8 +61,10 @@ public class Gui implements InputUser {
 		if(selected != null) {
 			selected.setSelected(false);
 		}
-		selected = c;
-		if(c != null) c.setSelected(true);
+		if(c != null && c.isSelectable()) {
+			selected = c;
+			if(c != null) c.setSelected(true);
+		} else selected = null;
 	}
 	
 	public Component getSelected() {

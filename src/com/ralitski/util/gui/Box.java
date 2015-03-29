@@ -92,6 +92,18 @@ public class Box implements Cloneable {
     	translate(x - xCenter, y - yCenter);
     }
     
+    public void setX(int x) {
+    	translateX(x - minX);
+    }
+    
+    public void setY(int y) {
+    	translateY(y - minY);
+    }
+    
+    public void setPosition(int x, int y) {
+    	translate(x - minX, y - minY);
+    }
+    
     public void translate(int x, int y) {
     	minX += x;
     	maxX += x;

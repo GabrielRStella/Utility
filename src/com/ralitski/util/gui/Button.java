@@ -39,6 +39,15 @@ public class Button extends ComponentAbstract {
 		return true;
 	}
 	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+		if(renderListState != null) renderListState.setDirty(true);
+	}
+
 	protected void doRender() {
 		super.doRender();
 		//love me some getters
@@ -48,13 +57,13 @@ public class Button extends ComponentAbstract {
 	@Override
 	public void onMouseEvent(MouseEvent event) {
 		//event can be assumed to be within this button's bounds
-		if(event instanceof MouseButtonEvent) {
+		if(event instanceof MouseButtonEvent && box.contains(event.getX(), event.getY())) {
 			MouseButtonEvent mEvent = (MouseButtonEvent)event;
 			//TODO: should I alert on release instead? maybe keep track of where it went down,
 			//then if it goes down and comes up within button, fire event? hmm...
 			if(mEvent.getButton() == mouseButton && mEvent.getType() == MouseEventType.DOWN) {
 				for(GuiEventListener listener : eventListeners) {
-					listener.onGuiEvent(new GuiEvent(this, null));
+					listener.onGuiEvent(new GuiEvent(this, title));
 				}
 			}
 		}

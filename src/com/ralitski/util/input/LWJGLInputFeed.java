@@ -1,5 +1,7 @@
 package com.ralitski.util.input;
 
+import org.lwjgl.Sys;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 public class LWJGLInputFeed implements InputFeed {
@@ -36,92 +38,78 @@ public class LWJGLInputFeed implements InputFeed {
 
 	@Override
 	public int getMouseEventButton() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Mouse.getEventButton();
 	}
 
 	@Override
 	public boolean getMouseEventButtonState() {
-		// TODO Auto-generated method stub
-		return false;
+		return Mouse.getEventButtonState();
 	}
 
 	@Override
 	public int getMouseEventX() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Mouse.getEventX();
 	}
 
 	@Override
 	public int getMouseEventY() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Mouse.getEventY();
 	}
 
 	@Override
 	public int getMouseEventDWheel() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Mouse.getEventDWheel();
 	}
 
 	@Override
 	public int getMouseEventDX() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Mouse.getEventDX();
 	}
 
 	@Override
 	public int getMouseEventDY() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Mouse.getEventDY();
 	}
 
 	@Override
 	public long getMouseEventTime() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Mouse.getEventNanoseconds();
 	}
 
 	@Override
 	public boolean keyNext() {
-		// TODO Auto-generated method stub
-		return false;
+		return Keyboard.next();
 	}
 
 	@Override
 	public boolean isKeyDown(int key) {
-		// TODO Auto-generated method stub
-		return false;
+		return Keyboard.isKeyDown(key);
 	}
 
 	@Override
 	public int getKeyEventKey() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Keyboard.getEventKey();
 	}
 
 	@Override
 	public char getKeyEventCharacter() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Keyboard.getEventCharacter();
 	}
 
 	@Override
 	public boolean getKeyEventState() {
-		// TODO Auto-generated method stub
-		return false;
+		return Keyboard.getEventKeyState();
 	}
 
 	@Override
 	public long getKeyEventTime() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Keyboard.getEventNanoseconds();
 	}
 
+	//multiply by 1E9 to get nano instead of seconds
 	@Override
 	public long getTime() {
-		// TODO Auto-generated method stub
-		return 0;
+		return (Sys.getTime() * 1000000000) / Sys.getTimerResolution();
 	}
 
 }

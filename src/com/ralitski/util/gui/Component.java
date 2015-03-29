@@ -6,7 +6,7 @@ import com.ralitski.util.input.InputUser;
 import com.ralitski.util.input.event.MouseEvent;
 
 //TODO: possibly update() or something
-//note: all input events passed to a component can be assumed to be within the component (position already checked), unless receiving a selectedMouseEvent (or a KeyEvent...)
+//note: input events passed are not guaranteed to be within this component
 public interface Component extends InputUser {
 	Gui getGui();
 	Container getParent();

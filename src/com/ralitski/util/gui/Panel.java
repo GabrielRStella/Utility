@@ -1,5 +1,7 @@
 package com.ralitski.util.gui;
 
+import com.ralitski.util.input.event.KeyEvent;
+
 public class Panel extends ContainerAbstract {
 	
 	public Panel(Gui gui) {
@@ -12,6 +14,10 @@ public class Panel extends ContainerAbstract {
 	
 	public Panel(Gui gui, Box box) {
 		super(gui, box);
+	}
+
+	@Override
+	public void onKeyEvent(KeyEvent event) {
 	}
 
 }

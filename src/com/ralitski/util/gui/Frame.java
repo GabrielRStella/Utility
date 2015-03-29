@@ -1,11 +1,17 @@
 package com.ralitski.util.gui;
 
+import com.ralitski.util.input.event.KeyEvent;
+import com.ralitski.util.input.event.MouseButtonEvent;
+import com.ralitski.util.input.event.MouseButtonEvent.MouseEventType;
 import com.ralitski.util.input.event.MouseEvent;
+import com.ralitski.util.input.event.MouseMoveEvent;
 
 //todo: the actual frame (borders, close button)
-//ie, if a Frame has a parent, it becomes an actual moveable window thing
+//ie, if a Frame has a parent, it becomes an actual mobile window thing
 //only accepts Desktop as parent
 public class Frame extends ContainerAbstract {
+	
+	private boolean dragging;
 	
 	public Frame(Gui gui) {
 		super(gui);
@@ -20,18 +26,61 @@ public class Frame extends ContainerAbstract {
 	}
 
 	@Override
-	public Container getParent() {
-		return null;
+	public void setParent(Container container) {
+		if(container instanceof Desktop) {
+			super.setParent(container);
+		} else {
+			throw new UnsupportedOperationException("Frames are top-level containers.");
+		}
 	}
 
 	@Override
-	public void setParent(Container container) {
-		throw new UnsupportedOperationException("Frames are top-level containers.");
+	public void onMouseEvent(MouseEvent event) {
+		if(dragging) {
+			if(event instanceof MouseMoveEvent) {
+				int x = event.getX();
+				int y = event.getY();
+				Box window = gui.getOwner().getWindow();
+				//check that mouse is in window
+				if(window.contains(x - 1, y - 1) && window.contains(x + 2, y + 2)) {
+					MouseMoveEvent mEvent = (MouseMoveEvent)event;
+					int dx = mEvent.getDx();
+					int dy = mEvent.getDy();
+					dx = -Math.min(-dx, box.getMinX() - window.getMinX());
+					dx = Math.min(dx, window.getMaxX() - box.getMaxX());
+					dy = -Math.min(-dy, box.getMinY() - window.getMinY());
+					dy = Math.min(dy, window.getMaxY() - box.getMaxY());
+					box.translate(dx, dy);
+					for(Component c : children) {
+						c.getBounds().translate(dx, dy);
+					}
+					renderListState.setDirty(true);
+				} else dragging = false;
+			} else if(event instanceof MouseButtonEvent) {
+				MouseButtonEvent mEvent = (MouseButtonEvent)event;
+				if(mEvent.getButton() == 0 && mEvent.getType() == MouseEventType.UP) {
+					dragging = false;
+				}
+			}
+		} else super.onMouseEvent(event);
 	}
 	
 	protected void mouseNotHandled(MouseEvent event) {
 		super.mouseNotHandled(event);
-		//TODO: move window if child of Desktop
+		if(parent != null) {
+			if(event instanceof MouseButtonEvent) {
+				MouseButtonEvent mEvent = (MouseButtonEvent)event;
+				int x = mEvent.getX();
+				int y = mEvent.getY();
+				if(mEvent.getButton() == 0 && mEvent.getType() == MouseEventType.DOWN && box.contains(x, y)) {
+					dragging = true;
+				}
+			}
+		}
+	}
+
+	@Override
+	public void onKeyEvent(KeyEvent event) {
 	}
 	
 }
