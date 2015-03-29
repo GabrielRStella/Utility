@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.ralitski.util.gui.layout.BorderLayout;
+import com.ralitski.util.gui.layout.BlankLayout;
 import com.ralitski.util.gui.layout.Layout;
 import com.ralitski.util.gui.render.RenderList;
 import com.ralitski.util.gui.render.RenderListState;
@@ -54,7 +54,7 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 	}
 	
 	private void prepare(Gui gui) {
-		layout = new BorderLayout();
+		layout = new BlankLayout();
 		children = new LinkedList<Component>();
 		GuiOwner owner = gui.getOwner().getGuiOwner();
 		if(owner.supportLists()) {
@@ -164,9 +164,11 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 		}
 		if(resizable) {
 			Dimension d = layout.getMinimumSize();
-			if(box.getWidth() < d.getWidth()) box.setWidth(Math.min(Math.max(minWidth, (int)d.getWidth()), gui.getOwner().getGuiOwner().getWidth()));
-			if(box.getHeight() < d.getHeight()) box.setHeight(Math.min(Math.max(minHeight, (int)d.getHeight()), gui.getOwner().getGuiOwner().getHeight()));
-			BoxPosition.position(null, box, gui.getOwner().getWindow(), BoxPosition.WITHIN_STRICT);
+			if(d != null) {
+				if(box.getWidth() < d.getWidth()) box.setWidth(Math.min(Math.max(minWidth, (int)d.getWidth()), gui.getOwner().getGuiOwner().getWidth()));
+				if(box.getHeight() < d.getHeight()) box.setHeight(Math.min(Math.max(minHeight, (int)d.getHeight()), gui.getOwner().getGuiOwner().getHeight()));
+				BoxPosition.position(null, box, gui.getOwner().getWindow(), BoxPosition.WITHIN_STRICT);
+			}
 		}
 		layout.refresh(box);
 	}

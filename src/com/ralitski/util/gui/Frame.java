@@ -6,9 +6,7 @@ import com.ralitski.util.input.event.MouseButtonEvent.MouseEventType;
 import com.ralitski.util.input.event.MouseEvent;
 import com.ralitski.util.input.event.MouseMoveEvent;
 
-//todo: the actual frame (borders, close button)
-//ie, if a Frame has a parent, it becomes an actual mobile window thing
-//only accepts Desktop as parent
+//todo: the actual frame (borders)
 public class Frame extends ContainerAbstract {
 	
 	private boolean dragging;
@@ -41,8 +39,8 @@ public class Frame extends ContainerAbstract {
 				int x = event.getX();
 				int y = event.getY();
 				Box window = gui.getOwner().getWindow();
-				//check that mouse is in window
-				if(window.contains(x - 1, y - 1) && window.contains(x + 2, y + 2)) {
+				//check that mouse is on frame
+				if(box.contains(x, y)) {
 					MouseMoveEvent mEvent = (MouseMoveEvent)event;
 					int dx = mEvent.getDx();
 					int dy = mEvent.getDy();
@@ -55,7 +53,7 @@ public class Frame extends ContainerAbstract {
 						c.getBounds().translate(dx, dy);
 					}
 					renderListState.setDirty(true);
-				} else dragging = false;
+				}
 			} else if(event instanceof MouseButtonEvent) {
 				MouseButtonEvent mEvent = (MouseButtonEvent)event;
 				if(mEvent.getButton() == 0 && mEvent.getType() == MouseEventType.UP) {
