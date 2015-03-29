@@ -108,6 +108,7 @@ public class Color implements Streamable, Cloneable {
     }
 
     public void glColor() {
+    	//redirect to allow this Color class to be used without opengl imports
         GLImageHelper.glColor(this);
     }
 

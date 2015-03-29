@@ -11,16 +11,19 @@ public class Button extends ComponentAbstract {
 	private String title;
 	private int mouseButton = 0;
 	
-	public Button(Gui gui) {
+	public Button(Gui gui, String title) {
 		super(gui);
+		this.title = title;
 	}
 	
-	public Button(Gui gui, int width, int height) {
+	public Button(Gui gui, int width, int height, String title) {
 		super(gui, width, height);
+		this.title = title;
 	}
 	
-	public Button(Gui gui, Box box) {
+	public Button(Gui gui, Box box, String title) {
 		super(gui, box);
+		this.title = title;
 	}
 
 	public int getMouseButton() {
@@ -30,11 +33,16 @@ public class Button extends ComponentAbstract {
 	public void setMouseButton(int mouseButton) {
 		this.mouseButton = mouseButton;
 	}
+
+	@Override
+	public boolean useParentRenderList() {
+		return true;
+	}
 	
 	protected void doRender() {
 		super.doRender();
 		//love me some getters
-		gui.getOwner().getGuiOwner().getFontRenderer().renderLine(title, box, FontRenderer.ALIGN_CENTER);
+		gui.getOwner().getGuiOwner().getFontRenderer().renderLine(title, box, this, style, FontRenderer.WIDTH_ALIGN_CENTER | FontRenderer.HEIGHT_ALIGN_CENTER);
 	}
 
 	@Override

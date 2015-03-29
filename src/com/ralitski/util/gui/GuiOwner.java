@@ -17,9 +17,9 @@ public interface GuiOwner {
 	//quick draw, used by Gui to render a black tint
 	void drawBox(Box box, Color c);
 	//use the box's RenderStyle to draw its bounds (and bg)
-	void drawBox(Box box, RenderStyle style);
+	void drawBox(Box box, Component c, RenderStyle style);
 	//draw an image scaled to fit inside the specified box
-	void drawImage(Image image, Box box, RenderStyle style);
+	void drawImage(Image image, Box box, Component c, RenderStyle style);
 	//render lists
 	boolean supportLists();
 	

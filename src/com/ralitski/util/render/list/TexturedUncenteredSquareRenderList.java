@@ -4,6 +4,8 @@ import org.lwjgl.opengl.GL11;
 
 public class TexturedUncenteredSquareRenderList extends ListMaker {
 	
+	public static TexturedUncenteredSquareRenderList FULL = new TexturedUncenteredSquareRenderList();
+	
 	private float minU;
 	private float minV;
 	private float maxU;

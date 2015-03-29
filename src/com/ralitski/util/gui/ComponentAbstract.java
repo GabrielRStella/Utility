@@ -163,7 +163,7 @@ public abstract class ComponentAbstract implements Component {
 	}
 	
 	protected void doRender() {
-		gui.getOwner().getGuiOwner().drawBox(box, style);
+		gui.getOwner().getGuiOwner().drawBox(box, this, style);
 	}
 	
 	private class RenderRunner implements Runnable {

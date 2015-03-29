@@ -15,13 +15,15 @@ public class Gui implements InputUser {
 	private Component topLevel;
 	private Component selected; //used to keep track of the selected component within the hierarchy
 	
-	public Gui(GuiManager owner, Component topLevel) {
+	public Gui(GuiManager owner) {
 		this.owner = owner;
-		this.topLevel = topLevel;
 	}
 	
-	public Gui(Gui parent, Component topLevel) {
+	public Gui(Gui parent) {
 		this.parent = parent;
+	}
+	
+	public void setTopLevel(Component topLevel) {
 		this.topLevel = topLevel;
 	}
 	

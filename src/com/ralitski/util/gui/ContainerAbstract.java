@@ -56,6 +56,7 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 	
 	private void prepare(Gui gui) {
 		layout = new BorderLayout();
+		children = new LinkedList<Component>();
 		GuiOwner owner = gui.getOwner().getGuiOwner();
 		if(owner.supportLists()) {
 			renderWithThis = new LinkedList<Component>();
@@ -117,9 +118,11 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 	public void add(Component c, String layout) {
 		children.add(c);
 		if(gui.getOwner().getGuiOwner().supportLists()) {
-			if(c.useParentRenderList()) this.renderWithThis.add(c);
+			if(c.useParentRenderList()) {
+				this.renderWithThis.add(c);
+				c.setParentRenderList(renderListState);
+			}
 			else this.renderWithSelf.add(c);
-			c.setParentRenderList(renderListState);
 		}
 		c.setParent(this);
 		this.layout.addComponent(c, layout);
@@ -184,6 +187,7 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 			if(renderList == null) getRenderList(owner);
 			if(renderListState.isDirty() || !renderList.registered()) {
 				renderList.compile();
+				renderListState.setDirty(false);
 			}
 			//render stuff with this list
 			renderList.call();
@@ -193,7 +197,7 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 			}
 		} else {
 			if(renderSelf) {
-				owner.drawBox(box, style);
+				owner.drawBox(box, this, style);
 			}
 			for(Component c : children) {
 				c.render(owner);
@@ -207,7 +211,7 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 		//render frame background, then components
 		GuiOwner owner = gui.getOwner().getGuiOwner();
 		if(renderSelf) {
-			owner.drawBox(box, style);
+			owner.drawBox(box, this, style);
 		}
 		for(Component c : renderWithThis) {
 			c.render(owner);

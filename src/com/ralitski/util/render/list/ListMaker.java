@@ -2,7 +2,10 @@ package com.ralitski.util.render.list;
 
 import org.lwjgl.opengl.GL11;
 
-public abstract class ListMaker {
+import com.ralitski.util.gui.render.RenderList;
+
+//implements RenderList for easy GUI system compatibility
+public abstract class ListMaker implements RenderList {
 
     private int callId;
 

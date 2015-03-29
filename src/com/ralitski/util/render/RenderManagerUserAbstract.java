@@ -43,4 +43,9 @@ public abstract class RenderManagerUserAbstract extends AbstractDisplayUser impl
     public void setup() {
       renderManager.setup();
     }
+
+	@Override
+	public void resize() {
+		renderManager.setup();
+	}
 }

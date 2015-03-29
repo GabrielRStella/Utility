@@ -152,4 +152,8 @@ public class Box implements Cloneable {
     public Box clone() {
     	return new Box(minX, minY, maxX, maxY);
     }
+    
+    public String toString() {
+    	return "[(" + minX + ", " + minY + "), (" + maxX + ", " + maxY + ")]";
+    }
 }

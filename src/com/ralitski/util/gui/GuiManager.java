@@ -32,6 +32,7 @@ public class GuiManager {
 			currentScreen.onClose(screen.isChildOf(currentScreen));
 		}
 		screen.onOpen(false);
+		currentScreen = screen;
 	}
 	
 	public int getWindowWidth() {
