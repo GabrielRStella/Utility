@@ -27,6 +27,10 @@ public class InputMonitor {
     private Map<Integer, Key> keyboard;
     private boolean wasMouseInWindow; //was cursor in window previous tick?
 
+    public InputMonitor(InputUser user) {
+        this(user, LWJGLInputFeed.getFeed());
+    }
+
     public InputMonitor(InputUser user, InputFeed feed) {
     	this.input = feed;
         this.user = user;
