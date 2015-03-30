@@ -128,7 +128,7 @@ public class Box implements Cloneable {
      * @return a new bounding box
      */
     public Box expand(int wide, int high) {
-        Box newBB = new Box(minX - wide, minY - high, maxX + wide, maxY + high);
+        Box newBB = new Box(getMinX() - wide, getMinY() - high, getMaxX() + wide, getMaxY() + high);
         return newBB;
     }
     
@@ -138,34 +138,34 @@ public class Box implements Cloneable {
     
     //note: to detect collisions between B1 and B2, (B1.intersecting(B2) || B2.intersecting(B1)) can be used
     public boolean intersecting(Box other) {
-        boolean TOP_BOTTOM = other.minY < maxY;
-        boolean BOTTOM_BOTTOM = other.minY > minY;
-        boolean TOP_TOP = other.maxY < maxY;
-        boolean BOTTOM_TOP = other.maxY > minY;
+        boolean TOP_BOTTOM = other.getMinY() < getMaxY();
+        boolean BOTTOM_BOTTOM = other.getMinY() > getMinY();
+        boolean TOP_TOP = other.getMaxY() < getMaxY();
+        boolean BOTTOM_TOP = other.getMaxY() > getMinY();
         if ((TOP_BOTTOM && BOTTOM_BOTTOM) || (TOP_TOP && BOTTOM_TOP)) {
             //sides
-            boolean RIGHT_LEFT = other.minX < maxX;
-            boolean LEFT_LEFT = other.minX > minX;
-            boolean RIGHT_RIGHT = other.maxX < maxX;
-            boolean LEFT_RIGHT = other.maxX > minX;
+            boolean RIGHT_LEFT = other.getMinX() < getMaxX();
+            boolean LEFT_LEFT = other.getMinX() > getMinX();
+            boolean RIGHT_RIGHT = other.getMaxX() < getMaxX();
+            boolean LEFT_RIGHT = other.getMaxX() > getMinX();
             return (RIGHT_LEFT && LEFT_LEFT) || (RIGHT_RIGHT && LEFT_RIGHT);
         }
         return false;
     }
 
     private boolean enclosed(Box other) {
-    	return other.maxX > maxX && other.minX < minX && other.maxY > maxY && other.minY < minY;
+    	return other.getMaxX() > getMaxX() && other.getMinX() < getMinX() && other.getMaxY() > getMaxY() && other.getMinY() < getMinY();
     }
 
     public boolean contains(int x, int y) {
-        return x >= minX && x <= maxX && y >= minY && y <= maxY;
+        return x >= getMinX() && x <= getMaxX() && y >= getMinY() && y <= getMaxY();
     }
     
     public Box clone() {
-    	return new Box(minX, minY, maxX, maxY);
+    	return new Box(getMinX(), getMinY(), getMaxX(), getMaxY());
     }
     
     public String toString() {
-    	return "[(" + minX + ", " + minY + "), (" + maxX + ", " + maxY + ")]";
+    	return "[(" + getMinX() + ", " + getMinY() + "), (" + getMaxX() + ", " + getMaxY() + ")]";
     }
 }
