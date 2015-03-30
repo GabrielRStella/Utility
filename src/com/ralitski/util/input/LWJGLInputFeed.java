@@ -5,6 +5,15 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 public class LWJGLInputFeed implements InputFeed {
+	
+	private static LWJGLInputFeed feed;
+	
+	//only allow one call to prevent input concurrent reading of input buffer
+	public static LWJGLInputFeed getFeed() {
+		return feed == null ? (feed = new LWJGLInputFeed()) : null;
+	}
+	
+	private LWJGLInputFeed() {}
 
 	@Override
 	public boolean mouseNext() {
