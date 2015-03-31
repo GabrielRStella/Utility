@@ -62,8 +62,8 @@ public class Button extends ComponentAbstract {
 			//TODO: should I alert on release instead? maybe keep track of where it went down,
 			//then if it goes down and comes up within button, fire event? hmm...
 			if(mEvent.getButton() == mouseButton && mEvent.getType() == MouseEventType.DOWN) {
-				for(GuiEventListener listener : eventListeners) {
-					listener.onGuiEvent(new GuiEvent(this, title));
+				for(ComponentEventListener listener : eventListeners) {
+					listener.onComponentEvent(new ComponentEvent(this, title));
 				}
 			}
 		}

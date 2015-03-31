@@ -1,15 +1,15 @@
 package com.ralitski.util.gui;
 
-public class GuiEvent {
+public class ComponentEvent {
 	
 	private Component source;
 	private String args;
 	
-	public GuiEvent(Component source) {
+	public ComponentEvent(Component source) {
 		this(source, null);
 	}
 	
-	public GuiEvent(Component source, String args) {
+	public ComponentEvent(Component source, String args) {
 		this.source = source;
 		this.args = args;
 	}

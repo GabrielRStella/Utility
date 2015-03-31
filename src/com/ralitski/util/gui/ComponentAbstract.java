@@ -18,7 +18,7 @@ public abstract class ComponentAbstract implements Component {
 	//render list stuff
 	protected RenderList renderList;
 	protected RenderListState renderListState;
-	protected List<GuiEventListener> eventListeners;
+	protected List<ComponentEventListener> eventListeners;
 	
 	public ComponentAbstract(Gui gui) {
 		prepare(gui);
@@ -41,7 +41,7 @@ public abstract class ComponentAbstract implements Component {
 	
 	private void prepare(Gui gui) {
 		this.gui = gui;
-		eventListeners = new LinkedList<GuiEventListener>();
+		eventListeners = new LinkedList<ComponentEventListener>();
 		GuiOwner owner = gui.getOwner().getGuiOwner();
 		if(owner.supportLists()) {
 			renderListState = new RenderListState();
@@ -117,12 +117,12 @@ public abstract class ComponentAbstract implements Component {
 	}
 
 	@Override
-	public void addGuiEventListener(GuiEventListener listener) {
+	public void addGuiEventListener(ComponentEventListener listener) {
 		eventListeners.add(listener);
 	}
 
 	@Override
-	public void removeGuiEventListener(GuiEventListener listener) {
+	public void removeGuiEventListener(ComponentEventListener listener) {
 		eventListeners.remove(listener);
 	}
 
