@@ -33,7 +33,7 @@ public abstract class ControllerMonitor {
 			float x = Controllers.getEventXAxisValue();
 			handleEvent(new ControllerAxisEvent(src, index, nano, x, ControllerAxisType.POV_X));
 		} else if(Controllers.isEventPovY()) {
-			float x = Controllers.getEventYAxisValue();
+			float y = Controllers.getEventYAxisValue();
 			handleEvent(new ControllerAxisEvent(src, index, nano, y, ControllerAxisType.POV_Y));
 		}
 	}
