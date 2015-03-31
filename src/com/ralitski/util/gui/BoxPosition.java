@@ -99,14 +99,14 @@ public enum BoxPosition {
 		@Override
 		public void position(Box toPosition, Box relative, int space, Box window) {
 			int pos = relative.getMinY() - space - toPosition.getMaxY();
-			toPosition.setCenterY(Math.min(toPosition.getCenterY(), pos));
+			toPosition.setCenterY(Math.min(toPosition.getCenterY(), toPosition.getCenterY() + pos));
 		}
 	},
 	BELOW_STRICT(true) {
 		@Override
 		public void position(Box toPosition, Box relative, int space, Box window) {
 			int pos = relative.getMinY() - space - toPosition.getMaxY();
-			toPosition.setCenterY(pos);
+			toPosition.translateY(pos);
 		}
 	},
 	WITHIN(false) {
