@@ -46,9 +46,11 @@ public class BoxOutset extends Box {
 	}
 	
 	public void setWidth(int width) {
+		parent.setWidth(width - xOff * 2);
 	}
 	
 	public void setHeight(int height) {
+		parent.setHeight(height - yOff * 2);
 	}
 
 	public int getWidth() {
