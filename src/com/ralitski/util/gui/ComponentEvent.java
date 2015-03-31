@@ -23,6 +23,6 @@ public class ComponentEvent {
 	}
 	
 	public String toString() {
-		return "[source:" + source + " args:" + args + "]";
+		return "ComponentEvent[source:" + source + " args:" + args + "]";
 	}
 }
