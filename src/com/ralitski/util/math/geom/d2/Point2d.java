@@ -189,6 +189,10 @@ public class Point2d implements Shape2d, Cloneable, Streamable {
     	this.addY(y);
     }
     
+    public void add(Vector2d v) {
+    	translate(v.getX(), v.getY());
+    }
+    
     public void subtract(Point2d p) {
     	subtract(p.getX(), p.getY());
     }

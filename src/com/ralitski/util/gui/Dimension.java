@@ -40,7 +40,11 @@ public class Dimension {
 		this.height = height;
 	}
 	
+	public Box createBox() {
+		return new Box(width, height);
+	}
+	
 	public Box createBox(int x, int y) {
-		return new Box(x, y, x + width, y + width);
+		return new Box(x, y, x + width, y + height);
 	}
 }

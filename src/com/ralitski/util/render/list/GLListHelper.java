@@ -53,7 +53,7 @@ public class GLListHelper {
         return squareListUncenteredCCW;
     }
 
-    public static ListMaker getSquareListCentered() {
+    public static ListMaker getSquareListCenteredCW() {
         return squareListCenteredCW;
     }
 

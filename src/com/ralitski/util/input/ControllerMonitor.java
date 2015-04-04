@@ -8,7 +8,13 @@ import com.ralitski.util.input.event.ControllerAxisEvent.ControllerAxisType;
 import com.ralitski.util.input.event.ControllerButtonEvent;
 import com.ralitski.util.input.event.ControllerEvent;
 
-public abstract class ControllerMonitor {
+public class ControllerMonitor {
+	
+	private ControllerUser user;
+	
+	public ControllerMonitor(ControllerUser user) {
+		this.user = user;
+	}
 	
 	public void update() {
 		while(Controllers.next()) {
@@ -38,5 +44,7 @@ public abstract class ControllerMonitor {
 		}
 	}
 	
-	public abstract void handleEvent(ControllerEvent event);
+	public void handleEvent(ControllerEvent event) {
+		user.onControllerEvent(event);
+	}
 }

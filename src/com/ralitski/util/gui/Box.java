@@ -172,4 +172,8 @@ public class Box implements Cloneable {
     public String toString() {
     	return "[(" + getMinX() + ", " + getMinY() + "), (" + getMaxX() + ", " + getMaxY() + ")]";
     }
+    
+    public Dimension getDimensions() {
+    	return new Dimension(getWidth(), getHeight());
+    }
 }
