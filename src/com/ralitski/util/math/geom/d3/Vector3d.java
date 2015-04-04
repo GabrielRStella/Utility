@@ -246,7 +246,7 @@ public class Vector3d implements Cloneable {
     	float mag = magnitude();
     	if(mag != 0F) multiply(m / mag);
     	else {
-    		x = 1;
+    		x = m;
     		y = 0;
     		z = 0;
     	}
