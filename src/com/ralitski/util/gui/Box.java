@@ -7,6 +7,10 @@ public class Box implements Cloneable {
     private int maxX;
     private int maxY;
 
+    public Box() {
+    	this(0, 0);
+	}
+
     public Box(int width, int height) {
         this(0, 0, width, height);
     }
@@ -18,7 +22,7 @@ public class Box implements Cloneable {
         this.maxY = maxY;
     }
 
-    public int getMinX() {
+	public int getMinX() {
         return minX;
     }
 
