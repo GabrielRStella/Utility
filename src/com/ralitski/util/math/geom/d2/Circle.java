@@ -5,7 +5,6 @@ import java.util.Random;
 import com.ralitski.util.math.expression.Expressible;
 import com.ralitski.util.math.expression.Expression;
 import com.ralitski.util.math.expression.Expressions;
-import com.ralitski.util.math.geom.IntervalCompound;
 
 public class Circle implements Shape2d, Expressible {
 
@@ -33,22 +32,24 @@ public class Circle implements Shape2d, Expressible {
 	 * @param p: point which will be compared
 	 * @return: state of point; -1 inside circle, 0 on circle, 1 outside circle
 	 */
-	public PointState getState(Point2d p)
+	public int getState(Point2d p)
 	{
 		return getState(p.getX(), p.getY());
 	}
 
-	public PointState getState(float x, float y)
+	public int getState(float x, float y)
 	{
 		float d = center.length(x, y);
-		if(d > this.radius) return PointState.OUTSIDE;
-		if(d < this.radius) return PointState.INSIDE;
-		return PointState.ON;
+		if(d > this.radius) return POINT_OUTSIDE;
+		if(d < this.radius) return POINT_INSIDE;
+		return POINT_ON;
 	}
 
 	@Override
 	public Point2d getClosestPoint(Point2d point) {
-		return null;
+		point = point.clone();
+		point.setLength(center, radius);
+		return point;
 	}
 	
 	public float circumfrence()

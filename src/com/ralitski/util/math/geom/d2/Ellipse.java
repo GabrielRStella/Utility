@@ -1,12 +1,13 @@
 package com.ralitski.util.math.geom.d2;
 
+import com.ralitski.util.math.expression.Expressible;
 import com.ralitski.util.math.expression.Expression;
 import com.ralitski.util.math.expression.Expressions;
 import com.ralitski.util.math.geom.Geometry;
 import com.ralitski.util.math.var.VariableSet;
 
 
-public class Ellipse implements Shape2d {
+public class Ellipse implements Shape2d, Expressible {
 
 	private Point2d focus1;
 	private Point2d focus2;
@@ -47,11 +48,16 @@ public class Ellipse implements Shape2d {
 	}
 
 	@Override
-	public PointState getState(Point2d point) {
+	public int getState(Point2d point) {
 		float d = focus1.length(point) + focus2.length(point);
-		if(d > this.fc) return PointState.OUTSIDE;
-		if(d < this.fc) return PointState.INSIDE;
-		return PointState.ON;
+		if(d > this.fc) return POINT_OUTSIDE;
+		if(d < this.fc) return POINT_INSIDE;
+		return POINT_ON;
+	}
+
+	@Override
+	public Point2d getClosestPoint(Point2d point) {
+		throw new UnsupportedOperationException("not yet supported :(");
 	}
 
 	@Override

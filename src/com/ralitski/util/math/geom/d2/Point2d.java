@@ -10,7 +10,7 @@ import com.ralitski.util.io.Streamable;
  *
  * @author ralitski
  */
-public class Point2d implements Cloneable, Streamable {
+public class Point2d implements Shape2d, Cloneable, Streamable {
 
 	public static Point2d midpoint(Point2d p1, Point2d p2) {
 		return new Point2d((p1.x + p2.x) / 2F, (p1.y + p2.y) / 2F);
@@ -189,6 +189,15 @@ public class Point2d implements Cloneable, Streamable {
     	this.addY(y);
     }
     
+    public void subtract(Point2d p) {
+    	subtract(p.getX(), p.getY());
+    }
+    
+    public void subtract(float x, float y) {
+    	this.addX(-x);
+    	this.addY(-y);
+    }
+    
     public void multiply(float scale) {
     	setX(getX() * scale);
     	setY(getY() * scale);
@@ -227,6 +236,13 @@ public class Point2d implements Cloneable, Streamable {
     public void setLength(float length) {
     	float l = length();
     	if(l != 0) multiply(length / l);
+    }
+    
+    public void setLength(Point2d center, float length) {
+    	subtract(center);
+    	float l = length();
+    	if(l != 0) multiply(length / l);
+    	translate(center);
     }
     
     //rotation
@@ -316,5 +332,31 @@ public class Point2d implements Cloneable, Streamable {
 	public void read(DataInputStream in) throws IOException {
 		setX(in.readFloat());
 		setY(in.readFloat());
+	}
+
+	@Override
+	public Point2d getPosition() {
+		return this;
+	}
+
+	@Override
+	public void setPosition(Point2d position) {
+		this.x = position.x;
+		this.y = position.y;
+	}
+
+	@Override
+	public int getState(Point2d point) {
+		return equals(point) ? POINT_OUTSIDE : POINT_ON;
+	}
+
+	@Override
+	public Point2d getClosestPoint(Point2d point) {
+		return this;
+	}
+
+	@Override
+	public float getArea() {
+		return 0;
 	}
 }
