@@ -8,8 +8,8 @@ import com.ralitski.util.math.expression.Expressions;
 
 public class Circle implements Shape2d, Expressible {
 
-	public Point2d center;
-	public float radius;
+	private Point2d center;
+	private float radius;
 	
 	public Circle(float r)
 	{
@@ -25,6 +25,10 @@ public class Circle implements Shape2d, Expressible {
 	{
 		this.center = p;
 		this.radius = r;
+	}
+
+	public float getRadius() {
+		return radius;
 	}
 	
 	/*
@@ -47,6 +51,9 @@ public class Circle implements Shape2d, Expressible {
 
 	@Override
 	public Point2d getClosestPoint(Point2d point) {
+		if(getState(point) != POINT_OUTSIDE) {
+			return point;
+		}
 		point = point.clone();
 		point.setLength(center, radius);
 		return point;

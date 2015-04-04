@@ -359,4 +359,40 @@ public class Point2d implements Shape2d, Cloneable, Streamable {
 	public float getArea() {
 		return 0;
 	}
+    
+    public Point2d addCopy(Point2d v) {
+    	return new Point2d(x + v.x, y + v.y);
+    }
+    
+    public Point2d subtractCopy(Point2d v) {
+    	return new Point2d(x - v.x, y - v.y);
+    }
+    
+    public Point2d scaleCopy(float f) {
+    	return new Point2d(x * f, y * f);
+    }
+    
+    public Point2d scaleCopy(Point2d v) {
+    	return new Point2d(x * v.x, y * v.y);
+    }
+    
+    public Point2d descaleCopy(float f) {
+    	return new Point2d(x / f, y / f);
+    }
+    
+    public Point2d descaleCopy(Point2d v) {
+    	return new Point2d(x / v.x, y / v.y);
+    }
+    
+    public Point2d negateCopy() {
+    	return new Point2d(-x, -y);
+    }
+    
+    public boolean isNaN() {
+    	return Float.isNaN(x) || Float.isNaN(y);
+    }
+    
+    public float[] toArray() {
+    	return new float[]{x, y};
+    }
 }
