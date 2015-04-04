@@ -68,4 +68,8 @@ public class GuiManager implements InputUser {
 	public void onKeyEvent(KeyEvent event) {
 		if(currentScreen != null) currentScreen.onKeyEvent(event);
 	}
+	
+	public void update() {
+		if(currentScreen != null) currentScreen.update();
+	}
 }

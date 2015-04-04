@@ -10,10 +10,10 @@ public class Gui implements InputUser {
 	//used to darken lower-level gui screens (parent gui rendered behind current gui)
 	private static final Color FILM = new Color(100, 100, 100, 100);
 	
-	private GuiManager owner;
-	private Gui parent;
-	private Component topLevel;
-	private Component selected; //used to keep track of the selected component within the hierarchy
+	protected GuiManager owner;
+	protected Gui parent;
+	protected Component topLevel;
+	protected Component selected; //used to keep track of the selected component within the hierarchy
 	
 	public Gui(GuiManager owner) {
 		this.owner = owner;
@@ -93,6 +93,7 @@ public class Gui implements InputUser {
 	public void render3d(float partial) {}
 	
 	//optional stuff to let the gui do whatever it needs to
+	public void update() {}
 	public void onOpen(boolean reentry) {}
 	public void onClose(boolean exit) {}
 
