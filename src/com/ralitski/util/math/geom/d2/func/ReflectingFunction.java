@@ -6,7 +6,6 @@ import java.lang.reflect.Method;
 import com.ralitski.util.doc.TODO;
 import com.ralitski.util.math.expression.Expression;
 import com.ralitski.util.math.expression.FunctionExpression;
-import com.ralitski.util.math.geom.IntervalCompound;
 
 public class ReflectingFunction implements Function {
 	

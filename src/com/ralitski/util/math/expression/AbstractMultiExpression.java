@@ -1,13 +1,14 @@
 package com.ralitski.util.math.expression;
 
 import com.ralitski.util.ArrayUtils;
-import com.ralitski.util.math.geom.IntervalCompound;
 import com.ralitski.util.math.var.VariableSet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import tempgeom.IntervalCompound;
 
 /**
  *

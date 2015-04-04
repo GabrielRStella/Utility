@@ -2,10 +2,6 @@ package com.ralitski.util.math.geom.d2.func;
 
 import com.ralitski.util.math.expression.Expression;
 import com.ralitski.util.math.expression.Expressions;
-import com.ralitski.util.math.geom.Interval;
-import com.ralitski.util.math.geom.IntervalCompound;
-import com.ralitski.util.math.geom.d2.Parametric;
-import com.ralitski.util.math.geom.d2.ParametricSimple;
 import com.ralitski.util.math.geom.d2.Point2d;
 
 
@@ -142,9 +138,9 @@ public class Line2d implements FunctionInverse {
 				);
 	}
 	
-	public Parametric getParametric() {
-		return new ParametricSimple(this, IntervalCompound.ALL);
-	}
+//	public Parametric getParametric() {
+//		return new ParametricSimple(this, IntervalCompound.ALL);
+//	}
 
 	/*
 	@Override

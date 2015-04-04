@@ -1,9 +1,8 @@
-package com.ralitski.util.math.geom.d2;
+package tempgeom;
 
 import java.util.Iterator;
 
-import com.ralitski.util.math.geom.Interval;
-import com.ralitski.util.math.geom.IntervalCompound;
+import com.ralitski.util.math.geom.d2.Point2d;
 
 
 public class ParametricIterator implements Iterator<Point2d> {

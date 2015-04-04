@@ -2,7 +2,6 @@ package com.ralitski.util.math.geom.d3;
 
 import com.ralitski.util.math.geom.Interval;
 
-
 public class Line3d implements Surface3d, Cloneable {
 	
 	public static boolean colinear(Point3d a, Point3d b, Point3d c) {

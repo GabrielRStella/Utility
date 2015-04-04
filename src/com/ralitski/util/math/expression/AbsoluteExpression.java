@@ -1,7 +1,8 @@
 package com.ralitski.util.math.expression;
 
-import com.ralitski.util.math.geom.Interval;
-import com.ralitski.util.math.geom.IntervalCompound;
+import tempgeom.Interval;
+import tempgeom.IntervalCompound;
+
 import com.ralitski.util.math.var.VariableSet;
 
 /**

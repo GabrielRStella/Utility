@@ -3,7 +3,8 @@ package com.ralitski.util.math.expression;
 import java.util.Collection;
 import java.util.List;
 
-import com.ralitski.util.math.geom.IntervalCompound;
+import tempgeom.IntervalCompound;
+
 
 /**
  *

@@ -1,6 +1,5 @@
-package com.ralitski.util.math.geom.d2;
+package tempgeom;
 
-import com.ralitski.util.math.geom.IntervalCompound;
 
 /**
  *

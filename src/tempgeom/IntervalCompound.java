@@ -1,4 +1,4 @@
-package com.ralitski.util.math.geom;
+package tempgeom;
 
 import java.util.ArrayList;
 import java.util.Arrays;

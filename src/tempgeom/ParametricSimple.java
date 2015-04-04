@@ -1,7 +1,5 @@
-package com.ralitski.util.math.geom.d2;
+package tempgeom;
 
-import com.ralitski.util.math.geom.Interval;
-import com.ralitski.util.math.geom.IntervalCompound;
 import com.ralitski.util.math.geom.d2.func.Function;
 
 public class ParametricSimple implements Parametric {

@@ -1,7 +1,8 @@
 package com.ralitski.util.math.expression;
 
+import tempgeom.IntervalCompound;
+
 import com.ralitski.util.ArrayUtils;
-import com.ralitski.util.math.geom.IntervalCompound;
 import com.ralitski.util.math.var.VariableSet;
 
 public class DividingExpression extends AbstractExpression {

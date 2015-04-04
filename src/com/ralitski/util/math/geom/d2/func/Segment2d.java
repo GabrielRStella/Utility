@@ -1,7 +1,5 @@
 package com.ralitski.util.math.geom.d2.func;
 
-import com.ralitski.util.math.geom.Interval;
-import com.ralitski.util.math.geom.IntervalCompound;
 import com.ralitski.util.math.geom.d2.Point2d;
 
 

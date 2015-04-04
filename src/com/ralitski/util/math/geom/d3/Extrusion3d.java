@@ -1,6 +1,6 @@
 package com.ralitski.util.math.geom.d3;
 
-import com.ralitski.util.math.geom.Interval;
+import tempgeom.Interval;
 
 public class Extrusion3d implements Shape3d {
 	

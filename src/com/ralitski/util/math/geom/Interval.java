@@ -1,5 +1,6 @@
 package com.ralitski.util.math.geom;
 
+
 //TODO: periodic intervals
 public class Interval implements Comparable<Interval> {
 
