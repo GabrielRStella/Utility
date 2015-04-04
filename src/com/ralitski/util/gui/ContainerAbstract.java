@@ -1,6 +1,5 @@
 package com.ralitski.util.gui;
 
-import java.awt.Dimension;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,10 +12,6 @@ import com.ralitski.util.input.event.MouseButtonEvent.MouseEventType;
 import com.ralitski.util.input.event.MouseEvent;
 
 public abstract class ContainerAbstract extends ComponentAbstract implements Container {
-	
-	private int minWidth;
-	private int minHeight;
-	private boolean resizable;
 	
 	protected Layout layout;
 	protected List<Component> children;
@@ -65,32 +60,6 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 	}
 	
 	//stuff
-
-	public int getMinWidth() {
-		return minWidth;
-	}
-
-	public void setMinWidth(int minWidth) {
-		this.minWidth = minWidth;
-	}
-
-	public int getMinHeight() {
-		return minHeight;
-	}
-
-	public void setMinHeight(int minHeight) {
-		this.minHeight = minHeight;
-	}
-
-	@Override
-	public void setResizable(boolean resizable) {
-		this.resizable = resizable;
-	}
-
-	@Override
-	public boolean isResizable() {
-		return resizable;
-	}
 
 	@Override
 	public int getRenderStyles() {

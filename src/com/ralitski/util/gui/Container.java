@@ -8,14 +8,6 @@ public interface Container extends Component {
 	void remove(Component c);
 	List<Component> getComponents();
 	
-	int getMinWidth();
-	void setMinWidth(int width);
-	int getMinHeight();
-	void setMinHeight(int height);
-	//control whether the container will resize itself to its layout's recommended size
-	void setResizable(boolean resizable);
-	boolean isResizable();
-	
 	//refreshes the state of the container (position components, resize)
 	void refresh();
 	

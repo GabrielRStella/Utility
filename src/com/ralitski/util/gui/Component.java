@@ -22,6 +22,15 @@ public interface Component extends InputUser {
 	
 	//this should reflect an editable boundary for the element; any change to this box should be immediately available when dealing with the component.
 	Box getBounds();
+
+	
+	int getMinWidth();
+	void setMinWidth(int width);
+	int getMinHeight();
+	void setMinHeight(int height);
+	//control whether the container can be resized by its parent's Layout
+	void setResizable(boolean resizable);
+	boolean isResizable();
 	
 	//gui owner included for ease
 	void render(GuiOwner owner);

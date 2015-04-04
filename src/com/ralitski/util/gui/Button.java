@@ -10,20 +10,34 @@ public class Button extends ComponentAbstract {
 	
 	private String title;
 	private int mouseButton = 0;
+	private BoxOutset textOffset;
 	
 	public Button(Gui gui, String title) {
 		super(gui);
-		this.title = title;
+		prepare(title);
 	}
 	
 	public Button(Gui gui, int width, int height, String title) {
 		super(gui, width, height);
-		this.title = title;
+		prepare(title);
 	}
 	
 	public Button(Gui gui, Box box, String title) {
 		super(gui, box);
-		this.title = title;
+		prepare(title);
+	}
+	
+	private void prepare(String title) {
+		setTitle(title);
+		textOffset = new BoxOutset(box, 0, 0);
+	}
+
+	public void setMinWidth(int minWidth) {
+		this.minWidth = Math.max(minWidth, gui.getOwner().getGuiOwner().getFontRenderer().getDimensions(title, this, style).getWidth() - textOffset.getWidth() * 2);
+	}
+
+	public void setMinHeight(int minHeight) {
+		this.minWidth = Math.max(minWidth, gui.getOwner().getGuiOwner().getFontRenderer().getDimensions(title, this, style).getHeight() - textOffset.getHeight() * 2);
 	}
 
 	public int getMouseButton() {
@@ -32,6 +46,24 @@ public class Button extends ComponentAbstract {
 
 	public void setMouseButton(int mouseButton) {
 		this.mouseButton = mouseButton;
+	}
+	
+	//use negative because outset -> inset
+	
+	public int getTextInsetX() {
+		return -textOffset.getOutsetX();
+	}
+	
+	public void setTextInsetX(int textInset) {
+		textOffset.setOutsetX(-textInset);
+	}
+	
+	public int getTextInsetY() {
+		return -textOffset.getOutsetY();
+	}
+	
+	public void setTextInsetY(int textInset) {
+		textOffset.setOutsetY(-textInset);
 	}
 
 	@Override

@@ -1,9 +1,8 @@
 package com.ralitski.util.gui.layout;
 
-import java.awt.Dimension;
-
 import com.ralitski.util.gui.Box;
 import com.ralitski.util.gui.Component;
+import com.ralitski.util.gui.Dimension;
 
 //TODO:
 //http://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html

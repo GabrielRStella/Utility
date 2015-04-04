@@ -36,20 +36,34 @@ public class GLListHelper {
         }
     }
     
-    private static CenteredSquareRenderList squareListCentered = new CenteredSquareRenderList();
-    private static UncenteredSquareRenderList squareListUncentered = new UncenteredSquareRenderList();
+    /*
+     * premade lists (2D squares)
+     */
+    
+    private static CenteredSquareRenderListCCW squareListCenteredCCW = new CenteredSquareRenderListCCW();
+    private static UncenteredSquareRenderListCCW squareListUncenteredCCW = new UncenteredSquareRenderListCCW();
+    private static CenteredSquareRenderListCW squareListCenteredCW = new CenteredSquareRenderListCW();
+    private static UncenteredSquareRenderListCW squareListUncenteredCW = new UncenteredSquareRenderListCW();
+
+    public static ListMaker getSquareListCenteredCCW() {
+        return squareListCenteredCCW;
+    }
+
+    public static ListMaker getSquareListUncenteredCCW() {
+        return squareListUncenteredCCW;
+    }
 
     public static ListMaker getSquareListCentered() {
-        return squareListCentered;
+        return squareListCenteredCW;
     }
 
-    public static ListMaker getSquareListUncentered() {
-        return squareListUncentered;
+    public static ListMaker getSquareListUncenteredCW() {
+        return squareListUncenteredCW;
     }
 
-    private static class UncenteredSquareRenderList extends ListMaker {
+    private static class UncenteredSquareRenderListCCW extends ListMaker {
 
-        private UncenteredSquareRenderList() {
+        private UncenteredSquareRenderListCCW() {
             GLListHelper.getList(this);
         }
 
@@ -66,9 +80,9 @@ public class GLListHelper {
         }
     }
 
-    private static class CenteredSquareRenderList extends ListMaker {
+    private static class CenteredSquareRenderListCCW extends ListMaker {
 
-        private CenteredSquareRenderList() {
+        private CenteredSquareRenderListCCW() {
             GLListHelper.getList(this);
         }
 
@@ -80,6 +94,44 @@ public class GLListHelper {
                 GL11.glVertex2f(-0.5F, 0.5F);
                 GL11.glVertex2f(0.5F, 0.5F);
                 GL11.glVertex2f(0.5F, -0.5F);
+            }
+            GL11.glEnd();
+        }
+    }
+
+    private static class UncenteredSquareRenderListCW extends ListMaker {
+
+        private UncenteredSquareRenderListCW() {
+            GLListHelper.getList(this);
+        }
+
+        @Override
+        public void makeList() {
+            GL11.glBegin(GL11.GL_QUADS);
+            {
+                GL11.glVertex2f(0F, 0F);
+                GL11.glVertex2f(1F, 0F);
+                GL11.glVertex2f(1F, 1F);
+                GL11.glVertex2f(0F, 1F);
+            }
+            GL11.glEnd();
+        }
+    }
+
+    private static class CenteredSquareRenderListCW extends ListMaker {
+
+        private CenteredSquareRenderListCW() {
+            GLListHelper.getList(this);
+        }
+
+        @Override
+        public void makeList() {
+            GL11.glBegin(GL11.GL_QUADS);
+            {
+                GL11.glVertex2f(-0.5F, -0.5F);
+                GL11.glVertex2f(0.5F, -0.5F);
+                GL11.glVertex2f(0.5F, 0.5F);
+                GL11.glVertex2f(-0.5F, 0.5F);
             }
             GL11.glEnd();
         }

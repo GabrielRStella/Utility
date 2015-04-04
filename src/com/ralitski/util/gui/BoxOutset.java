@@ -12,6 +12,22 @@ public class BoxOutset extends Box {
 		this.xOff = xOff;
 		this.yOff = yOff;
 	}
+	
+	public int getOutsetX() {
+		return xOff;
+	}
+
+	public void setOutsetX(int outsetX) {
+		this.xOff = outsetX;
+	}
+	
+	public int getOutsetY() {
+		return yOff;
+	}
+
+	public void setOutsetY(int outsetY) {
+		this.yOff = outsetY;
+	}
 
     public int getMinX() {
         return parent.getMinX() - xOff;

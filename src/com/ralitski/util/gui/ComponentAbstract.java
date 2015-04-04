@@ -11,6 +11,9 @@ import com.ralitski.util.input.event.MouseEvent;
 public abstract class ComponentAbstract implements Component {
 	
 	protected Gui gui;
+	protected int minWidth;
+	protected int minHeight;
+	protected boolean resizable;
 	protected int id = -1;
 	protected Box box;
 	protected RenderStyle style;
@@ -50,6 +53,32 @@ public abstract class ComponentAbstract implements Component {
 	}
 	
 	//stuff
+
+	public int getMinWidth() {
+		return minWidth;
+	}
+
+	public void setMinWidth(int minWidth) {
+		this.minWidth = minWidth;
+	}
+
+	public int getMinHeight() {
+		return minHeight;
+	}
+
+	public void setMinHeight(int minHeight) {
+		this.minHeight = minHeight;
+	}
+
+	@Override
+	public void setResizable(boolean resizable) {
+		this.resizable = resizable;
+	}
+
+	@Override
+	public boolean isResizable() {
+		return resizable;
+	}
 
 	@Override
 	public Gui getGui() {
