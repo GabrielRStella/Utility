@@ -2,12 +2,12 @@ package com.ralitski.util.math.geom.d2;
 
 import java.util.Random;
 
+import com.ralitski.util.math.expression.Expressible;
 import com.ralitski.util.math.expression.Expression;
 import com.ralitski.util.math.expression.Expressions;
-import com.ralitski.util.math.geom.Interval;
 import com.ralitski.util.math.geom.IntervalCompound;
 
-public class Circle implements Shape {
+public class Circle implements Shape2d, Expressible {
 
 	public Point2d center;
 	public float radius;
@@ -44,6 +44,11 @@ public class Circle implements Shape {
 		if(d > this.radius) return PointState.OUTSIDE;
 		if(d < this.radius) return PointState.INSIDE;
 		return PointState.ON;
+	}
+
+	@Override
+	public Point2d getClosestPoint(Point2d point) {
+		return null;
 	}
 	
 	public float circumfrence()
@@ -128,47 +133,47 @@ public class Circle implements Shape {
 				);
 	}
 	
-	public Parametric getParametric() {
-		return new CircleParametric();
-	}
-	
-	public Parametric getParametricRadians() {
-		return new CircleParametricRadians();
-	}
-	
-	private class CircleParametric implements Parametric {
-
-		@Override
-		public float getX(float t) {
-			return (float)Math.cos(Math.toRadians(t)) * radius + center.getX();
-		}
-
-		@Override
-		public float getY(float t) {
-			return (float)Math.sin(Math.toRadians(t)) * radius + center.getY();
-		}
-
-		@Override
-		public IntervalCompound getInterval() {
-			return IntervalCompound.DEGREES;
-		}
-	}
-	
-	private class CircleParametricRadians implements Parametric {
-
-		@Override
-		public float getX(float t) {
-			return (float)Math.cos(t) * radius + center.getX();
-		}
-
-		@Override
-		public float getY(float t) {
-			return (float)Math.sin(t) * radius + center.getY();
-		}
-
-		@Override
-		public IntervalCompound getInterval() {
-			return IntervalCompound.RADIANS;
-		}
-	}
+//	public Parametric getParametric() {
+//		return new CircleParametric();
+//	}
+//	
+//	public Parametric getParametricRadians() {
+//		return new CircleParametricRadians();
+//	}
+//	
+//	private class CircleParametric implements Parametric {
+//
+//		@Override
+//		public float getX(float t) {
+//			return (float)Math.cos(Math.toRadians(t)) * radius + center.getX();
+//		}
+//
+//		@Override
+//		public float getY(float t) {
+//			return (float)Math.sin(Math.toRadians(t)) * radius + center.getY();
+//		}
+//
+//		@Override
+//		public IntervalCompound getInterval() {
+//			return IntervalCompound.DEGREES;
+//		}
+//	}
+//	
+//	private class CircleParametricRadians implements Parametric {
+//
+//		@Override
+//		public float getX(float t) {
+//			return (float)Math.cos(t) * radius + center.getX();
+//		}
+//
+//		@Override
+//		public float getY(float t) {
+//			return (float)Math.sin(t) * radius + center.getY();
+//		}
+//
+//		@Override
+//		public IntervalCompound getInterval() {
+//			return IntervalCompound.RADIANS;
+//		}
+//	}
 }

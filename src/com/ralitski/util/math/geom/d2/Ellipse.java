@@ -6,7 +6,7 @@ import com.ralitski.util.math.geom.Geometry;
 import com.ralitski.util.math.var.VariableSet;
 
 
-public class Ellipse implements Shape {
+public class Ellipse implements Shape2d {
 
 	private Point2d focus1;
 	private Point2d focus2;

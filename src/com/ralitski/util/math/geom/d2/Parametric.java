@@ -1,6 +1,5 @@
 package com.ralitski.util.math.geom.d2;
 
-import com.ralitski.util.math.geom.Interval;
 import com.ralitski.util.math.geom.IntervalCompound;
 
 /**
