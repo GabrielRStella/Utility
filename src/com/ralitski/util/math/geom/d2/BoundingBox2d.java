@@ -121,6 +121,12 @@ public class BoundingBox2d {
     }
 
 	public BoundingBox2d scale(float scale) {
-		return new BoundingBox2d(minX * scale, minY * scale, maxX * scale, maxY * scale);
+		float w = getWidth();
+		float h = getHeight();
+		float width = w * scale;
+		float height = h * scale;
+		w = (width - w) / 2F;
+		h = (height - h) / 2F;
+		return new BoundingBox2d(minX - w, minY - h, maxX + w, maxY + h);
 	}
 }
