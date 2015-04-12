@@ -134,7 +134,7 @@ public class DisplayManager implements WindowListener {
         float f = timer != null ? (float)timer.time() : 1;
         partialTicks += f;
         boolean flag = this.partialTicks >= 1F;
-        if(flag) partialTicks = 0; //get rid of extra built-up ticks
+        if(flag) partialTicks -= 1F; //get rid of extra built-up ticks
         if (!this.user.update(flag, f)) {
             this.running = false;
         }

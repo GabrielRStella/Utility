@@ -129,4 +129,12 @@ public class BoundingBox2d {
 		h = (height - h) / 2F;
 		return new BoundingBox2d(minX - w, minY - h, maxX + w, maxY + h);
 	}
+    
+    public BoundingBox2d clone() {
+    	return new BoundingBox2d(getMinX(), getMinY(), getMaxX(), getMaxY());
+    }
+    
+    public String toString() {
+    	return "[(" + getMinX() + ", " + getMinY() + "), (" + getMaxX() + ", " + getMaxY() + ")]";
+    }
 }

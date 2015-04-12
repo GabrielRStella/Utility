@@ -11,7 +11,7 @@ public class Ticker {
 	}
 	
 	private float ticksPerMillisecond;
-	private long prevTime = -1;
+	private long prevTime;
 	
 	public Ticker(float ticksPerMillisecond) {
 		this.ticksPerMillisecond = ticksPerMillisecond;
@@ -23,7 +23,6 @@ public class Ticker {
 	 */
 	public double time() {
 		long time = getTime();
-		if(prevTime == -1) prevTime = time;
 		long delta = time - prevTime; //delta time in milliseconds
 		double tick = ticksPerMillisecond * delta;
 		prevTime = time;

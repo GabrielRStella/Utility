@@ -48,6 +48,7 @@ public class IterableColorSet {
 
 	public void setTicker(Ticker ticker) {
 		this.ticker = ticker;
+		ticker.time();
 	}
 	
 	public void tick() {
