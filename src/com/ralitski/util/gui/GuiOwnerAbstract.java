@@ -9,8 +9,8 @@ import com.ralitski.util.render.camera.Camera;
 
 public abstract class GuiOwnerAbstract extends RenderManagerUserAbstract implements GuiOwner {
 	
-	private GuiManager guiManager;
-	private InputMonitor input;
+	protected GuiManager guiManager;
+	protected InputMonitor input;
 
     public GuiOwnerAbstract() {
     	super();

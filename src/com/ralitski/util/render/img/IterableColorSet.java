@@ -1,12 +1,15 @@
 package com.ralitski.util.render.img;
 
+import java.util.Iterator;
+
 import com.ralitski.util.Ticker;
 
-public class ColorSet {
+public class IterableColorSet {
 	private float prevTime;
 	private float prevPart;
-	private int index;
-	private Color[] colors;
+	private Color current;
+	private Color next;
+	private Iterator<Color> colors;
 	private boolean isSmooth;
 	
 	private int ticksPerLoop;
@@ -15,11 +18,12 @@ public class ColorSet {
 	//if no ticker is assigned, the ColorSet must be updated by calling tick()
 	private Ticker ticker;
 	
-	public ColorSet(Color[] colors, int ticksPerLoop) {
-		if(colors.length == 0) throw new IllegalArgumentException("ColorSet must contain at least 1 Color");
+	public IterableColorSet(Iterator<Color> colors, int ticksPerLoop) {
 		this.colors = colors;
 		this.ticksPerLoop = ticksPerLoop;
 		isSmooth = true;
+		current = colors.next();
+		next = colors.next();
 	}
 
 	public boolean isSmooth() {
@@ -58,33 +62,35 @@ public class ColorSet {
 			prevTime += f;
 			partial = prevTime % 1F;
 			prevPart += f;
-			int tick = (int)prevPart;
+			int tick = (int)Math.floor(prevPart);
 			if(tick > 0) {
-				index = (index + tick) % colors.length;
+				doNext();
 				prevPart = 0;
-			} else {
-				//?
 			}
 		} else {
 			if(ticks >= ticksPerLoop) {
 				int mod = ticks % ticksPerLoop;
 				int extra = (ticks - mod) / ticksPerLoop;
-				index = (index + extra) % colors.length;
+				while(extra-- > 0) doNext();
 				ticks = mod;
 			}
 			partial = (float)ticks / (float)ticksPerLoop;
 		}
 		if(isSmooth) {
-			Color current = colors[index];
-			Color next = colors[(index + 1) % colors.length];
 			float partial1 = partial;
 			partial = 1F - partial1;
 			//fancy gradienting yay
+			System.out.println(current + " " + next);
 			float r = (partial * current.getRedFloat()) + (partial1 * next.getRedFloat());
 			float g = (partial * current.getGreenFloat()) + (partial1 * next.getGreenFloat());
 			float b = (partial * current.getBlueFloat()) + (partial1 * next.getBlueFloat());
 			float a = (partial * current.getAlphaFloat()) + (partial1 * next.getAlphaFloat());
 			return new Color(r, g, b, a);
-		} else return colors[index];
+		} else return current;
+	}
+	
+	private void doNext() {
+		current = next;
+		next = colors.next();
 	}
 }

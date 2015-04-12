@@ -19,6 +19,10 @@ public class Color implements Streamable, Cloneable {
     public static final Color MAGENTA = new Color(ColorHelper.MAGENTA);
     
 	private int r, g, b, a;
+	
+	public Color(String s) {
+		this(s.length() == 8 ? ColorHelper.fromHex(s) : (ColorHelper.fromHex(s) | 0xFF000000));
+	}
 
     public Color(int i) {
         int[] c = ColorHelper.fromCompressed(i);
@@ -117,6 +121,10 @@ public class Color implements Streamable, Cloneable {
         this.r = (255 - this.r);
         this.g = (255 - this.g);
         this.b = (255 - this.b);
+    }
+    
+    public Color inverse() {
+        return new Color((255 - this.r), (255 - this.g), (255 - this.b));
     }
 
     public void equalize() {

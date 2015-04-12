@@ -277,6 +277,22 @@ public class ArrayUtils {
         return new ArrayIterator<T>(len, t);
     }
     
+    public static <T> Iterable<T> getLoopIterable(T...t) {
+    	return getLoopIterable(t.length, t);
+    }
+    
+    public static <T> Iterable<T> getLoopIterable(int length, T...t) {
+        return new ArrayLoopIterable<T>(t.length, t);
+    }
+    
+    public static <T> Iterator<T> getLoopIterator(T...t) {
+        return getLoopIterator(t.length, t);
+    }
+    
+    public static <T> Iterator<T> getLoopIterator(int length, T...t) {
+        return new ArrayLoopIterator<T>(t.length, t);
+    }
+    
     private static class ArrayIterable<T> implements Iterable<T> {
     	
     	private int len;
@@ -319,6 +335,52 @@ public class ArrayUtils {
         public void remove() {
             //I don't particularly like doing this.
             //t[nextIndex] = null;
+        }
+        
+    }
+    
+    private static class ArrayLoopIterable<T> implements Iterable<T> {
+    	
+    	private int len;
+    	private T[] t;
+    	
+    	private ArrayLoopIterable(int len, T...t) {
+    		this.len = len;
+    		this.t = t;
+    	}
+
+		@Override
+		public Iterator<T> iterator() {
+			return new ArrayLoopIterator<T>(len, t);
+		}
+    	
+    }
+    
+    private static class ArrayLoopIterator<T> implements Iterator<T> {
+        
+    	private int len;
+        private T[] t;
+        private int nextIndex;
+        
+        private ArrayLoopIterator(int len, T...t) {
+        	this.len = len;
+            this.t = t;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return true;
+        }
+
+        @Override
+        public T next() {
+        	T next = t[nextIndex++];
+        	nextIndex %= len;
+            return next;
+        }
+
+        @Override
+        public void remove() {
         }
         
     }

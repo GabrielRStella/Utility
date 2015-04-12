@@ -48,6 +48,10 @@ public class InputMonitor {
     public InputUser getUser() {
         return user;
     }
+    
+    public InputFeed getInputFeed() {
+    	return input;
+    }
 
     public void setUser(InputUser user) {
         this.user = user;

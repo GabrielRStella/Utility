@@ -15,6 +15,14 @@ public class Ring implements Shape2d {
 		inside = new Circle(point, innerRadius);
 		outside = new Circle(point, outerRadius);
 	}
+	
+	public Circle getInside() {
+		return inside;
+	}
+	
+	public Circle getOutside() {
+		return outside;
+	}
 
 	@Override
 	public Point2d getPosition() {
