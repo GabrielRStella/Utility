@@ -88,4 +88,13 @@ public class ColorHelper {
 	public static int fullAlpha(int i) {
 		return i | 0xFF000000;
 	}
+	
+	public static Color blend(Color color1, Color color2, float grad) {
+		float grad2 = 1F - grad;
+		float r = color1.getRedFloat() * grad + color2.getRedFloat() * grad2;
+		float g = color1.getGreenFloat() * grad + color2.getGreenFloat() * grad2;
+		float b = color1.getBlueFloat() * grad + color2.getBlueFloat() * grad2;
+		float a = color1.getAlphaFloat() * grad + color2.getAlphaFloat() * grad2;
+		return new Color(r, g, b, a);
+	}
 }

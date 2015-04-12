@@ -77,14 +77,7 @@ public class ColorSet {
 		if(isSmooth) {
 			Color current = colors[index];
 			Color next = colors[(index + 1) % colors.length];
-			float partial1 = partial;
-			partial = 1F - partial1;
-			//fancy gradienting yay
-			float r = (partial * current.getRedFloat()) + (partial1 * next.getRedFloat());
-			float g = (partial * current.getGreenFloat()) + (partial1 * next.getGreenFloat());
-			float b = (partial * current.getBlueFloat()) + (partial1 * next.getBlueFloat());
-			float a = (partial * current.getAlphaFloat()) + (partial1 * next.getAlphaFloat());
-			return new Color(r, g, b, a);
+			return ColorHelper.blend(current, next, 1F - partial);
 		} else return colors[index];
 	}
 }

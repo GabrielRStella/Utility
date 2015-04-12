@@ -16,7 +16,7 @@ public class ColorRange {
 	
 	public Color createSmooth(Random random) {
 		float grad = random.nextFloat();
-		return blend(min, max, grad);
+		return ColorHelper.blend(min, max, grad);
 	}
 	
 	public Color getMin() {
@@ -48,15 +48,6 @@ public class ColorRange {
 		grad = random.nextFloat();
 		grad2 = 1F - grad;
 		float a = min.getAlphaFloat() * grad + max.getAlphaFloat() * grad2;
-		return new Color(r, g, b, a);
-	}
-	
-	public static Color blend(Color color1, Color color2, float grad) {
-		float grad2 = 1F - grad;
-		float r = color1.getRedFloat() * grad + color2.getRedFloat() * grad2;
-		float g = color1.getGreenFloat() * grad + color2.getGreenFloat() * grad2;
-		float b = color1.getBlueFloat() * grad + color2.getBlueFloat() * grad2;
-		float a = color1.getAlphaFloat() * grad + color2.getAlphaFloat() * grad2;
 		return new Color(r, g, b, a);
 	}
 }
