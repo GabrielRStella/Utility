@@ -63,8 +63,7 @@ public class ColorSet {
 			if(tick > 0) {
 				index = (index + tick) % colors.length;
 				prevPart = 0;
-			} else {
-				//?
+				partial = 0;
 			}
 		} else {
 			if(ticks >= ticksPerLoop) {

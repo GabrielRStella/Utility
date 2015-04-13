@@ -67,6 +67,7 @@ public class IterableColorSet {
 			if(tick > 0) {
 				doNext();
 				prevPart = 0;
+				partial = 0;
 			}
 		} else {
 			if(ticks >= ticksPerLoop) {
