@@ -23,10 +23,15 @@ public class BoundingBox2d {
     }
 
     public BoundingBox2d(float minX, float minY, float maxX, float maxY) {
+    	this(minX, minY, maxX, maxY, 0);
+    }
+
+    public BoundingBox2d(float minX, float minY, float maxX, float maxY, float angle) {
         this.minX = minX;
         this.minY = minY;
         this.maxX = maxX;
         this.maxY = maxY;
+        this.angle = angle;
     }
 
 	public void setCenter(Point2d center) {
@@ -144,6 +149,10 @@ public class BoundingBox2d {
     }
 
     public boolean contains(float x, float y) {
+    	Point2d p = new Point2d(x, y);
+    	p.rotateAround(center, -angle);
+    	x = p.getX();
+    	y = p.getY();
         return (x >= minX + center.getX() && x <= maxX + center.getX()) && (y >= minY + center.getY() && y <= maxY + center.getY());
     }
 
@@ -154,7 +163,7 @@ public class BoundingBox2d {
 		float height = h * scale;
 		w = (width - w) / 2F;
 		h = (height - h) / 2F;
-		return new BoundingBox2d(minX - w, minY - h, maxX + w, maxY + h);
+		return new BoundingBox2d(minX - w, minY - h, maxX + w, maxY + h, angle);
 	}
     
     public BoundingBox2d clone() {
