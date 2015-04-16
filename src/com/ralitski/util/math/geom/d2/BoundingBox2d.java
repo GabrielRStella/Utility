@@ -1,5 +1,6 @@
 package com.ralitski.util.math.geom.d2;
 
+//TODO: fix collision detection methods to have rotation
 public class BoundingBox2d {
 
     private Point2d origin() {
@@ -10,6 +11,7 @@ public class BoundingBox2d {
     private float minY;
     private float maxX;
     private float maxY;
+    private float angle;
     private Point2d center = origin();
 
     public BoundingBox2d() {
@@ -51,6 +53,30 @@ public class BoundingBox2d {
     public Point2d getCenter() {
         return center;
     }
+    
+    public float getAngleDegrees() {
+    	return angle;
+    }
+    
+    public void setAngleDegrees(float angle) {
+    	this.angle = angle;
+    }
+    
+    public float getAngleRadians() {
+    	return (float)Math.toRadians(angle);
+    }
+    
+    public void setAngleRadians(float angle) {
+    	this.angle = (float)Math.toDegrees(angle);
+    }
+    
+    public void rotateDegrees(float angle) {
+    	this.angle += angle;
+    }
+    
+    public void rotateRadians(float angle) {
+    	this.angle += (float)Math.toDegrees(angle);
+    }
 
     public float getMinX() {
         return center.getX() + minX;
@@ -89,6 +115,7 @@ public class BoundingBox2d {
     public BoundingBox2d expand(float wide, float high) {
         BoundingBox2d newBB = new BoundingBox2d(minX - wide, minY - high, maxX + wide, maxY + high);
         newBB.setCenter(center);
+        newBB.setAngleDegrees(angle);
         return newBB;
     }
     
@@ -135,6 +162,19 @@ public class BoundingBox2d {
     }
     
     public String toString() {
-    	return "[(" + getMinX() + ", " + getMinY() + "), (" + getMaxX() + ", " + getMaxY() + ")]";
+    	return "[(" + getMinX() + ", " + getMinY() + "), (" + getMaxX() + ", " + getMaxY() + "), " + angle + "°]";
+    }
+    
+    public Point2d[] getCorners() {
+    	Point2d tl, tr, bl, br;
+    	tl = new Point2d(getMinX(), getMaxY());
+    	tr = new Point2d(getMaxX(), getMaxY());
+    	bl = new Point2d(getMinX(), getMinY());
+    	br = new Point2d(getMaxX(), getMinY());
+    	tl.rotateAround(center, angle);
+    	tr.rotateAround(center, angle);
+    	bl.rotateAround(center, angle);
+    	br.rotateAround(center, angle);
+    	return new Point2d[]{tl, tr, br, bl};
     }
 }
