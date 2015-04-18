@@ -156,6 +156,14 @@ public class BoundingBox2d {
         return (x >= minX + center.getX() && x <= maxX + center.getX()) && (y >= minY + center.getY() && y <= maxY + center.getY());
     }
 
+    public boolean contains(Point2d p) {
+    	p = p.clone();
+    	p.rotateAround(center, -angle);
+    	float x = p.getX();
+    	float y = p.getY();
+        return (x >= minX + center.getX() && x <= maxX + center.getX()) && (y >= minY + center.getY() && y <= maxY + center.getY());
+    }
+
 	public BoundingBox2d scale(float scale) {
 		float w = getWidth();
 		float h = getHeight();
