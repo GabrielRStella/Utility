@@ -24,7 +24,13 @@ public class ImageFontGenerator {
 		Font font = g.getFont();
 		FontRenderContext context = g.getFontRenderContext();
 		TextLayout layout = new TextLayout(text, font, context);
-		return layout.getPixelBounds(context, 0, 0);
+		Rectangle2D rect = layout.getPixelBounds(context, 0, 0);
+//		if(style.getStyle(c, "font-shadow") == Boolean.TRUE) {
+//			Integer i = style.getStyle(c, "font-shadow-offset");
+//			float f = i.floatValue();
+//			rect = new Rectangle2D.Double(rect.getX(), rect.getY(), rect.getWidth() + f, rect.getHeight() + f);
+//		}
+		return rect;
 	}
 	
 	public BufferedImage produceImage(String text, Component c, RenderStyle style) {

@@ -1,6 +1,7 @@
 package com.ralitski.util.gui;
 
 import com.ralitski.util.gui.render.FontRenderer;
+import com.ralitski.util.gui.render.RenderStyle;
 import com.ralitski.util.input.event.KeyEvent;
 import com.ralitski.util.input.event.MouseButtonEvent;
 import com.ralitski.util.input.event.MouseButtonEvent.MouseEventType;
@@ -14,6 +15,7 @@ public class Button extends ComponentAbstract {
 	private BoxOutset textOffset;
 	private int textOutsetX;
 	private int textOutsetY;
+	private RenderStyle text;
 	
 	public Button(Gui gui, String title) {
 		super(gui);
@@ -35,12 +37,32 @@ public class Button extends ComponentAbstract {
 		textOffset = new BoxOutset(box, 0, 0);
 	}
 
+	@Override
+	public void setRenderStyle(int index, RenderStyle s) {
+		if(index == 0) style = s;
+		else text = s;
+	}
+
+	@Override
+	public RenderStyle getRenderStyle(int index) {
+		return index == 0 ? style : text;
+	}
+
+	@Override
+	public int getRenderStyles() {
+		return 2;
+	}
+	
+	public RenderStyle getTextStyle() {
+		return text != null ? text : style;
+	}
+
 	public void setMinWidth(int minWidth) {
-		this.minWidth = Math.max(minWidth, gui.getOwner().getGuiOwner().getFontRenderer().getDimensions(title, this, style).getWidth() - textOffset.getWidth() * 2);
+		this.minWidth = Math.max(minWidth, gui.getOwner().getGuiOwner().getFontRenderer().getDimensions(title, this, getTextStyle()).getWidth() - textOffset.getWidth() * 2);
 	}
 
 	public void setMinHeight(int minHeight) {
-		this.minWidth = Math.max(minWidth, gui.getOwner().getGuiOwner().getFontRenderer().getDimensions(title, this, style).getHeight() - textOffset.getHeight() * 2);
+		this.minWidth = Math.max(minWidth, gui.getOwner().getGuiOwner().getFontRenderer().getDimensions(title, this, getTextStyle()).getHeight() - textOffset.getHeight() * 2);
 	}
 
 	public int getMouseButton() {
@@ -68,11 +90,6 @@ public class Button extends ComponentAbstract {
 	public void setTextInsetY(int textInset) {
 		textOffset.setOutsetY(textOutsetY = -textInset);
 	}
-
-	@Override
-	public boolean useParentRenderList() {
-		return true;
-	}
 	
 	public String getTitle() {
 		return title;
@@ -86,7 +103,7 @@ public class Button extends ComponentAbstract {
 	protected void doRender() {
 		super.doRender();
 		//love me some getters
-		gui.getOwner().getGuiOwner().getFontRenderer().renderLine(title, textOffset, this, style, FontRenderer.WIDTH_ALIGN_CENTER | FontRenderer.HEIGHT_ALIGN_CENTER);
+		gui.getOwner().getGuiOwner().getFontRenderer().renderLine(title, textOffset, this, getTextStyle(), FontRenderer.WIDTH_ALIGN_CENTER | FontRenderer.HEIGHT_ALIGN_CENTER);
 	}
 
 	@Override

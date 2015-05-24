@@ -58,10 +58,10 @@ public class Text extends ComponentAbstract {
 		return true;
 	}
 
-	@Override
-	public boolean useParentRenderList() {
-		return true;
-	}
+//	@Override
+//	public boolean useParentRenderList() {
+//		return true;
+//	}
 	
 	public String getTitle() {
 		return title;

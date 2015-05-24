@@ -163,7 +163,7 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 			BoxPosition.position(box, null, manager.getWindow(), BoxPosition.WITHIN_STRICT);
 		}
 		layout.refresh(box);
-		renderListState.setDirty(true);
+		if(renderListState != null) renderListState.setDirty(true);
 	}
 	
 	public void refreshAll() {

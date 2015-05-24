@@ -8,7 +8,7 @@ import com.ralitski.util.render.img.Color;
 public class Gui implements InputUser {
 	
 	//used to darken lower-level gui screens (parent gui rendered behind current gui)
-	private static final Color FILM = new Color(100, 100, 100, 30);
+	private static final Color FILM = new Color(100, 100, 100, 60);
 	
 	protected GuiManager owner;
 	protected Gui parent;

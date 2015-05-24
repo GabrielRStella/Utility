@@ -22,6 +22,7 @@ public abstract class ComponentAbstract implements Component {
 	protected RenderList renderList;
 	protected RenderListState renderListState;
 	protected List<ComponentEventListener> eventListeners;
+	protected boolean useParentRenderList = true;
 	
 	public ComponentAbstract(Gui gui) {
 		prepare(gui);
@@ -162,7 +163,11 @@ public abstract class ComponentAbstract implements Component {
 
 	@Override
 	public boolean useParentRenderList() {
-		return false;
+		return useParentRenderList;
+	}
+
+	public void setUseParentRenderList(boolean useParentRenderList) {
+		this.useParentRenderList = useParentRenderList;
 	}
 
 	@Override
