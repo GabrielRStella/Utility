@@ -65,6 +65,6 @@ public interface Component extends InputUser {
 	
 	//event system
 
-	void addGuiEventListener(ComponentEventListener listener);
+	void addComponentEventListener(ComponentEventListener listener);
 	void removeGuiEventListener(ComponentEventListener listener);
 }

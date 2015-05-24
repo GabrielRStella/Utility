@@ -83,7 +83,7 @@ public class Button extends ComponentAbstract {
 	protected void doRender() {
 		super.doRender();
 		//love me some getters
-		gui.getOwner().getGuiOwner().getFontRenderer().renderLine(title, box, this, style, FontRenderer.WIDTH_ALIGN_CENTER | FontRenderer.HEIGHT_ALIGN_CENTER);
+		gui.getOwner().getGuiOwner().getFontRenderer().renderLine(title, textOffset, this, style, FontRenderer.WIDTH_ALIGN_CENTER | FontRenderer.HEIGHT_ALIGN_CENTER);
 	}
 
 	@Override

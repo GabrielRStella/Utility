@@ -42,7 +42,7 @@ public class BoxRelative extends Box {
 
     public int getMinX() {
     	int align = this.align & ALIGN_WIDE;
-    	return align == ALIGN_LEFT ? (parent.getMinX() + xOff) : (align == ALIGN_CENTER ? (parent.getMinX() + (parent.getWidth() - super.getWidth()) / 2) : (parent.getMaxX() - xOff - super.getWidth()));
+    	return align == ALIGN_LEFT ? (parent.getMinX() + xOff) : (align == ALIGN_CENTER_X ? (parent.getMinX() + (parent.getWidth() - super.getWidth()) / 2) : (parent.getMaxX() - xOff - super.getWidth()));
     }
 
     public int getMinY() {

@@ -10,44 +10,58 @@ import java.awt.font.TextLayout;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
+import com.ralitski.util.gui.Component;
+
 public class ImageFontGenerator {
 	
-	Graphics2D g;
-	
 	public ImageFontGenerator() {
+	}
+	
+	public Rectangle2D getBounds(String text, Component c, RenderStyle style) {
 		BufferedImage base = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-		g = base.createGraphics();
-		g.setColor(Color.BLACK);
-		g.setPaint(Color.BLACK);
-		g.setFont(new Font("Arial", Font.PLAIN, 20));
-		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
-		g.setBackground(Color.WHITE);
-		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-	}
-	
-	public Rectangle2D getBounds(String text) {
+		Graphics2D g = base.createGraphics();
+		getGraphics(c, style, g);
 		Font font = g.getFont();
-		FontRenderContext c = g.getFontRenderContext();
-		TextLayout layout = new TextLayout(text, font, c);
-		return layout.getPixelBounds(c, 0, 0);
+		FontRenderContext context = g.getFontRenderContext();
+		TextLayout layout = new TextLayout(text, font, context);
+		return layout.getPixelBounds(context, 0, 0);
 	}
 	
-	public BufferedImage produceImage(String text) {
-		Rectangle2D bounds = getBounds(text);
+	public BufferedImage produceImage(String text, Component c, RenderStyle style) {
+		Rectangle2D bounds = getBounds(text, c, style);
 		BufferedImage image = new BufferedImage((int)Math.ceil(bounds.getWidth()), (int)Math.ceil(bounds.getHeight()), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = image.createGraphics();
-		set(g);
+		
+		BufferedImage base = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2 = base.createGraphics();
+		getGraphics(c, style, g2);
+		set(g2, g);
 		g.drawString(text, -(int)bounds.getX(), -(int)bounds.getY());
 		
 		return image;
 	}
 	
-	private void set(Graphics2D g2) {
-		g2.setColor(g.getColor());
-		g2.setPaint(g.getPaint());
-		g2.setFont(g.getFont());
-		g2.setComposite(g.getComposite());
-		g2.setBackground(g.getBackground()); //doesn't seem to do anything...
-		g2.setRenderingHints(g.getRenderingHints());
+	private void set(Graphics2D src, Graphics2D dst) {
+		dst.setColor(src.getColor());
+		dst.setPaint(src.getPaint());
+		dst.setFont(src.getFont());
+		dst.setComposite(src.getComposite());
+		dst.setBackground(src.getBackground()); //doesn't seem to do anything...
+		dst.setRenderingHints(src.getRenderingHints());
+	}
+	
+	private void getGraphics(Component c, RenderStyle style, Graphics2D g) {
+		Object color = style.getStyle(c, "font-color");
+		Color jColor = color != null ? (color instanceof Color ? (Color)color : ((com.ralitski.util.render.img.Color)color).jColor()) : Color.BLACK;
+		g.setColor(jColor);
+		g.setPaint(jColor);
+		
+		String font = style.getStyle(c, "font");
+		Integer size = style.getStyle(c, "font-size");
+		g.setFont(new Font(font != null ? font : "Arial", Font.PLAIN, size != null ? size : 20));
+		
+		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+		g.setBackground(Color.WHITE);
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 	}
 }

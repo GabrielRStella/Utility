@@ -146,7 +146,7 @@ public abstract class ComponentAbstract implements Component {
 	}
 
 	@Override
-	public void addGuiEventListener(ComponentEventListener listener) {
+	public void addComponentEventListener(ComponentEventListener listener) {
 		eventListeners.add(listener);
 	}
 

@@ -7,5 +7,5 @@ public interface RenderStyle {
 	String getClassType();
 	
 	RenderStyle setStyle(String style, Object value);
-	Object getStyle(Component c, String style);
+	<T> T getStyle(Component c, String style);
 }

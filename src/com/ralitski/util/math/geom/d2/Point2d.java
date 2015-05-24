@@ -145,7 +145,7 @@ public class Point2d implements Shape2d, Cloneable, Streamable {
     private float x;
     private float y;
     
-    protected Point2d() {}
+    public Point2d() {}
     
     public Point2d(float x, float y) {
         this.x = x;
@@ -272,7 +272,7 @@ public class Point2d implements Shape2d, Cloneable, Streamable {
     //rotate
     
     public void rotate(float degrees) {
-    	rotate((float)Math.toRadians(degrees));
+    	rotateRadians((float)Math.toRadians(degrees));
     }
     
     public void rotateRadians(float radians) {

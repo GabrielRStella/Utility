@@ -16,10 +16,18 @@ public class BoundingBox2d {
 
     public BoundingBox2d() {
     	this(0, 0, 0, 0);
-	}
+	}  
 
     public BoundingBox2d(float width, float height) {
         this(-width / 2F, -height / 2F, width / 2F, height / 2F);
+    }
+
+    public BoundingBox2d(Point2d p) {
+    	this(Math.min(p.getX(), 0), Math.min(p.getY(), 0), Math.max(p.getX(), 0), Math.max(p.getY(), 0));
+    }
+
+    public BoundingBox2d(Point2d p1, Point2d p2) {
+    	this(Math.min(p1.getX(), p2.getX()), Math.min(p1.getY(), p2.getY()), Math.max(p1.getX(), p2.getX()), Math.max(p1.getY(), p2.getY()));
     }
 
     public BoundingBox2d(float minX, float minY, float maxX, float maxY) {
@@ -171,7 +179,9 @@ public class BoundingBox2d {
 		float height = h * scale;
 		w = (width - w) / 2F;
 		h = (height - h) / 2F;
-		return new BoundingBox2d(minX - w, minY - h, maxX + w, maxY + h, angle);
+		BoundingBox2d b = new BoundingBox2d(minX - w, minY - h, maxX + w, maxY + h, angle);
+		b.setCenter(center);
+		return b;
 	}
     
     public BoundingBox2d clone() {
@@ -186,8 +196,8 @@ public class BoundingBox2d {
     	Point2d tl, tr, bl, br;
     	tl = new Point2d(getMinX(), getMaxY());
     	tr = new Point2d(getMaxX(), getMaxY());
-    	bl = new Point2d(getMinX(), getMinY());
-    	br = new Point2d(getMaxX(), getMinY());
+    	bl = new Point2d(getMaxX(), getMinY());
+    	br = new Point2d(getMinX(), getMinY());
     	tl.rotateAround(center, angle);
     	tr.rotateAround(center, angle);
     	bl.rotateAround(center, angle);

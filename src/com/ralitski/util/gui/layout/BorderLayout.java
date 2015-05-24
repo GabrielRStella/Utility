@@ -1,10 +1,9 @@
 package com.ralitski.util.gui.layout;
 
-import java.awt.Dimension;
-
 import com.ralitski.util.gui.Box;
 import com.ralitski.util.gui.BoxPosition;
 import com.ralitski.util.gui.Component;
+import com.ralitski.util.gui.Dimension;
 
 public class BorderLayout implements Layout {
 	

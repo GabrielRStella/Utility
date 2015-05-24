@@ -1,9 +1,8 @@
 package com.ralitski.util.gui.layout;
 
-import java.awt.Dimension;
-
 import com.ralitski.util.gui.Box;
 import com.ralitski.util.gui.Component;
+import com.ralitski.util.gui.Dimension;
 
 public class BoxPositionLayout implements Layout {
 

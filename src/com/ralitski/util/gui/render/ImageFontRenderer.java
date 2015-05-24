@@ -24,7 +24,7 @@ public class ImageFontRenderer implements FontRenderer {
 
 	@Override
 	public void renderLine(String line, Box bounds, Component c, RenderStyle style, int align) {
-		BufferedImage image = generator.produceImage(line);
+		BufferedImage image = generator.produceImage(line, c, style);
 		boolean resize = false;
 		int cutLeft = 0;
 		int cutRight = 0;
@@ -92,7 +92,7 @@ public class ImageFontRenderer implements FontRenderer {
 
 	@Override
 	public Box getBounds(String line, Box bounds, Component c, RenderStyle style, int align) {
-		Rectangle2D rect = generator.getBounds(line);
+		Rectangle2D rect = generator.getBounds(line, c, style);
 		int width = (int)Math.ceil(rect.getWidth());
 		int height = (int)Math.ceil(rect.getHeight());
 		switch(align) {
@@ -109,7 +109,7 @@ public class ImageFontRenderer implements FontRenderer {
 
 	@Override
 	public Dimension getDimensions(String line, Component c, RenderStyle style) {
-		Rectangle2D rect = generator.getBounds(line);
+		Rectangle2D rect = generator.getBounds(line, c, style);
 		return new Dimension(rect);
 	}
 
