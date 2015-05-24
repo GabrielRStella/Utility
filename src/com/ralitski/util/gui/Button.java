@@ -10,7 +10,10 @@ public class Button extends ComponentAbstract {
 	
 	private String title;
 	private int mouseButton = 0;
+	
 	private BoxOutset textOffset;
+	private int textOutsetX;
+	private int textOutsetY;
 	
 	public Button(Gui gui, String title) {
 		super(gui);
@@ -55,7 +58,7 @@ public class Button extends ComponentAbstract {
 	}
 	
 	public void setTextInsetX(int textInset) {
-		textOffset.setOutsetX(-textInset);
+		textOffset.setOutsetX(textOutsetX = -textInset);
 	}
 	
 	public int getTextInsetY() {
@@ -63,7 +66,7 @@ public class Button extends ComponentAbstract {
 	}
 	
 	public void setTextInsetY(int textInset) {
-		textOffset.setOutsetY(-textInset);
+		textOffset.setOutsetY(textOutsetY = -textInset);
 	}
 
 	@Override
@@ -104,6 +107,11 @@ public class Button extends ComponentAbstract {
 	@Override
 	public void onKeyEvent(KeyEvent event) {
 		//dun care
+	}
+	
+	protected void setBox(Box box) {
+		super.setBox(box);
+		textOffset = new BoxOutset(box, textOutsetX, textOutsetY);
 	}
 
 }

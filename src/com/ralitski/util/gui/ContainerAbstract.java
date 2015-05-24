@@ -129,7 +129,14 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 	//position components and possibly resize container
 	public void refresh() {
 		for(Component c : children) {
-			if(c instanceof Container) ((Container)c).refresh();
+			if(c instanceof Container) {
+				((Container)c).refresh();
+			} else {
+				if(c.isResizable()) {
+					box.setWidth(c.getMinWidth());
+					box.setHeight(c.getMinHeight());
+				}
+			}
 		}
 		if(resizable) {
 			Dimension d = layout.getMinimumSize();
@@ -156,6 +163,7 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 			BoxPosition.position(box, null, manager.getWindow(), BoxPosition.WITHIN_STRICT);
 		}
 		layout.refresh(box);
+		renderListState.setDirty(true);
 	}
 	
 	public void refreshAll() {

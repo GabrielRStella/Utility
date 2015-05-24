@@ -46,11 +46,12 @@ public class CascadingRenderStyle implements RenderStyle {
 		return this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Object getStyle(Component c, String style) {
+	public <T> T getStyle(Component c, String style) {
 		Object o = values.get(style);
 		if(o != null) {
-			return o;
+			return (T)o;
 		}
 		if(parentType != null) {
 			RenderStyle r = styles.getRenderStyle(parentType);

@@ -9,7 +9,8 @@ public class BoxRelative extends Box {
 	
 	public static BoxRelative makeRelative(Box original, Box parent) {
 		if(original instanceof BoxRelative) {
-			
+			BoxRelative box = (BoxRelative)original;
+			return new BoxRelative(parent, box.getMinX(), box.getMinY(), box.getMaxX(), box.getMaxY(), box.getOffsetX() + parent.getMinX() - original.getMinX(), box.getOffsetY() + parent.getMinY() - original.getMinY());
 		} else return parent != null ? new BoxRelative(parent, original.getMinX() - parent.getMinX(), original.getMinY() - parent.getMinY(), original.getMaxX() - parent.getMinX(), original.getMaxY() - parent.getMinY(), parent.getMinX(), parent.getMinY())
 		: new BoxRelative(null, original.getMinX(), original.getMinY(), original.getMaxX(), original.getMaxY(), 0, 0);
 	}

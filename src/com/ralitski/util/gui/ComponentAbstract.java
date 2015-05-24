@@ -31,14 +31,13 @@ public abstract class ComponentAbstract implements Component {
 	
 	public ComponentAbstract(Gui gui, int width, int height) {
 		prepare(gui);
-		GuiOwner owner = gui.getOwner().getGuiOwner();
-		box = new Box(0, 0, Math.min(width, owner.getWidth()), Math.min(height, owner.getHeight()));
+		box = new Box(0, 0, width, height);
 		BoxPosition.position(box, null, gui.getOwner().getWindow(), BoxPosition.CENTER);
 	}
 	
 	public ComponentAbstract(Gui gui, Box box) {
 		prepare(gui);
-		BoxPosition.position(box, null, gui.getOwner().getWindow(), BoxPosition.WITHIN_STRICT);
+		BoxPosition.position(box, null, gui.getOwner().getWindow(), BoxPosition.WITHIN);
 		this.box = box;
 	}
 	
@@ -108,7 +107,7 @@ public abstract class ComponentAbstract implements Component {
 	@Override
 	public void setParent(Container container) {
 		this.parent = container;
-		this.box = BoxRelative.makeRelative(box, container != null ? container.getBounds() : null);
+		setBox(BoxRelative.makeRelative(box, container != null ? container.getBounds() : null));
 	}
 
 	@Override
@@ -201,6 +200,10 @@ public abstract class ComponentAbstract implements Component {
 		public void run() {
 			doRender();
 		}
+	}
+	
+	protected void setBox(Box box) {
+		this.box = box;
 	}
 
 }
