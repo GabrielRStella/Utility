@@ -1,29 +1,38 @@
 package com.ralitski.util.gui;
 
+/**
+ * relative to parent's (minX, minY) corner
+ * @author ralitski
+ *
+ */
 public class BoxRelative extends Box {
-
-	public static final int ALIGN_LEFT = 1;
-	public static final int ALIGN_RIGHT = 2;
-	public static final int ALIGN_CENTER_X = 4;
-	public static final int ALIGN_TOP = 8;
-	public static final int ALIGN_BOTTOM = 16;
-	public static final int ALIGN_CENTER_Y = 32;
-	public static final int ALIGN_WIDE = 0b00000111;
-	public static final int ALIGN_HIGH = 0b00111000;
+	
+	public static BoxRelative makeRelative(Box original, Box parent) {
+		if(original instanceof BoxRelative) {
+			
+		} else return parent != null ? new BoxRelative(parent, original.getMinX() - parent.getMinX(), original.getMinY() - parent.getMinY(), original.getMaxX() - parent.getMinX(), original.getMaxY() - parent.getMinY(), parent.getMinX(), parent.getMinY())
+		: new BoxRelative(null, original.getMinX(), original.getMinY(), original.getMaxX(), original.getMaxY(), 0, 0);
+	}
 	
 	private Box parent;
-	private int align;
 	private int xOff;
 	private int yOff;
 
-	public BoxRelative(Box box, int align, int minX, int minY, int maxX, int maxY, int xOff, int yOff) {
+	public BoxRelative(Box box, int minX, int minY, int maxX, int maxY, int xOff, int yOff) {
 		super(minX, minY, maxX, maxY);
 		this.parent = box;
-		this.align = align;
 		this.xOff = xOff;
 		this.yOff = yOff;
 	}
 	
+	public Box getParent() {
+		return parent;
+	}
+
+	public void setParent(Box parent) {
+		this.parent = parent;
+	}
+
 	public int getOffsetX() {
 		return xOff;
 	}
@@ -41,72 +50,55 @@ public class BoxRelative extends Box {
 	}
 
     public int getMinX() {
-    	int align = this.align & ALIGN_WIDE;
-    	return align == ALIGN_LEFT ? (parent.getMinX() + xOff) : (align == ALIGN_CENTER_X ? (parent.getMinX() + (parent.getWidth() - super.getWidth()) / 2) : (parent.getMaxX() - xOff - super.getWidth()));
+    	int minX = xOff + super.getMinX();
+    	return parent != null ? parent.getMinX() + minX : minX;
     }
 
     public int getMinY() {
-        return parent.getMinY() - yOff;
+    	int minY = yOff + super.getMinY();
+    	return parent != null ? parent.getMinY() + minY : minY;
     }
 
     public int getMaxX() {
-        return parent.getMaxX() + xOff;
+    	int maxX = xOff + super.getMaxX();
+    	return parent != null ? parent.getMinX() + maxX : maxX;
     }
 
     public int getMaxY() {
-        return parent.getMaxY() + yOff;
+    	int maxY = yOff + super.getMaxY();
+    	return parent != null ? parent.getMinY() + maxY : maxY;
     }
 
     public void setMinX(int minX) {
-    	parent.setMinX(minX + xOff);
+    	xOff += (minX - getMinX());
 	}
 
 	public void setMinY(int minY) {
-		parent.setMinY(minY + yOff);
+		yOff += (minY - getMinY());
 	}
 
 	public void setMaxX(int maxX) {
-		parent.setMaxX(maxX - xOff);
+		xOff += (maxX - getMaxX());
 	}
 
 	public void setMaxY(int maxY) {
-		parent.setMaxY(maxY - yOff);
+		yOff += (maxY - getMaxY());
 	}
-	
-	public void setWidth(int width) {
-		parent.setWidth(width - xOff * 2);
-	}
-	
-	public void setHeight(int height) {
-		parent.setHeight(height - yOff * 2);
-	}
-
-	public int getWidth() {
-		return parent.getWidth() + xOff * 2;
-    }
-
-    public int getHeight() {
-    	return parent.getHeight() + yOff * 2;
-    }
     
     public int getCenterX() {
-    	//TODO
+    	return (getMinX() + getMaxX()) / 2;
     }
     
     public void setCenterX(int x) {
-    	//TODO
+    	translateX(x - getCenterX());
     }
     
     public int getCenterY() {
-    	//TODO
+    	return (getMinY() + getMaxY()) / 2;
     }
     
     public void setCenterY(int y) {
-    	//TODO
-    }
-    
-    public void setCenter(int x, int y) {
-    	//TODO
+    	translateY(y - getCenterY());
     }
     
     public void setX(int x) {
@@ -127,19 +119,11 @@ public class BoxRelative extends Box {
     }
     
     public void translateX(int x) {
-    	if((align & ALIGN_LEFT) == ALIGN_LEFT) {
-    		xOff += x;
-    	} else {
-    		xOff -= x;
-    	}
+    	xOff += x;
     }
     
     public void translateY(int y) {
-    	if((align & ALIGN_BOTTOM) == ALIGN_BOTTOM) {
-    		yOff += y;
-    	} else {
-    		yOff -= y;
-    	}
+    	yOff += y;
     }
 
 }

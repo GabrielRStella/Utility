@@ -88,11 +88,11 @@ public class BorderLayout implements Layout {
 	}
 	
 	public void refresh(Box window) {
-		if(north != null) BoxPosition.position(null, north.getBounds(), window, BoxPosition.TOP);
-		if(south != null) BoxPosition.position(null, south.getBounds(), window, BoxPosition.BOTTOM);
-		if(west != null) BoxPosition.position(null, west.getBounds(), window, BoxPosition.LEFT);
-		if(east != null) BoxPosition.position(null, east.getBounds(), window, BoxPosition.RIGHT);
-		if(center != null) BoxPosition.position(null, center.getBounds(), window, BoxPosition.CENTER);
+		if(north != null) BoxPosition.position(north.getBounds(), null, window, BoxPosition.TOP);
+		if(south != null) BoxPosition.position(south.getBounds(), null, window, BoxPosition.BOTTOM);
+		if(west != null) BoxPosition.position(west.getBounds(), null, window, BoxPosition.LEFT);
+		if(east != null) BoxPosition.position(east.getBounds(), null, window, BoxPosition.RIGHT);
+		if(center != null) BoxPosition.position(center.getBounds(), null, window, BoxPosition.CENTER);
 	}
 
 	//TODO: this might need a bit of editing

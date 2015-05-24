@@ -133,13 +133,38 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 		}
 		if(resizable) {
 			Dimension d = layout.getMinimumSize();
-			if(d != null) {
-				if(box.getWidth() < d.getWidth()) box.setWidth(Math.min(Math.max(minWidth, (int)d.getWidth()), gui.getOwner().getGuiOwner().getWidth()));
-				if(box.getHeight() < d.getHeight()) box.setHeight(Math.min(Math.max(minHeight, (int)d.getHeight()), gui.getOwner().getGuiOwner().getHeight()));
-				BoxPosition.position(null, box, gui.getOwner().getWindow(), BoxPosition.WITHIN_STRICT);
+			GuiManager manager = gui.getOwner();
+			int dW = d != null ? d.getWidth() : 0;
+			int dH = d != null ? d.getHeight() : 0;
+			int w = box.getWidth();
+			int h = box.getHeight();
+			int width = w;
+			int height = h;
+			int wW = manager.getWindowWidth();
+			int wH = manager.getWindowHeight();
+			if(parent == null) {
+				width = wW;
+				height = wH;
+			} else {
+				if(width < dW) width = Math.min(dW, wW);
+				else width = Math.min(width, dW);
+				if(height < dH) height = Math.min(dH, wH);
+				else height = Math.min(height, dH);
 			}
+			box.setWidth(width);
+			box.setHeight(height);
+			BoxPosition.position(box, null, manager.getWindow(), BoxPosition.WITHIN_STRICT);
 		}
 		layout.refresh(box);
+	}
+	
+	public void refreshAll() {
+		for(Component c : children) {
+			if(c instanceof Container) {
+				((Container)c).refreshAll();
+			}
+		}
+		refresh();
 	}
 
 	@Override

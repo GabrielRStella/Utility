@@ -10,6 +10,8 @@ public interface Container extends Component {
 	
 	//refreshes the state of the container (position components, resize)
 	void refresh();
+	//recursively refreshes all sub-containers and this container
+	void refreshAll();
 	
 	//if the container should render itself, or just children
 	boolean doRenderSelf();

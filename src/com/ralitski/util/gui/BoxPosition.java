@@ -160,11 +160,11 @@ public enum BoxPosition {
 	
 	public abstract void position(Box toPosition, Box relative, int space, Box window);
 	
-	public static void position(Box relative, Box boundingBox, Box window, BoxPosition...positions) {
-		position(relative, boundingBox, window, 0, positions);
+	public static void position(Box boundingBox, Box relative, Box window, BoxPosition...positions) {
+		position(boundingBox, relative, window, 0, positions);
 	}
 	
-	public static void position(Box relative, Box boundingBox, Box window, int boundarySpace, BoxPosition...positions) {
+	public static void position(Box boundingBox, Box relative, Box window, int boundarySpace, BoxPosition...positions) {
 		for(BoxPosition position : positions) {
 			if(relative != null || !position.isRelative())
 				position.position(boundingBox, relative, boundarySpace, window);
