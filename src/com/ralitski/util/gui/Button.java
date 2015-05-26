@@ -103,6 +103,7 @@ public class Button extends ComponentAbstract {
 	protected void doRender() {
 		super.doRender();
 		//love me some getters
+		System.out.println(333);
 		gui.getOwner().getGuiOwner().getFontRenderer().renderLine(title, textOffset, this, getTextStyle(), FontRenderer.WIDTH_ALIGN_CENTER | FontRenderer.HEIGHT_ALIGN_CENTER);
 	}
 

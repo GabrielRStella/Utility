@@ -90,22 +90,24 @@ public class BoxLayout implements Layout {
 
 	@Override
 	public void refresh(Box window) {
-		int dir = DIR & direction;
-		BoxPosition pos = dir == DIR_UP ? BoxPosition.ABOVE_STRICT : (dir == DIR_LEFT ? BoxPosition.LEFT_OF_STRICT : (dir == DIR_RIGHT ? BoxPosition.RIGHT_OF_STRICT : BoxPosition.BELOW_STRICT));
-		boolean isX = (dir & DIR_X) != 0;
-		int align = direction & (isX ? ALIGN_X : ALIGN_Y);
-		BoxPosition al = align == ALIGN_LEFT ? BoxPosition.LEFT : (align == ALIGN_RIGHT ? BoxPosition.RIGHT : (align == ALIGN_UP ? BoxPosition.TOP : (align == ALIGN_DOWN ? BoxPosition.BOTTOM : BoxPosition.CENTER)));
-		//align base component
-		Component prev = components.get(0);
-		BoxPosition base = dir == DIR_UP ? BoxPosition.BOTTOM : (dir == DIR_LEFT ? BoxPosition.RIGHT : (dir == DIR_RIGHT ? BoxPosition.LEFT : BoxPosition.TOP));
-		al.position(prev.getBounds(), null, isX ? spaceY : spaceX, window);
-		base.position(prev.getBounds(), null, isX ? spaceX : spaceY, window);
-		//align other components
-		for(int i = 1; i < components.size(); i++) {
-			Component c = components.get(i);
-			al.position(c.getBounds(), prev.getBounds(), isX ? spaceY : spaceX, window);
-			pos.position(c.getBounds(), prev.getBounds(), isX ? spaceX : spaceY, window);
-			prev = c;
+		if(!components.isEmpty()) {
+			int dir = DIR & direction;
+			BoxPosition pos = dir == DIR_UP ? BoxPosition.ABOVE_STRICT : (dir == DIR_LEFT ? BoxPosition.LEFT_OF_STRICT : (dir == DIR_RIGHT ? BoxPosition.RIGHT_OF_STRICT : BoxPosition.BELOW_STRICT));
+			boolean isX = (dir & DIR_X) != 0;
+			int align = direction & (isX ? ALIGN_X : ALIGN_Y);
+			BoxPosition al = align == ALIGN_LEFT ? BoxPosition.LEFT : (align == ALIGN_RIGHT ? BoxPosition.RIGHT : (align == ALIGN_UP ? BoxPosition.TOP : (align == ALIGN_DOWN ? BoxPosition.BOTTOM : BoxPosition.CENTER)));
+			//align base component
+			Component prev = components.get(0);
+			BoxPosition base = dir == DIR_UP ? BoxPosition.BOTTOM : (dir == DIR_LEFT ? BoxPosition.RIGHT : (dir == DIR_RIGHT ? BoxPosition.LEFT : BoxPosition.TOP));
+			al.position(prev.getBounds(), null, isX ? spaceY : spaceX, window);
+			base.position(prev.getBounds(), null, isX ? spaceX : spaceY, window);
+			//align other components
+			for(int i = 1; i < components.size(); i++) {
+				Component c = components.get(i);
+				al.position(c.getBounds(), prev.getBounds(), isX ? spaceY : spaceX, window);
+				pos.position(c.getBounds(), prev.getBounds(), isX ? spaceX : spaceY, window);
+				prev = c;
+			}
 		}
 	}
 
