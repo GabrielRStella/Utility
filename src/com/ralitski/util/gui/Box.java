@@ -146,8 +146,13 @@ public class Box implements Cloneable {
     }
     
     public void translate(int x, int y) {
+    	if(eventListener != null)
+    		eventListener.onBoxEvent(new BoxEvent(this, BoxEventType.TRANSLATE_X, 0, x));
     	minX += x;
     	maxX += x;
+    	
+    	if(eventListener != null)
+    		eventListener.onBoxEvent(new BoxEvent(this, BoxEventType.TRANSLATE_Y, 0, y));
     	minY += y;
     	maxY += y;
     }
