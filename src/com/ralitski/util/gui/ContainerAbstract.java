@@ -273,25 +273,13 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Box
 	}
 	
 	public void onBoxEvent(BoxEvent event) {
-		/*
-		SET_MINX,
-		SET_MINY,
-		SET_MAXX,
-		SET_MAXY,
-		SET_WIDTH,
-		SET_HEIGHT,
-		SET_CENTERX,
-		SET_CENTERY,
-		SET_X,
-		SET_Y,
-		TRANSLATE_X,
-		TRANSLATE_Y;
-		 */
 		BoxEventType type = event.getEventType();
 		if(type.isMovement()) {
+			int x = event.getTranslateX();
+			int y = event.getTranslateY();
 			//translate the container's children
 			for(Component c : children) {
-				//...
+				c.getBounds().translate(x, y);
 			}
 		} else {
 			//refresh the container to distribute its children

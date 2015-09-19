@@ -2,6 +2,9 @@ package com.ralitski.util.gui;
 
 public class BoxEvent {
 
+	public static final int AXIS_X = 1;
+	public static final int AXIS_Y = 2;
+
 	private Box source;
 	private BoxEventType eventType;
 	/**
@@ -39,28 +42,46 @@ public class BoxEvent {
 		return newValue;
 	}
 
+	public int getTranslateX() {
+		if(eventType.isMovement() && eventType.getAxis() == AXIS_X) {
+			return newValue - prevValue;
+		} else return 0;
+	}
+
+	public int getTranslateY() {
+		if(eventType.isMovement() && eventType.getAxis() == AXIS_Y) {
+			return newValue - prevValue;
+		} else return 0;
+	}
+
 	public static enum BoxEventType {
-		SET_MINX(true),
-		SET_MINY(true),
-		SET_MAXX(false),
-		SET_MAXY(false),
-		SET_WIDTH(false),
-		SET_HEIGHT(false),
-		SET_CENTERX(true),
-		SET_CENTERY(true),
-		SET_X(true),
-		SET_Y(true),
-		TRANSLATE_X(true),
-		TRANSLATE_Y(true);
+		SET_MINX(true, AXIS_X),
+		SET_MINY(true, AXIS_Y),
+		SET_MAXX(false, AXIS_X),
+		SET_MAXY(false, AXIS_Y),
+		SET_WIDTH(false, AXIS_X),
+		SET_HEIGHT(false, AXIS_Y),
+		SET_CENTERX(true, AXIS_X),
+		SET_CENTERY(true, AXIS_Y),
+		SET_X(true, AXIS_X),
+		SET_Y(true, AXIS_Y),
+		TRANSLATE_X(true, AXIS_X),
+		TRANSLATE_Y(true, AXIS_Y);
 		
 		private boolean isMovement;
+		private int axis;
 		
-		BoxEventType(boolean isMovement) {
+		BoxEventType(boolean isMovement, int axis) {
 			this.isMovement = isMovement;
+			this.axis = axis;
 		}
 		
 		public boolean isMovement() {
 			return isMovement;
+		}
+		
+		public int getAxis() {
+			return axis;
 		}
 	}
 }
