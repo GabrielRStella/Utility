@@ -36,8 +36,8 @@ public abstract class RenderManagerUserAbstract extends AbstractDisplayUser impl
     
     //stuff
 
-    public void updatePartial(float partial) {
-      renderManager.render(partial);
+    public void updatePartial(float partial, float partialFromLast) {
+      renderManager.render(partial, partialFromLast);
     }
     
     public void setup() {

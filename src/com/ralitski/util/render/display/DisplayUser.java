@@ -13,10 +13,11 @@ public interface DisplayUser {
 	/**
 	 * updates logic and rendering; return false to shutdown program
 	 * @param tick If at least a full tick has passed
-	 * @param partial the part of a tick that has passed since the last call to update(boolean, float)
+	 * @param partial the part of a tick that has passed since the last call to update(boolean, float, float)
+	 * @param partialFromLast the part of a tick that has passed since the last tick
 	 * @return
 	 */
-	boolean update(boolean tick, float partial);
+	boolean update(boolean tick, float partial, float partialFromLast);
 	
 	/**
 	 * called on program shutdown in order to save / cleanup / whatever

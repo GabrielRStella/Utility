@@ -53,13 +53,13 @@ public abstract class GuiOwnerAbstract extends RenderManagerUserAbstract impleme
 	protected abstract Gui getMainMenu(GuiManager guiManager);
 
 	@Override
-	public void render3dTransformed(float partial) {
-		guiManager.render3d(partial);
+	public void render3dTransformed(float partial, float partialFromLast) {
+		guiManager.render3d(partial, partialFromLast);
 	}
 
 	@Override
-	public void render2d(float partial) {
-		guiManager.render2d(partial);
+	public void render2d(float partial, float partialFromLast) {
+		guiManager.render2d(partial, partialFromLast);
 	}
 
 	@Override

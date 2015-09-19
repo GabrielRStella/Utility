@@ -165,7 +165,7 @@ public class RenderManager {
         }
     }
     
-    public void render(float partial) {
+    public void render(float partial, float partialFromLast) {
     	//clear screen
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glLoadIdentity();
@@ -173,22 +173,22 @@ public class RenderManager {
         
         Camera camera = owner.getCamera();
         if(this.is3D && camera != null) {
-            owner.render3dUntransformed(partial);
+            owner.render3dUntransformed(partial, partialFromLast);
 
             //TODO: le test
             Orientation3d o = camera.getOrientation();
             GL11.glRotatef((float)Math.toDegrees(o.getPitch()), 1, 0, 0);
             GL11.glRotatef((float)Math.toDegrees(o.getRoll()), 0, 0, 1);
             GL11.glRotatef((float)Math.toDegrees(o.getYaw()), 0, 1, 0);
-            owner.render3dRotated(partial);
+            owner.render3dRotated(partial, partialFromLast);
             Point3d p = camera.getPosition();
             GL11.glTranslatef(-p.getX(), -p.getY(), -p.getZ());
-            owner.render3dTransformed(partial);
+            owner.render3dTransformed(partial, partialFromLast);
         }
         
         //2D stoof
         begin2d();
-        owner.render2d(partial);
+        owner.render2d(partial, partialFromLast);
         end2d();
     }
     

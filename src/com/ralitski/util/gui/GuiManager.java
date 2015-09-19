@@ -51,12 +51,12 @@ public class GuiManager implements InputUser {
 		return new Box(0, 0, getWindowWidth(), getWindowHeight());
 	}
 	
-	public void render2d(float partial) {
-		if(currentScreen != null) currentScreen.render2d(partial);
+	public void render2d(float partial, float partialFromLast) {
+		if(currentScreen != null) currentScreen.render2d(partial, partialFromLast);
 	}
 	
-	public void render3d(float partial) {
-		if(currentScreen != null) currentScreen.render3d(partial);
+	public void render3d(float partial, float partialFromLast) {
+		if(currentScreen != null) currentScreen.render3d(partial, partialFromLast);
 	}
 
 	@Override

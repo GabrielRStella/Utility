@@ -6,6 +6,7 @@ import com.ralitski.util.input.InputUser;
 import com.ralitski.util.input.event.MouseEvent;
 
 //TODO: possibly update() or something
+//TODO: edit input event hierarchy and Component position management
 //note: input events passed are not guaranteed to be within this component
 public interface Component extends InputUser {
 	Gui getGui();

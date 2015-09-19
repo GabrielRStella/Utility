@@ -113,6 +113,7 @@ public class DisplayManager implements WindowListener {
 
     public void start() {
         if(!setup) return;
+        if(timer != null) timer.time();
         while (running) {
             this.update();
         }
@@ -133,11 +134,12 @@ public class DisplayManager implements WindowListener {
         resizeCheck();
         float f = timer != null ? (float)timer.time() : 1;
         partialTicks += f;
-        boolean flag = this.partialTicks >= 1F;
-        if(flag) partialTicks -= 1F; //get rid of extra built-up ticks
-        if (!this.user.update(flag, f)) {
+        boolean flag = partialTicks >= 1F;
+        System.out.println(f + " " + partialTicks + " " + flag);
+        if (!this.user.update(flag, f, partialTicks)) {
             this.running = false;
         }
+        if(flag) partialTicks -= 1F; //get rid of extra built-up ticks
         //Display.sync(60);
         Display.update();
         if (Display.isCloseRequested()) {
@@ -194,7 +196,7 @@ public class DisplayManager implements WindowListener {
 		this.stopOnClose = stopOnClose;
 	}
     
-    public void time(int ticksPerSecond) {
+    public void time(float ticksPerSecond) {
         this.timer = Ticker.ticksPerSecond(ticksPerSecond);
     }
 

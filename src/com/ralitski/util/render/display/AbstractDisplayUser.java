@@ -34,11 +34,9 @@ public abstract class AbstractDisplayUser implements DisplayUser {
     }
 
     @Override
-    public boolean update(boolean tick, float partial) {
-        if (tick) {
-            this.updateTick();
-        }
-        this.updatePartial(partial);
+    public boolean update(boolean tick, float partial, float partialFromLast) {
+        if (tick) updateTick();
+        updatePartial(partial, partialFromLast);
         return true;
     }
     
@@ -54,7 +52,7 @@ public abstract class AbstractDisplayUser implements DisplayUser {
 
     public abstract void updateTick();
 
-    public abstract void updatePartial(float partial);
+    public abstract void updatePartial(float partial, float partialFromLast);
 
     @Override
     public int getWidth() {
@@ -108,7 +106,7 @@ public abstract class AbstractDisplayUser implements DisplayUser {
 		manager.setStopOnClose(stopOnClose);
 	}
     
-    public void time(int ticksPerSecond) {
+    public void time(float ticksPerSecond) {
     	manager.time(ticksPerSecond);
     }
 

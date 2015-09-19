@@ -1,6 +1,10 @@
 package com.ralitski.util.render.camera;
 
 import com.ralitski.util.input.InputUser;
+import com.ralitski.util.input.event.KeyEvent;
+import com.ralitski.util.input.event.MouseEvent;
+import com.ralitski.util.input.event.MouseWheelEvent;
+import com.ralitski.util.input.event.KeyEvent.KeyEventType;
 import com.ralitski.util.math.geom.d3.Orientation3d;
 import com.ralitski.util.math.geom.d3.Point3d;
 import com.ralitski.util.render.camera.Camera;
@@ -15,11 +19,11 @@ import org.lwjgl.input.Mouse;
 public class DebugCamera implements Camera, InputUser {
     
     public static final float MIN_Y = 1;
-    public static final float GRAVITY = .065F;
-    public static final float DRAG = .7F;
-    public static final float SPEED = .025F;
+    public static final float GRAVITY = .07F;
+    public static final float DRAG = .9F;
+    public static final float SPEED = .001F;
     public static final float SENSITIVITY = .5F;
-    public static final float FLY_Y = .05F;
+    public static final float FLY_Y = .01F;
     
     private float x, y, z;
     private Pos pos = new Pos();
@@ -95,64 +99,6 @@ public class DebugCamera implements Camera, InputUser {
     public float getZ() {
         return z;
     }
-
-    @Override
-    public void onMouseClick(int x, int y, int button) {
-		System.out.println(button + " on");
-    }
-
-    @Override
-    public void onMouseHold(int x, int y, int button, int ticks) {
-    }
-
-    @Override
-    public void onMouseRelease(int x, int y, int button, int ticks) {
-		System.out.println(button + " off (" + ticks + ")");
-    }
-
-    @Override
-    public void onMouseWheel(int x, int y, int dWheel) {
-        flying = dWheel > 0;
-    }
-
-    @Override
-    public void onMouseEnterWindow(int x, int y) {
-    }
-
-    @Override
-    public void onMouseExitWindow(int x, int y) {
-    }
-
-    @Override
-    public void onKeyClick(int key, char keyChar) {
-        if(key == Keyboard.KEY_ESCAPE) {
-            mouseGrabbed = !Mouse.isGrabbed();
-            Mouse.setGrabbed(mouseGrabbed);
-        } else if(key == Keyboard.KEY_TAB) {
-            ONLY_FLY_UP = !ONLY_FLY_UP;
-        }
-    }
-
-    @Override
-    public void onKeyHold(int key, int ticks) {
-        if(key == Keyboard.KEY_SPACE && (flying || onGround)) {
-            my += flying ? FLY_Y : 1;
-        } else if(key == Keyboard.KEY_LSHIFT && flying) {
-            my -= FLY_Y;
-        } else if(key == Keyboard.KEY_W) {
-            //forward
-            moveForward(SPEED);
-        } else if(key == Keyboard.KEY_S) {
-            //backward
-            moveForward(-SPEED);
-        }else if(key == Keyboard.KEY_A) {
-            //left
-            moveStrafe(-SPEED);
-        } else if(key == Keyboard.KEY_D) {
-            //right
-            moveStrafe(SPEED);
-        }
-    }
     
     private void moveForward(float forward) {
     	/*
@@ -184,10 +130,6 @@ public class DebugCamera implements Camera, InputUser {
         mx -= -(float)Math.cos(-rYaw) * strafe;
         mz -= (float)Math.sin(-rYaw) * strafe;
     }
-
-    @Override
-    public void onKeyRelease(int key, char keyChar, int ticks) {
-    }
     
     private class Pos extends Point3d {
     	public void setX(float x) {
@@ -214,4 +156,45 @@ public class DebugCamera implements Camera, InputUser {
     		return z;
     	}
     }
+
+	@Override
+	public void onMouseEvent(MouseEvent event) {
+		if(event instanceof MouseWheelEvent) {
+			MouseWheelEvent mEvent = (MouseWheelEvent)event;
+	        flying = mEvent.getWheel() > 0;
+		}
+	}
+
+	@Override
+	public void onKeyEvent(KeyEvent event) {
+		// TODO Auto-generated method stub
+		int key = event.getKey();
+		KeyEventType type = event.getType();
+		if(type == KeyEventType.DOWN) {
+	        if(key == Keyboard.KEY_ESCAPE) {
+	            mouseGrabbed = !Mouse.isGrabbed();
+	            Mouse.setGrabbed(mouseGrabbed);
+	        } else if(key == Keyboard.KEY_TAB) {
+	            ONLY_FLY_UP = !ONLY_FLY_UP;
+	        }
+		} else if(type == KeyEventType.HOLD) {
+	        if(key == Keyboard.KEY_SPACE && (flying || onGround)) {
+	            my += flying ? FLY_Y : 1;
+	        } else if(key == Keyboard.KEY_LSHIFT && flying) {
+	            my -= FLY_Y;
+	        } else if(key == Keyboard.KEY_W) {
+	            //forward
+	            moveForward(SPEED);
+	        } else if(key == Keyboard.KEY_S) {
+	            //backward
+	            moveForward(-SPEED);
+	        }else if(key == Keyboard.KEY_A) {
+	            //left
+	            moveStrafe(-SPEED);
+	        } else if(key == Keyboard.KEY_D) {
+	            //right
+	            moveStrafe(SPEED);
+	        }
+		}
+	}
 }

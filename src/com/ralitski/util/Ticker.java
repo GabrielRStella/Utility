@@ -24,7 +24,7 @@ public class Ticker {
 	public double time() {
 		long time = getTime();
 		long delta = time - prevTime; //delta time in milliseconds
-		double tick = ticksPerMillisecond * delta;
+		double tick = ticksPerMillisecond * (double)delta;
 		prevTime = time;
 		return tick;
 	}

@@ -75,11 +75,11 @@ public class Gui implements InputUser {
 		return true;
 	}
 	
-	public void render2d(float partial) {
+	public void render2d(float partial, float partialFromLast) {
 		GuiManager manager = getOwner();
 		GuiOwner render = manager.getGuiOwner();
 		if(parent != null && renderParent()) {
-			parent.render2d(partial);
+			parent.render2d(partial, partialFromLast);
 			if(drawFilm()) render.drawBox(manager.getWindow(), FILM);
 		}
 		if(topLevel != null) topLevel.render(render);
@@ -90,7 +90,7 @@ public class Gui implements InputUser {
 	}
 	
 	//optional 3d rendering
-	public void render3d(float partial) {}
+	public void render3d(float partial, float partialFromLast) {}
 	
 	//optional stuff to let the gui do whatever it needs to
 	public void update() {}
