@@ -1,6 +1,5 @@
 package com.ralitski.util.gui;
 
-import com.ralitski.util.gui.render.FontRenderer;
 import com.ralitski.util.gui.render.RenderStyle;
 import com.ralitski.util.input.event.KeyEvent;
 import com.ralitski.util.input.event.MouseButtonEvent;
