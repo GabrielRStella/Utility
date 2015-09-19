@@ -5,7 +5,7 @@ import com.ralitski.util.gui.render.RenderStyle;
 import com.ralitski.util.input.InputUser;
 
 //TODO: possibly update() or something
-//TODO: edit input event hierarchy and Component position management
+//TODO: edit input event hierarchy
 //note: input events passed are not guaranteed to be within this component
 public interface Component extends InputUser {
 	Gui getGui();
@@ -57,4 +57,9 @@ public interface Component extends InputUser {
 
 	void addComponentEventListener(ComponentEventListener listener);
 	void removeComponentEventListener(ComponentEventListener listener);
+	
+	/**
+	 * Tells the component to release all of its resources.
+	 */
+	void delete();
 }

@@ -6,7 +6,6 @@ import java.util.List;
 import com.ralitski.util.gui.render.RenderList;
 import com.ralitski.util.gui.render.RenderListState;
 import com.ralitski.util.gui.render.RenderStyle;
-import com.ralitski.util.input.event.MouseEvent;
 
 public abstract class ComponentAbstract implements Component {
 	
@@ -202,8 +201,8 @@ public abstract class ComponentAbstract implements Component {
 		}
 	}
 	
-	protected void setBox(Box box) {
-		this.box = box;
+	public void delete() {
+		if(renderList != null) renderList.delete();
 	}
 
 }

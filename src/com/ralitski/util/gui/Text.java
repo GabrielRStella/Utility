@@ -1,12 +1,14 @@
 package com.ralitski.util.gui;
 
-import com.ralitski.util.gui.render.FontRenderer;
+import com.ralitski.util.gui.render.GuiRenderer;
+import com.ralitski.util.gui.render.RenderListBounded;
 import com.ralitski.util.input.event.KeyEvent;
 import com.ralitski.util.input.event.MouseEvent;
 
 public class Text extends ComponentAbstract {
 	
 	private String title;
+	private RenderListBounded text;
 	
 	private boolean minDirty = true;
 	private int minWidth = 0;
@@ -46,7 +48,7 @@ public class Text extends ComponentAbstract {
 	}
 	
 	private void recalcMin() {
-		Dimension d = gui.getOwner().getGuiOwner().getFontRenderer().getDimensions(title, this, style);
+		Dimension d = gui.getOwner().getGuiOwner().getRenderer().getDimensions(title, this, style);
 		minWidth = d.getWidth();
 		minHeight = d.getHeight();
 		box.setWidth(minWidth);
@@ -57,11 +59,6 @@ public class Text extends ComponentAbstract {
 	public boolean isResizable() {
 		return true;
 	}
-
-//	@Override
-//	public boolean useParentRenderList() {
-//		return true;
-//	}
 	
 	public String getTitle() {
 		return title;
@@ -70,11 +67,17 @@ public class Text extends ComponentAbstract {
 	public void setTitle(String title) {
 		this.title = title;
 		if(renderListState != null) renderListState.setDirty(true);
+		if(text != null) text.delete();
+		text = null;
 	}
 
 	protected void doRender() {
 		//love me some getters
-		gui.getOwner().getGuiOwner().getFontRenderer().renderLine(title, box, this, style, FontRenderer.WIDTH_ALIGN_CENTER | FontRenderer.HEIGHT_ALIGN_CENTER);
+		GuiRenderer renderer = gui.getOwner().getGuiOwner().getRenderer();
+		if(text == null) {
+			text = renderer.getTextRenderList(title, this, style);
+		}
+		renderer.drawBox(text, box, null, null, GuiRenderer.ALIGN_WIDTH_CENTER | GuiRenderer.ALIGN_HEIGHT_CENTER);
 	}
 
 	@Override
@@ -83,6 +86,10 @@ public class Text extends ComponentAbstract {
 
 	@Override
 	public void onKeyEvent(KeyEvent event) {
+	}
+	
+	public void delete() {
+		if(text != null) text.delete();
 	}
 
 }

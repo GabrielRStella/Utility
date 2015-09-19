@@ -1,5 +1,7 @@
 package com.ralitski.util.gui;
 
+import com.ralitski.util.gui.render.GuiRenderer;
+import com.ralitski.util.gui.render.RenderListBounded;
 import com.ralitski.util.gui.render.RenderStyle;
 import com.ralitski.util.input.event.KeyEvent;
 import com.ralitski.util.input.event.MouseButtonEvent;
@@ -9,12 +11,11 @@ import com.ralitski.util.input.event.MouseEvent;
 public class Button extends ComponentAbstract {
 	
 	private String title;
+	private RenderListBounded text;
 	private int mouseButton = 0;
 	
 	private BoxOutset textOffset;
-	private int textOutsetX;
-	private int textOutsetY;
-	private RenderStyle text;
+	private RenderStyle textStyle;
 	
 	public Button(Gui gui, String title) {
 		super(gui);
@@ -38,13 +39,13 @@ public class Button extends ComponentAbstract {
 
 	@Override
 	public void setRenderStyle(int index, RenderStyle s) {
-		if(index == 0) style = s;
-		else text = s;
+		if(index == 1) style = s;
+		else textStyle = s;
 	}
 
 	@Override
 	public RenderStyle getRenderStyle(int index) {
-		return index == 0 ? style : text;
+		return index == 0 ? style : textStyle;
 	}
 
 	@Override
@@ -53,15 +54,15 @@ public class Button extends ComponentAbstract {
 	}
 	
 	public RenderStyle getTextStyle() {
-		return text != null ? text : style;
+		return textStyle;
 	}
 
 	public void setMinWidth(int minWidth) {
-		this.minWidth = Math.max(minWidth, gui.getOwner().getGuiOwner().getFontRenderer().getDimensions(title, this, getTextStyle()).getWidth() - textOffset.getWidth() * 2);
+		this.minWidth = Math.max(minWidth, gui.getOwner().getGuiOwner().getRenderer().getDimensions(title, this, textStyle).getWidth() - textOffset.getWidth() * 2);
 	}
 
 	public void setMinHeight(int minHeight) {
-		this.minWidth = Math.max(minWidth, gui.getOwner().getGuiOwner().getFontRenderer().getDimensions(title, this, getTextStyle()).getHeight() - textOffset.getHeight() * 2);
+		this.minWidth = Math.max(minWidth, gui.getOwner().getGuiOwner().getRenderer().getDimensions(title, this, textStyle).getHeight() - textOffset.getHeight() * 2);
 	}
 
 	public int getMouseButton() {
@@ -79,7 +80,7 @@ public class Button extends ComponentAbstract {
 	}
 	
 	public void setTextInsetX(int textInset) {
-		textOffset.setOutsetX(textOutsetX = -textInset);
+		textOffset.setOutsetX(-textInset);
 	}
 	
 	public int getTextInsetY() {
@@ -87,7 +88,7 @@ public class Button extends ComponentAbstract {
 	}
 	
 	public void setTextInsetY(int textInset) {
-		textOffset.setOutsetY(textOutsetY = -textInset);
+		textOffset.setOutsetY(-textInset);
 	}
 	
 	public String getTitle() {
@@ -97,12 +98,18 @@ public class Button extends ComponentAbstract {
 	public void setTitle(String title) {
 		this.title = title;
 		if(renderListState != null) renderListState.setDirty(true);
+		if(text != null) text.delete();
+		text = null;
 	}
 
 	protected void doRender() {
 		super.doRender();
 		//love me some getters
-		gui.getOwner().getGuiOwner().getFontRenderer().renderLine(title, textOffset, this, getTextStyle(), FontRenderer.WIDTH_ALIGN_CENTER | FontRenderer.HEIGHT_ALIGN_CENTER);
+		GuiRenderer renderer = gui.getOwner().getGuiOwner().getRenderer();
+		if(text == null) {
+			text = renderer.getTextRenderList(title, this, textStyle);
+		}
+		renderer.drawBox(text, box, null, null, GuiRenderer.ALIGN_WIDTH_CENTER | GuiRenderer.ALIGN_HEIGHT_CENTER);
 	}
 
 	@Override
@@ -125,9 +132,8 @@ public class Button extends ComponentAbstract {
 		//dun care
 	}
 	
-	protected void setBox(Box box) {
-		super.setBox(box);
-		textOffset = new BoxOutset(box, textOutsetX, textOutsetY);
+	public void delete() {
+		if(text != null) text.delete();
 	}
 
 }

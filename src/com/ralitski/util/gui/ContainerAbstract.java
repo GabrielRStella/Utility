@@ -283,8 +283,15 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Box
 			}
 		} else {
 			//refresh the container to distribute its children
-			//TODO: use refreshAll()?
+			//TODO: use refreshAll()? naw
 			this.refresh();
+		}
+	}
+	
+	public void delete() {
+		if(renderList != null) renderList.delete();
+		for(Component c : children) {
+			c.delete();
 		}
 	}
 
