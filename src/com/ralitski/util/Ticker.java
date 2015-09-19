@@ -12,9 +12,15 @@ public class Ticker {
 	
 	private float ticksPerMillisecond;
 	private long prevTime;
+	private boolean start;
 	
 	public Ticker(float ticksPerMillisecond) {
 		this.ticksPerMillisecond = ticksPerMillisecond;
+	}
+	
+	public void start() {
+		start = true;
+		prevTime = getTime();
 	}
 	
 	/**
@@ -22,6 +28,7 @@ public class Ticker {
 	 * @return The proportion of a tick (or ticks) that have passed since the last call to time()
 	 */
 	public double time() {
+		if(!start) start(); //safety feature to prevent a bug where on the first call to time(), prevTime = 0 and thus delta = getTime()
 		long time = getTime();
 		long delta = time - prevTime; //delta time in milliseconds
 		double tick = ticksPerMillisecond * (double)delta;

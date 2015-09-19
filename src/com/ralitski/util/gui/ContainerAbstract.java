@@ -52,7 +52,7 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 		layout = new BlankLayout();
 		children = new LinkedList<Component>();
 		GuiOwner owner = gui.getOwner().getGuiOwner();
-		if(owner.supportLists()) {
+		if(owner.getRenderer().supportLists()) {
 			renderWithThis = new LinkedList<Component>();
 			renderWithSelf = new LinkedList<Component>();
 //			getRenderList(owner);
@@ -86,7 +86,7 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 	@Override
 	public void add(Component c, String layout) {
 		children.add(c);
-		if(gui.getOwner().getGuiOwner().supportLists()) {
+		if(gui.getOwner().getGuiOwner().getRenderer().supportLists()) {
 			if(c.useParentRenderList()) {
 				this.renderWithThis.add(c);
 				c.setParentRenderList(renderListState);
@@ -102,7 +102,7 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 			c.setParent(null);
 			children.remove(c);
 			layout.removeComponent(c);
-			if(gui.getOwner().getGuiOwner().supportLists()) {
+			if(gui.getOwner().getGuiOwner().getRenderer().supportLists()) {
 				if(c.useParentRenderList()) this.renderWithThis.remove(c);
 				else this.renderWithSelf.remove(c);
 //				if(!this.renderWithThis.remove(c)) this.renderWithSelf.remove(c);
@@ -188,7 +188,7 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 	}
 	
 	public void render(GuiOwner owner) {
-		if(owner.supportLists() && !useParentRenderList()) {
+		if(owner.getRenderer().supportLists() && !useParentRenderList()) {
 			if(renderList == null) getRenderList(owner);
 			if(renderListState.isDirty() || !renderList.registered()) {
 				renderList.compile();
@@ -224,11 +224,11 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 	}
 	
 	protected void renderSelf(GuiOwner owner) {
-		owner.drawBox(box, this, style);
+		owner.getRenderer().drawBox(box, this, style);
 	}
 	
 	protected void getRenderList(GuiOwner owner) {
-		renderList = owner.newList(new RenderRunner());
+		renderList = owner.getRenderer().newList(new RenderRunner());
 		renderListState.setDirty(true);
 	}
 	

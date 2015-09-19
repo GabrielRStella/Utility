@@ -80,7 +80,7 @@ public class Gui implements InputUser {
 		GuiOwner render = manager.getGuiOwner();
 		if(parent != null && renderParent()) {
 			parent.render2d(partial, partialFromLast);
-			if(drawFilm()) render.drawBox(manager.getWindow(), FILM);
+			if(drawFilm()) render.getRenderer().drawBox(manager.getWindow(), FILM);
 		}
 		if(topLevel != null) topLevel.render(render);
 	}

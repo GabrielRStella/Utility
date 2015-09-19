@@ -46,7 +46,7 @@ public abstract class ComponentAbstract implements Component {
 		this.gui = gui;
 		eventListeners = new LinkedList<ComponentEventListener>();
 		GuiOwner owner = gui.getOwner().getGuiOwner();
-		if(owner.supportLists()) {
+		if(owner.getRenderer().supportLists()) {
 			renderListState = new RenderListState();
 //			getRenderList(owner);
 		}
@@ -108,7 +108,7 @@ public abstract class ComponentAbstract implements Component {
 	@Override
 	public void setParent(Container container) {
 		this.parent = container;
-		setBox(BoxRelative.makeRelative(box, container != null ? container.getBounds() : null));
+//		setBox(BoxRelative.makeRelative(box, container != null ? container.getBounds() : null));
 	}
 
 	@Override
@@ -142,17 +142,12 @@ public abstract class ComponentAbstract implements Component {
 	}
 
 	@Override
-	public boolean receiveSelectedMouseEvent(MouseEvent event) {
-		return false;
-	}
-
-	@Override
 	public void addComponentEventListener(ComponentEventListener listener) {
 		eventListeners.add(listener);
 	}
 
 	@Override
-	public void removeGuiEventListener(ComponentEventListener listener) {
+	public void removeComponentEventListener(ComponentEventListener listener) {
 		eventListeners.remove(listener);
 	}
 
@@ -180,7 +175,7 @@ public abstract class ComponentAbstract implements Component {
 	}
 	
 	public void render(GuiOwner owner) {
-		if(owner.supportLists() && !useParentRenderList()) {
+		if(owner.getRenderer().supportLists() && !useParentRenderList()) {
 			if(renderList == null) getRenderList(owner);
 			if(renderListState.isDirty() || !renderList.registered()) {
 				renderList.compile();
@@ -192,12 +187,12 @@ public abstract class ComponentAbstract implements Component {
 	}
 	
 	protected void getRenderList(GuiOwner owner) {
-		renderList = owner.newList(new RenderRunner());
+		renderList = owner.getRenderer().newList(new RenderRunner());
 		renderListState.setDirty(true);
 	}
 	
 	protected void doRender() {
-		gui.getOwner().getGuiOwner().drawBox(box, this, style);
+		gui.getOwner().getGuiOwner().getRenderer().drawBox(box, this, style);
 	}
 	
 	private class RenderRunner implements Runnable {

@@ -3,7 +3,6 @@ package com.ralitski.util.gui;
 import com.ralitski.util.gui.render.RenderListState;
 import com.ralitski.util.gui.render.RenderStyle;
 import com.ralitski.util.input.InputUser;
-import com.ralitski.util.input.event.MouseEvent;
 
 //TODO: possibly update() or something
 //TODO: edit input event hierarchy and Component position management
@@ -24,7 +23,6 @@ public interface Component extends InputUser {
 	//this should reflect an editable boundary for the element; any change to this box should be immediately available when dealing with the component.
 	Box getBounds();
 
-	
 	int getMinWidth();
 	void setMinWidth(int width);
 	int getMinHeight();
@@ -55,17 +53,8 @@ public interface Component extends InputUser {
 	 */
 	void setParentRenderList(RenderListState state);
 	
-	//extra input
-	
-	/**
-	 * sends a MouseEvent to a selected component.
-	 * @param event The event in question
-	 * @return true to mark that the event has been received and handled, false to allow other Components to handle the event
-	 */
-	boolean receiveSelectedMouseEvent(MouseEvent event);
-	
 	//event system
 
 	void addComponentEventListener(ComponentEventListener listener);
-	void removeGuiEventListener(ComponentEventListener listener);
+	void removeComponentEventListener(ComponentEventListener listener);
 }
