@@ -3,6 +3,7 @@ package com.ralitski.util.gui;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.ralitski.util.gui.BoxEvent.BoxEventType;
 import com.ralitski.util.gui.layout.BlankLayout;
 import com.ralitski.util.gui.layout.Layout;
 import com.ralitski.util.gui.render.RenderList;
@@ -11,7 +12,7 @@ import com.ralitski.util.input.event.MouseButtonEvent;
 import com.ralitski.util.input.event.MouseButtonEvent.MouseEventType;
 import com.ralitski.util.input.event.MouseEvent;
 
-public abstract class ContainerAbstract extends ComponentAbstract implements Container {
+public abstract class ContainerAbstract extends ComponentAbstract implements BoxEventListener, Container {
 	
 	protected Layout layout;
 	protected List<Component> children;
@@ -58,6 +59,7 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 //			getRenderList(owner);
 		}
 		this.useParentRenderList = false;
+		box.setEventListener(this);
 	}
 	
 	//stuff
@@ -268,6 +270,34 @@ public abstract class ContainerAbstract extends ComponentAbstract implements Con
 			return mEvent.getButton() == 0 && mEvent.getType() == MouseEventType.DOWN;
 		}
 		return false;
+	}
+	
+	public void onBoxEvent(BoxEvent event) {
+		/*
+		SET_MINX,
+		SET_MINY,
+		SET_MAXX,
+		SET_MAXY,
+		SET_WIDTH,
+		SET_HEIGHT,
+		SET_CENTERX,
+		SET_CENTERY,
+		SET_X,
+		SET_Y,
+		TRANSLATE_X,
+		TRANSLATE_Y;
+		 */
+		BoxEventType type = event.getEventType();
+		if(type.isMovement()) {
+			//translate the container's children
+			for(Component c : children) {
+				//...
+			}
+		} else {
+			//refresh the container to distribute its children
+			//TODO: use refreshAll()?
+			this.refresh();
+		}
 	}
 
 }

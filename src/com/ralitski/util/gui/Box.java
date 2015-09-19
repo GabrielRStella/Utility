@@ -1,11 +1,18 @@
 package com.ralitski.util.gui;
 
+import com.ralitski.util.gui.BoxEvent.BoxEventType;
+
 public class Box implements Cloneable {
     
     private int minX;
     private int minY;
     private int maxX;
     private int maxY;
+    
+    /*
+     * Only one BoxEventListener is stored for speed, and since Boxes will often not have a listener.
+     */
+    private BoxEventListener eventListener;
 
     public Box() {
     	this(0, 0);
@@ -21,6 +28,14 @@ public class Box implements Cloneable {
         this.maxX = maxX;
         this.maxY = maxY;
     }
+
+	public BoxEventListener getEventListener() {
+		return eventListener;
+	}
+
+	public void setEventListener(BoxEventListener eventListener) {
+		this.eventListener = eventListener;
+	}
 
 	public int getMinX() {
         return minX;
@@ -39,26 +54,38 @@ public class Box implements Cloneable {
     }
 
     public void setMinX(int minX) {
+    	if(eventListener != null)
+    		eventListener.onBoxEvent(new BoxEvent(this, BoxEventType.SET_MINX, this.minX, minX));
 		this.minX = minX;
 	}
 
 	public void setMinY(int minY) {
+    	if(eventListener != null)
+    		eventListener.onBoxEvent(new BoxEvent(this, BoxEventType.SET_MINY, this.minY, minY));
 		this.minY = minY;
 	}
 
 	public void setMaxX(int maxX) {
+    	if(eventListener != null)
+    		eventListener.onBoxEvent(new BoxEvent(this, BoxEventType.SET_MAXX, this.maxX, maxX));
 		this.maxX = maxX;
 	}
 
 	public void setMaxY(int maxY) {
+    	if(eventListener != null)
+    		eventListener.onBoxEvent(new BoxEvent(this, BoxEventType.SET_MAXY, this.maxY, maxY));
 		this.maxY = maxY;
 	}
 	
 	public void setWidth(int width) {
+    	if(eventListener != null)
+    		eventListener.onBoxEvent(new BoxEvent(this, BoxEventType.SET_WIDTH, this.getWidth(), width));
 		maxX = minX + width;
 	}
 	
 	public void setHeight(int height) {
+    	if(eventListener != null)
+    		eventListener.onBoxEvent(new BoxEvent(this, BoxEventType.SET_HEIGHT, this.getHeight(), height));
 		maxY = minY + height;
 	}
 
@@ -75,7 +102,10 @@ public class Box implements Cloneable {
     }
     
     public void setCenterX(int x) {
-    	x -= getCenterX();
+    	int i = this.getCenterX();
+    	if(eventListener != null)
+    		eventListener.onBoxEvent(new BoxEvent(this, BoxEventType.SET_CENTERX, i, x));
+    	x -= i;
     	minX += x;
     	maxX += x;
     }
@@ -85,7 +115,10 @@ public class Box implements Cloneable {
     }
     
     public void setCenterY(int y) {
-    	y -= getCenterY();
+    	int i = this.getCenterY();
+    	if(eventListener != null)
+    		eventListener.onBoxEvent(new BoxEvent(this, BoxEventType.SET_CENTERY, i, y));
+    	y -= i;
     	minY += y;
     	maxY += y;
     }
@@ -97,10 +130,14 @@ public class Box implements Cloneable {
     }
     
     public void setX(int x) {
+    	if(eventListener != null)
+    		eventListener.onBoxEvent(new BoxEvent(this, BoxEventType.SET_X, getMinX(), x));
     	translateX(x - minX);
     }
     
     public void setY(int y) {
+    	if(eventListener != null)
+    		eventListener.onBoxEvent(new BoxEvent(this, BoxEventType.SET_Y, getMinY(), y));
     	translateY(y - minY);
     }
     
@@ -116,11 +153,15 @@ public class Box implements Cloneable {
     }
     
     public void translateX(int x) {
+    	if(eventListener != null)
+    		eventListener.onBoxEvent(new BoxEvent(this, BoxEventType.TRANSLATE_X, 0, x));
     	minX += x;
     	maxX += x;
     }
     
     public void translateY(int y) {
+    	if(eventListener != null)
+    		eventListener.onBoxEvent(new BoxEvent(this, BoxEventType.TRANSLATE_Y, 0, y));
     	minY += y;
     	maxY += y;
     }
