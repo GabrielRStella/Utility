@@ -1,3 +1,6 @@
+Note: This is an old (Deprecated, outdated, no-longer-updated) project. I have other utility packages now.
+I'm keeping it up as an example of my old code (and how it's gotten better over time).
+
 # Utility
 Various utilities written in java.
 A copy of LWJGL 2.9.1 (and its natives) is included for ease of use. They can be found in the [src/lwjgl](https://github.com/XyPhoGR/Utility/tree/master/src/lwjgl) folder.
