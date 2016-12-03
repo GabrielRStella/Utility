@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 //TODO: pen, command system, separate Rules structure
+//redo Rules structure to have arbitrary keys (have a method that finds patterns rather than a given String key)
 public class LSystem {
 	
 	private String axiom;
